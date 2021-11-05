@@ -19,8 +19,15 @@ from types import SimpleNamespace
 import zipfile
 import json
 
-def _GenerateDate(topic=None):
-	pass
+datamodel=[]
+
+def _GenerateData(topic=None,parent=None):
+    newClass=ObjectDescription()
+    newClass.className=topic.title
+	if hasattr(topic,'labels'):
+	   pass    
+    newClass.classInheritancyParent=parent
+    
 
 def _loadXmind(name=None):
 	with zipfile.ZipFile(name) as f:
