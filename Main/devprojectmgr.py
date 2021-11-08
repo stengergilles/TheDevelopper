@@ -4,18 +4,14 @@ sys.path.append(".")
 from Lib import getUserPath
 from Lib.filedialog import FileDialog
 from devdiagram import loadDevDiagram
-from kivy.uix.scatter import Scatter
-from kivy.properties import StringProperty
-from kivy.logger import Logger
 from kivy.app import App
-
-# kivy.require('1.0.6')
-
-class SchemaObject(Scatter):
-    source = StringProperty(None)
+from kivy.properties import StringProperty
+from schemaobject import SchemaObject
+from schemaobject import cleanUi
+from schemaobject import createUiGraph
 
 class ProjectApp(App):
-    
+
     workspaceRoot = StringProperty(getUserPath())
 
     def on_workspaceRoot(self, instance, value):
@@ -23,7 +19,8 @@ class ProjectApp(App):
 
     def _loadfile(self):
         self.devdiagram = loadDevDiagram(name=self.workspaceRoot)
-        pass
+        cleanUi()
+        createUiGraph(g=self.devdiagram)
 
     def _create_popup_workspace_open(self):
         if not hasattr(self, "openFile"):
@@ -43,6 +40,6 @@ class ProjectApp(App):
     def on_pause(self):
         return True
 
-
 if __name__ == '__main__':
     ProjectApp().run()
+    

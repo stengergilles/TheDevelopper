@@ -3,7 +3,6 @@ import json
 import zipfile
 from types import SimpleNamespace
 
-
 class ObjectDescription(object):
     className = ""
     classAttributes = []
