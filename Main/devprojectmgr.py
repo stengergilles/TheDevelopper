@@ -19,8 +19,9 @@ class ProjectApp(App):
 
     def _loadfile(self):
         self.devdiagram = loadDevDiagram(name=self.workspaceRoot)
-        cleanUi()
-        createUiGraph(g=self.devdiagram)
+        if self.devdiagram:
+            cleanUi()
+            createUiGraph(g=self.devdiagram)
 
     def _create_popup_workspace_open(self):
         if not hasattr(self, "openFile"):

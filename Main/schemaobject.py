@@ -1,6 +1,7 @@
 from kivy.properties import StringProperty
 from kivy.uix.scatter import Scatter
 from kivy.app import App
+from kivy.core.window import Window
 
 class SchemaObject(Scatter):
     source = StringProperty(None)
