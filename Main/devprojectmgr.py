@@ -18,6 +18,10 @@ class ProjectApp(App):
         self.root.ids.title.text = value
 
     def _loadfile(self):
+        if not hasattr(self,"devdiagram"):
+            self.devdiagram=None
+        if self.devdiagram:
+            self.devdiagram=None
         self.devdiagram = loadDevDiagram(name=self.workspaceRoot)
         if self.devdiagram:
             cleanUi()

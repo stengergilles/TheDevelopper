@@ -6,7 +6,8 @@ from kivy.uix.floatlayout import FloatLayout
 
 from random import randint
 def cleanUi():
-	pass
+	for i in App.get_running_app().root.children:
+		App.get_running_app().root.remove_widget(i)
 	
 def createUiGraph(g=None):
 	for i in g:
