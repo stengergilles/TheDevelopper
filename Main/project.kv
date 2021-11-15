@@ -40,32 +40,3 @@ FloatLayout:
             text_size: self.width, None
             color: (1, 1, 1, .8)
             text: 'Dev Project:' + app.workspaceRoot
-
-<SchemaObject>:
-#    on_size: self.center = win.Window.center
-    size_hint: 0.1,0.1
-    auto_bring_to_front:False
-    do_rotation: True
-    do_translation: True
-    do_scale: True
-    BoxLayout:
-        id: bl 
-        size_hint: 1,1
-        Label:
-            id: title
-            text: 'project title'
-            height: 24
-            color: (0,0,0,.8)
-
-            canvas.before:
-                Color:
-                    rgba: 1,1,1,1
-                BorderImage:
-                    source: 'shadow32.png'
-                    border: (36,36,36,36)
-                    size:(self.width+72, self.height+72)
-                    pos: (-36,-36)
-                    
-        Button:
-            id:btn
-            text:'button'
