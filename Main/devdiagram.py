@@ -20,8 +20,6 @@ class Signature(object):
     signatureType = ""
     cardinality = ""
 
-datamodel = []
-
 def _GenerateData(topic=None, parent=None):
     newClass = ObjectDescription()
     newClass.className = topic.title
@@ -49,6 +47,7 @@ def _GenerateData(topic=None, parent=None):
     return newClass
 
 def _loadXmind(name=None):
+    datamodel=[]
     with zipfile.ZipFile(name) as f:
         if "content.json" in f.namelist():
             data = f.open("content.json").read().decode('utf-8')

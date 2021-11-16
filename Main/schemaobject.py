@@ -3,21 +3,22 @@ from kivy.uix.label import Label
 from kivy.graphics import Color,Rectangle,Canvas,Ellipse, Line
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
-
 from random import randint
+
 def cleanUi():
-	for i in App.get_running_app().root.children:
-		App.get_running_app().root.remove_widget(i)
+	GA=App.get_running_app()
+	GA.root.ids['canvasZone'].clear_widgets()
 	
 def createUiGraph(g=None):
+	print(len(g))
 	for i in g:
 		newWidget=SchemaObject()
 		newWidget.canvas=Canvas()
-		newWidget.add_widget(Label(text=i.className,halign="left",valign="top",pos=(0,0)))
+		newWidget.add_widget(Label(text=i.className,halign="left",valign="top",pos=(0,0),text_size=(100,50)))
 		newWidget.bind(pos=newWidget.redraw,size=newWidget.redraw)
 		newWidget.size_hint=(0.1,0.1)
 		newWidget.pos=(randint(50,100),randint(50,100))
-		App.get_running_app().root.add_widget(newWidget)
+		App.get_running_app().root.ids['canvasZone'].add_widget(newWidget)
 
 class SchemaObject(FloatLayout):
 
