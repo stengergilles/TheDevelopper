@@ -1,6 +1,8 @@
 from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
 from kivy.uix.floatlayout import FloatLayout
 
+from widgets.mylabel import MyLabel
+
 class SchemaObject(FloatLayout):
 
 	def on_touch_down(self, touch):
@@ -36,3 +38,12 @@ class SchemaObject(FloatLayout):
 			Ellipse(pos=self.pos,size=(24,24))
 			Color(0.0,0.0,0.0)
 			Ellipse(pos=(self.pos[0]+2,self.pos[1]+2),size=(20,20))
+
+def createSchemaObject(title=None):
+	newWidget=SchemaObject()
+	newWidget.canvas=Canvas()
+	newWidget.title=MyLabel(text=title,font_size=14)
+	newWidget.title.tag="title"
+	newWidget.add_widget(newWidget.title)
+	newWidget.bind(pos=newWidget.redraw,size=newWidget.redraw)
+	return newWidget
