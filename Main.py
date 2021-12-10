@@ -3,6 +3,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.graphics import Canvas
 from kivy.core.window import Window
 from kivy.properties import StringProperty
+from kivy.metrics import dp
+
 from kivy_addons.CustomModules import CustomGraphics
 
 from random import randint
@@ -40,19 +42,17 @@ class SchemaApp(App):
 			if type(i) is SchemaObject:
 				self.root.remove_widget(i)
 		newWidget=createSchemaObject(title='My First Object')
-		newWidget.size_hint=(0.05,0.1)
 		newWidget.pos=(randint(50,100),randint(50,100))
 		self.root.add_widget(newWidget)
 
 	def build(self):
 		self.root=FloatLayout(size=(Window.width,Window.height))
 		CustomGraphics.SetBG(self.root,bg_color=[0.5,0.5,0.5,1])
-		print(Window.width)
-		self.open=CircularButton(img='fileopen.png',pos=((1 - 64/Window.width)*Window.width,20),size=(64,64),size_hint=(None,None))
+		self.open=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*    Window.width,dp(20)),size=(dp(64),dp(64)),size_hint=(None,None))
 		self.open.factor=1
 		self.open.bind(pos=self.open.redraw,size=self.open.redraw,on_press=self._create_popup_workspace_open)
 		self.root.add_widget(self.open)
-		self.close=CircularButton(img='fileclose.png',pos=((1 - 2 * 64/Window.width)*Window.width,20),size=(64,64),size_hint=(None,None))
+		self.close=CircularButton(img='fileclose.png',pos=(int((1 - 2 * dp(64)/Window.width)*Window.width),int(dp(20))),size=(int(dp(64)),int(dp(64))),size_hint=(None,None))
 		self.close.factor=2
 		self.close.bind(pos=self.close.redraw,size=self.close.redraw)
 		self.root.add_widget(self.close)

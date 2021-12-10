@@ -1,6 +1,6 @@
 from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
 from kivy.uix.floatlayout import FloatLayout
-
+from kivy.metrics import sp,dp
 from widgets.mylabel import MyLabel
 
 class SchemaObject(FloatLayout):
@@ -32,18 +32,20 @@ class SchemaObject(FloatLayout):
 					txtlength=i.label.texture.width/2
 		with self.canvas.before:
 			Color(1.0,1.0,1.0)
-			Line(points=(self.pos[0]+12,self.pos[1]+12,self.pos[0]+self.size[0],self.pos[1]+12))
-			Line(points=(self.pos[0]+self.size[0],self.pos[1]+12,self.pos[0]+self.size[0],self.pos[1]+self.size[1]))
+			Line(points=(self.pos[0]+int(dp(12)),self.pos[1]+int(dp(12)),self.pos[0]+self.size[0],self.pos[1]+int(dp(12))))
+			Line(points=(self.pos[0]+self.size[0],self.pos[1]+int(dp(12)),self.pos[0]+self.size[0],self.pos[1]+self.size[1]))
 			Line(points=(self.pos[0]+self.size[0],self.pos[1]+self.size[1],self.pos[0]+self.size[0]+txtlength,self.pos[1]+self.size[1]))
-			Ellipse(pos=self.pos,size=(24,24))
+			Ellipse(pos=self.pos,size=(int(dp(24)),int(dp(24))))
 			Color(0.0,0.0,0.0)
-			Ellipse(pos=(self.pos[0]+2,self.pos[1]+2),size=(20,20))
+			Ellipse(pos=(int(self.pos[0]+dp(2)),int(self.pos[1]+dp(2))),size=(int(dp(20)),int(dp(20))))
 
 def createSchemaObject(title=None):
 	newWidget=SchemaObject()
 	newWidget.canvas=Canvas()
-	newWidget.title=MyLabel(text=title,font_size=14)
+	newWidget.title=MyLabel(text=title,font_size=sp(14))
 	newWidget.title.tag="title"
 	newWidget.add_widget(newWidget.title)
 	newWidget.bind(pos=newWidget.redraw,size=newWidget.redraw)
+	newWidget.size_hint=(None,None)
+	newWidget.size=(int(dp(100)),int(dp(100)))
 	return newWidget
