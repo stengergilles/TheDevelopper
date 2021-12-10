@@ -33,7 +33,7 @@ class SchemaApp(App):
 	def on_window_resize(self,window,width,height):
 		for i in self.root.children:
 			if type(i) is CircularButton:
-				i.pos=(window.width*i.factor,20)
+				i.pos=((1 - i.factor * i.size[0]/window.width)*window.width,20)
 
 	def _loadCanvas(self):
 		for i in self.root.children:
@@ -47,12 +47,13 @@ class SchemaApp(App):
 	def build(self):
 		self.root=FloatLayout(size=(Window.width,Window.height))
 		CustomGraphics.SetBG(self.root,bg_color=[0.5,0.5,0.5,1])
-		self.open=CircularButton(img='fileopen.png',pos=(Window.width*0.83,20),size=(64,64),size_hint=(None,None))
-		self.open.factor=0.83
+		print(Window.width)
+		self.open=CircularButton(img='fileopen.png',pos=((1 - 64/Window.width)*Window.width,20),size=(64,64),size_hint=(None,None))
+		self.open.factor=1
 		self.open.bind(pos=self.open.redraw,size=self.open.redraw,on_press=self._create_popup_workspace_open)
 		self.root.add_widget(self.open)
-		self.close=CircularButton(img='fileclose.png',pos=(Window.width*0.92,20),size=(64,64),size_hint=(None,None))
-		self.close.factor=0.92
+		self.close=CircularButton(img='fileclose.png',pos=((1 - 2 * 64/Window.width)*Window.width,20),size=(64,64),size_hint=(None,None))
+		self.close.factor=2
 		self.close.bind(pos=self.close.redraw,size=self.close.redraw)
 		self.root.add_widget(self.close)
 		self._loadCanvas()
