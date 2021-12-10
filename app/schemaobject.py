@@ -1,0 +1,38 @@
+from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
+from kivy.uix.floatlayout import FloatLayout
+
+class SchemaObject(FloatLayout):
+
+	def on_touch_down(self, touch):
+		if self.collide_point(*touch.pos):
+			touch.grab(self)
+			return True
+		return super().on_touch_down(touch)
+
+	def on_touch_up(self, touch):
+		if touch.grab_current is self:
+			touch.ungrab(self)
+		return super().on_touch_up(touch)
+
+	def on_touch_move(self, touch):
+		if touch.grab_current is self: 
+			self.pos=touch.pos
+		return super().on_touch_move(touch)
+
+	def redraw(self,object,pos):
+		self.canvas.before.clear()
+		txtlength=0
+		for i in self.children:
+			if (hasattr(i,"tag")):
+				if i.tag == "title":
+					i.texture_update()
+					i.pos=(self.pos[0]+self.size[0],self.pos[1]+self.size[1])
+					txtlength=i.label.texture.width/2
+		with self.canvas.before:
+			Color(1.0,1.0,1.0)
+			Line(points=(self.pos[0]+12,self.pos[1]+12,self.pos[0]+self.size[0],self.pos[1]+12))
+			Line(points=(self.pos[0]+self.size[0],self.pos[1]+12,self.pos[0]+self.size[0],self.pos[1]+self.size[1]))
+			Line(points=(self.pos[0]+self.size[0],self.pos[1]+self.size[1],self.pos[0]+self.size[0]+txtlength,self.pos[1]+self.size[1]))
+			Ellipse(pos=self.pos,size=(24,24))
+			Color(0.0,0.0,0.0)
+			Ellipse(pos=(self.pos[0]+2,self.pos[1]+2),size=(20,20))
