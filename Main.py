@@ -1,5 +1,6 @@
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Canvas
 from kivy.core.window import Window
 from kivy.properties import StringProperty
@@ -16,49 +17,61 @@ from app.schemaobject import SchemaObject
 from app.schemaobject import createSchemaObject
 
 class SchemaApp(App):
-	root=None
-	open=None
+	racine=None
+	principal=None
+	ouvrir=None
 	close=None
 
 	workspaceRoot = StringProperty(getUserPath())
 
-	def _create_popup_workspace_open(self,event):
-		if not hasattr(self, "openFile"):
-			self.openFile = FileDialog(
+	def _create_popup_workspace_ouvrir(self,event):
+		if not hasattr(self, "ouvrirFile"):
+			self.ouvrirFile = FileDialog(
 				sourceObject=self, sourceProperty="workspaceRoot", title="Open Schema", onsubmit=self._loadCanvas)
 		else:
-			if self.openFile is None:
-				self.openFile = FileDialog(
+			if self.ouvrirFile is None:
+				self.ouvrirFile = FileDialog(
 					sourceObject=self, sourceProperty="workspaceRoot", title="Open Schema", onsubmit=self._loadCanvas)
-		self.openFile.showDialog()
+		self.ouvrirFile.showDialog()
 
 	def on_window_resize(self,window,width,height):
-		for i in self.root.children:
+		for i in self.principal.children:
 			if type(i) is CircularButton:
 				i.pos=((1 - i.factor * i.size[0]/window.width)*window.width,20)
 
 	def _loadCanvas(self):
-		for i in self.root.children:
+		print("load canvas")
+		print(self.principal)
+		print(self.racine)
+		for i in self.racine.children:
 			if type(i) is SchemaObject:
-				self.root.remove_widget(i)
+				self.racine.remove_widget(i)
 		newWidget=createSchemaObject(title='My First Object')
 		newWidget.pos=(randint(50,100),randint(50,100))
-		self.root.add_widget(newWidget)
+		self.racine.add_widget(newWidget)
 
 	def build(self):
-		self.root=FloatLayout(size=(Window.width,Window.height))
-		CustomGraphics.SetBG(self.root,bg_color=[0.5,0.5,0.5,1])
-		self.open=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*    Window.width,dp(20)),size=(dp(64),dp(64)),size_hint=(None,None))
-		self.open.factor=1
-		self.open.bind(pos=self.open.redraw,size=self.open.redraw,on_press=self._create_popup_workspace_open)
-		self.root.add_widget(self.open)
+		self.racine=FloatLayout(size_hint=(0.8,0.8))
+		self.principal=FloatLayout(size=(Window.width,Window.height))
+		print("build")
+		print(self.racine)
+		print(self.principal)
+		CustomGraphics.SetBG(self.racine,bg_color=[0.5,0.5,0.5,0.5])
+		CustomGraphics.SetBG(self.principal,bg_color=[0.5,0.5,0.5])
+		scrlv=ScrollView()
+		scrlv.add_widget(self.racine)
+		self.ouvrir=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*    Window.width,dp(20)),size=(dp(64),dp(64)),size_hint=(None,None))
+		self.ouvrir.factor=1
+		self.ouvrir.bind(pos=self.ouvrir.redraw,size=self.ouvrir.redraw,on_press=self._create_popup_workspace_ouvrir)
+		self.principal.add_widget(self.ouvrir)
 		self.close=CircularButton(img='fileclose.png',pos=(int((1 - 2 * dp(64)/Window.width)*Window.width),int(dp(20))),size=(int(dp(64)),int(dp(64))),size_hint=(None,None))
 		self.close.factor=2
 		self.close.bind(pos=self.close.redraw,size=self.close.redraw)
-		self.root.add_widget(self.close)
+		self.principal.add_widget(self.close)
+		self.principal.add_widget(scrlv)
 		self._loadCanvas()
 		Window.bind(on_resize=self.on_window_resize)
-		return self.root
+		return self.principal
 
 if __name__ == '__main__':
 	SchemaApp().run()
