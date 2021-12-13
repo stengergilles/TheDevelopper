@@ -39,7 +39,7 @@ class SchemaApp(App):
 		for i in self.racine.children:
 			if type(i) is SchemaObject:
 				self.racine.remove_widget(i)
-		newWidget=createSchemaObject(title='My First Object')
+		newWidget=createSchemaObject(title='My First Object',icon='azure.png')
 		newWidget.pos=(randint(50,100),randint(50,100))
 		self.racine.add_widget(newWidget)
 
@@ -65,13 +65,14 @@ class SchemaApp(App):
 	def on_touch_move(self,floatlayout,touch):
 		for i in self.racine.children:
 			if i.collide_point(*touch.pos):
-				return i.on_touch_move(touch)		
-		if self.moving:
-			delta=((touch.pos[0]-self.prevpos[0]),(touch.pos[1]-self.prevpos[1]))
-			self.prevpos=(touch.pos[0],touch.pos[1])
-			for i in self.racine.children:
-				if type(i) is SchemaObject:
-					i.pos=(i.pos[0]+delta[0],i.pos[1]+delta[1])
+				return i.on_touch_move(touch)	
+		if hasattr(self,"moving"):	
+			if self.moving:
+				delta=((touch.pos[0]-self.prevpos[0]),(touch.pos[1]-self.prevpos[1]))
+				self.prevpos=(touch.pos[0],touch.pos[1])
+				for i in self.racine.children:
+					if type(i) is SchemaObject:
+						i.pos=(i.pos[0]+delta[0],i.pos[1]+delta[1])
 
 	def build(self):
 		self.racine=FloatLayout(size=(Window.width,Window.height))

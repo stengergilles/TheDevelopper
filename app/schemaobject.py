@@ -33,13 +33,15 @@ class SchemaObject(FloatLayout):
 		with self.canvas.before:
 			Color(1.0,1.0,1.0)
 			Line(points=(self.pos[0]+int(dp(12)),self.pos[1]+int(dp(12)),self.pos[0]+self.size[0],self.pos[1]+int(dp(12))))
+			if hasattr(self,"icon"):
+				Rectangle(pos=(self.pos[0]+int(dp(14)),self.pos[1]+int(dp(14))),size=(self.size[0]-int(dp(16)),self.size[1]-int(dp(16))),source=self.icon)
 			Line(points=(self.pos[0]+self.size[0],self.pos[1]+int(dp(12)),self.pos[0]+self.size[0],self.pos[1]+self.size[1]))
 			Line(points=(self.pos[0]+self.size[0],self.pos[1]+self.size[1],self.pos[0]+self.size[0]+txtlength,self.pos[1]+self.size[1]))
 			Ellipse(pos=self.pos,size=(int(dp(24)),int(dp(24))))
 			Color(0.0,0.0,0.0)
 			Ellipse(pos=(int(self.pos[0]+dp(2)),int(self.pos[1]+dp(2))),size=(int(dp(20)),int(dp(20))))
 
-def createSchemaObject(title=None):
+def createSchemaObject(title=None,icon=None):
 	newWidget=SchemaObject()
 	newWidget.canvas=Canvas()
 	newWidget.title=MyLabel(text=title,font_size=sp(14))
@@ -48,4 +50,6 @@ def createSchemaObject(title=None):
 	newWidget.bind(pos=newWidget.redraw,size=newWidget.redraw)
 	newWidget.size_hint=(None,None)
 	newWidget.size=(int(dp(100)),int(dp(100)))
+	if not icon is None:
+		newWidget.icon=icon
 	return newWidget
