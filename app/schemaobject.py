@@ -1,5 +1,6 @@
 from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.metrics import sp,dp
 from widgets.mylabel import MyLabel
 
@@ -30,6 +31,8 @@ class SchemaObject(FloatLayout):
 					i.texture_update()
 					i.pos=(self.pos[0]+self.size[0],self.pos[1]+self.size[1])
 					txtlength=i.label.texture.width/2
+			if type(i) is GridLayout:
+				i.pos=(self.pos[0]+self.size[0],self.pos[1])
 		with self.canvas.before:
 			Color(1.0,1.0,1.0)
 			Line(points=(self.pos[0]+int(dp(12)),self.pos[1]+int(dp(12)),self.pos[0]+self.size[0],self.pos[1]+int(dp(12))))
@@ -41,7 +44,7 @@ class SchemaObject(FloatLayout):
 			Color(0.0,0.0,0.0)
 			Ellipse(pos=(int(self.pos[0]+dp(2)),int(self.pos[1]+dp(2))),size=(int(dp(20)),int(dp(20))))
 
-def createSchemaObject(title=None,icon=None):
+def createSchemaObject(title=None,icon=None,dataobject=None):
 	newWidget=SchemaObject()
 	newWidget.canvas=Canvas()
 	newWidget.title=MyLabel(text=title,font_size=sp(14))
@@ -52,4 +55,7 @@ def createSchemaObject(title=None,icon=None):
 	newWidget.size=(int(dp(100)),int(dp(100)))
 	if not icon is None:
 		newWidget.icon=icon
+	if not dataobject is None:
+		newWidget.dataobject=dataobject
+		newWidget.add_widget(newWidget.dataobject.getLayout())				
 	return newWidget

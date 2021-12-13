@@ -15,6 +15,7 @@ from dialogs.files import FileDialog
 from widgets.circularbutton import CircularButton
 from app.schemaobject import SchemaObject
 from app.schemaobject import createSchemaObject
+from data.dataobject import DataObject
 
 class SchemaApp(App):
 	racine=None
@@ -39,7 +40,12 @@ class SchemaApp(App):
 		for i in self.racine.children:
 			if type(i) is SchemaObject:
 				self.racine.remove_widget(i)
-		newWidget=createSchemaObject(title='My First Object',icon='azure.png')
+		dataobject=DataObject()
+		dataobject.field1="Value 1"
+		dataobject.addField(name="field1",displayname="My Field 1")
+		dataobject.field2="Value 2"
+		dataobject.addField(name="field2",displayname="My Field 2")
+		newWidget=createSchemaObject(title='My First Object',icon='azure.png',dataobject=dataobject)
 		newWidget.pos=(randint(50,100),randint(50,100))
 		self.racine.add_widget(newWidget)
 
@@ -75,6 +81,7 @@ class SchemaApp(App):
 						i.pos=(i.pos[0]+delta[0],i.pos[1]+delta[1])
 
 	def build(self):
+		self.title="Schema Editor"
 		self.racine=FloatLayout(size=(Window.width,Window.height))
 		self.racine.bind(on_touch_down=self.on_touch_down,on_touch_up=self.on_touch_up,on_touch_move=self.on_touch_move)
 		CustomGraphics.SetBG(self.racine,bg_color=[0.5,0.5,0.5,0.5])
