@@ -17,6 +17,7 @@ from app.schemaobject import SchemaObject
 from app.schemaobject import createSchemaObject
 from data.dataobject import DataObject
 from tools.files import isjson
+from tools.files import save
 
 class SchemaApp(App):
 	root=None
@@ -95,6 +96,7 @@ class SchemaApp(App):
 		self.root.add_widget(self.close)
 		self._loadCanvas()
 		Window.bind(on_resize=self.on_window_resize)
+		save(fname="tmp.json",root=self.root)
 		return self.root
 
 if __name__ == '__main__':
