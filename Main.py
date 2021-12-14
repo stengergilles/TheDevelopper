@@ -16,6 +16,7 @@ from widgets.circularbutton import CircularButton
 from app.schemaobject import SchemaObject
 from app.schemaobject import createSchemaObject
 from data.dataobject import DataObject
+from tools.files import isjson
 
 class SchemaApp(App):
 	root=None
@@ -35,6 +36,7 @@ class SchemaApp(App):
 		self.openFile.showDialog()
 
 	def _loadCanvas(self):
+		isjson(self.workspaceRoot)
 		for i in self.root.children:
 			if type(i) is SchemaObject:
 				self.root.remove_widget(i)
