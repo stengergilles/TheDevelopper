@@ -3,12 +3,14 @@ from kivy.core.text import Label as CoreLabel
 from kivy.graphics import Color,Rectangle
 
 class MyLabel(Widget):
+
 	def __init__(self,text=None,font_size=None,**kwargs):
 		super(MyLabel,self).__init__(**kwargs)
 		self.label=CoreLabel(text=text,font_size=font_size)
-	
+
 	def texture_update(self):
 		self.label.refresh()
+		self.texture_size=(self.label.texture.width,self.label.texture.height)
 
 	def on_pos(self,*args):
 		self.label.refresh()

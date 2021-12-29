@@ -1,6 +1,6 @@
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.textinput import TextInput
+from widgets.mylabel import MyLabel
+from widgets.mytextinput import MyTextInput
 
 class DataObject(object):
 	displayname=None
@@ -17,11 +17,11 @@ class DataObject(object):
 		w=0
 		h=0
 		for i in self.displayname.keys():
-			l=Label(text=self.displayname[i],size_hint_y=None,size_hint_x=None,font_size='12sp')
+			l=MyLabel(text=self.displayname[i],size_hint_y=None,size_hint_x=None,font_size=12)
 			l.texture_update()
 			l.size=(l.texture_size[0]*1.2,l.texture_size[1]*2)
 			ret.add_widget(l)
-			t=TextInput(multiline=False,size_hint_y=None,size_hint_x=None,font_size='12sp')
+			t=MyTextInput(multiline=False,size_hint_y=None,size_hint_x=None,font_size=12)
 			texture=t._create_line_label("xxxxxxxxxx")
 			ret.add_widget(t)
 			if l.texture_size[1]+texture.size[0]>w:
