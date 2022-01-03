@@ -1,5 +1,5 @@
 from kivy.app import App
-from kivy.uix.floatlayout import FloatLayout
+from widgets.myfloatlayout import MyFloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Canvas
 from kivy.core.window import Window
@@ -83,7 +83,7 @@ class SchemaApp(App):
 
 	def build(self):
 		self.title="Schema Editor"
-		self.root=FloatLayout(size=(Window.width,Window.height))
+		self.root=MyFloatLayout(size=(Window.width,Window.height))
 		self.root.bind(on_touch_down=self.on_touch_down,on_touch_up=self.on_touch_up,on_touch_move=self.on_touch_move)
 		CustomGraphics.SetBG(self.root,bg_color=[0.5,0.5,0.5,0.5])
 		self.open=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*Window.width,dp(20)),size=(dp(64),dp(64)),size_hint=(None,None))

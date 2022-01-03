@@ -1,12 +1,13 @@
 from kivy.uix.widget import Widget
 from kivy.core.text import Label as CoreLabel
 from kivy.graphics import Color,Rectangle
+from kivy.metrics import dp
 
 class MyLabel(Widget):
 
 	def __init__(self,text=None,font_size=None,**kwargs):
 		super(MyLabel,self).__init__(**kwargs)
-		self.label=CoreLabel(text=text,font_size=font_size)
+		self.label=CoreLabel(text=text,font_size=dp(font_size))
 
 	def texture_update(self):
 		self.label.refresh()

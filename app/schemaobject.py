@@ -1,10 +1,16 @@
 from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.gridlayout import GridLayout
+from widgets.myfloatlayout import MyFloatLayout
+from widgets.mygridlayout import MyGridLayout
 from kivy.metrics import sp,dp
 from widgets.mylabel import MyLabel
 
-class SchemaObject(FloatLayout):
+class SchemaObject(MyFloatLayout):
+	
+	def __getstate__(self):
+		return {"title":self.title}
+
+	def _setstate__(self,state):
+		pass
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -31,7 +37,7 @@ class SchemaObject(FloatLayout):
 					i.texture_update()
 					i.pos=(self.pos[0]+self.size[0],self.pos[1]+self.size[1])
 					txtlength=i.label.texture.width/2
-			if type(i) is GridLayout:
+			if type(i) is MyGridLayout:
 				i.pos=(self.pos[0]+self.size[0],self.pos[1])
 		with self.canvas.before:
 			Color(1.0,1.0,1.0)
@@ -47,7 +53,7 @@ class SchemaObject(FloatLayout):
 def createSchemaObject(title=None,icon=None,dataobject=None):
 	newWidget=SchemaObject()
 	newWidget.canvas=Canvas()
-	newWidget.title=MyLabel(text=title,font_size=sp(14))
+	newWidget.title=MyLabel(text=title,font_size=14)
 	newWidget.title.tag="title"
 	newWidget.add_widget(newWidget.title)
 	newWidget.bind(pos=newWidget.redraw,size=newWidget.redraw)

@@ -1,4 +1,4 @@
-from kivy.uix.gridlayout import GridLayout
+from widgets.mygridlayout import MyGridLayout
 from widgets.mylabel import MyLabel
 from widgets.mytextinput import MyTextInput
 
@@ -12,7 +12,7 @@ class DataObject(object):
 		self.displayname[name]=displayname
 
 	def getLayout(self): 
-		ret=GridLayout(size_hint=(None,1))
+		ret=MyGridLayout(size_hint=(None,1))
 		ret.cols=2
 		w=0
 		h=0
@@ -21,7 +21,7 @@ class DataObject(object):
 			l.texture_update()
 			l.size=(l.texture_size[0]*1.2,l.texture_size[1]*2)
 			ret.add_widget(l)
-			t=MyTextInput(multiline=False,size_hint_y=None,size_hint_x=None,font_size=12)
+			t=MyTextInput(multiline=False,size_hint_y=None,size_hint_x=None,font_size='12dp')
 			texture=t._create_line_label("xxxxxxxxxx")
 			ret.add_widget(t)
 			if l.texture_size[1]+texture.size[0]>w:
