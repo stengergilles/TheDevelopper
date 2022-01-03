@@ -5,12 +5,6 @@ from kivy.metrics import sp,dp
 from widgets.mylabel import MyLabel
 
 class SchemaObject(MyFloatLayout):
-	
-	def __getstate__(self):
-		return {"title":self.title}
-
-	def _setstate__(self,state):
-		pass
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):

@@ -11,4 +11,5 @@ def isjson(f=None):
 
 def save(fname=None, root=None):
 	with open(fname,'w') as file:
-		file.write(jsonpickle.encode(root))
+		for i in root.children:
+			file.write(jsonpickle.encode(i))
