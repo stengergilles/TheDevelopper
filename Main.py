@@ -96,7 +96,7 @@ class SchemaApp(App):
 		self.root.add_widget(self.close)
 		self._loadCanvas()
 		Window.bind(on_resize=self.on_window_resize)
-		save(fname="tmp.json",root=self.root)
+		save(fname="tmp.json",root=self.root,tosave=SchemaObject)
 		return self.root
 
 if __name__ == '__main__':
