@@ -49,6 +49,7 @@ class SchemaApp(App):
 		self.saveFile.showDialog()
 
 	def _saveCanvas(self):
+# Check if isDirectory
 		save(fname=self.workspaceRoot,root=self.root,tosave=SchemaObject)
 
 	def _loadCanvas(self):
