@@ -18,6 +18,7 @@ from app.schemaobject import createSchemaObject
 from data.dataobject import DataObject
 from tools.files import isjson
 from tools.files import save
+from tools.files import load
 
 class SchemaApp(App):
 	root=None
@@ -37,19 +38,22 @@ class SchemaApp(App):
 		self.openFile.showDialog()
 
 	def _loadCanvas(self):
-		isjson(self.workspaceRoot)
-		for i in self.root.children:
-			if type(i) is SchemaObject:
-				self.root.remove_widget(i)
-		dataobject=DataObject()
-		dataobject.field1="Value 1"
-		dataobject.addField(name="field1",displayname="My Field 1")
-		dataobject.field2="Value 2"
-		dataobject.addField(name="field2",displayname="My Field 2")
-		newWidget=createSchemaObject(title='My First Object',icon='azure.png',dataobject=dataobject)
-		newWidget.pos=(randint(50,100),randint(50,100))
-		self.root.add_widget(newWidget)
-
+		if isjson(self.workspaceRoot):
+			for i in self.root.children:
+				if type(i) is SchemaObject:
+					self.root.remove_widget(i)
+			load(fname=self.workspaceRoot,root=self.root)
+		else:			
+			dataobject=DataObject()
+			dataobject.field1="Value 1"
+			dataobject.addField(name="field1",displayname="My Field 1")
+			dataobject.field2="Value 2"
+			dataobject.addField(name="field2",displayname="My Field 2")
+			newWidget=createSchemaObject(title='My First Object',icon='azure.png',dataobject=dataobject)
+			newWidget.pos=(randint(50,100),randint(50,100))
+			self.root.add_widget(newWidget)
+			save(fname="tmp.json",root=self.root,tosave=SchemaObject)
+			
 	def on_window_resize(self,window,width,height):
 		for i in self.root.children:
 			if type(i) is CircularButton:
@@ -96,7 +100,6 @@ class SchemaApp(App):
 		self.root.add_widget(self.close)
 		self._loadCanvas()
 		Window.bind(on_resize=self.on_window_resize)
-		save(fname="tmp.json",root=self.root,tosave=SchemaObject)
 		return self.root
 
 if __name__ == '__main__':

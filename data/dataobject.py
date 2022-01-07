@@ -5,6 +5,15 @@ from widgets.mytextinput import MyTextInput
 class DataObject(object):
 	displayname=None
 
+	def __getstate__(self):
+		ret={
+			'displayname': self.displayname
+		}
+		return ret
+
+	def __setstate__(self,d):
+		self.displayname=d['displayname']
+
 	def __init__(self):
 		self.displayname={}
 

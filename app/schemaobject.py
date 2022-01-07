@@ -10,11 +10,17 @@ class SchemaObject(MyFloatLayout):
 		ret={
 			'icon': self.icon,
 			'title': self.title.label.text,
-			'pos': self.pos,
-			'size': self.size,
+			'pos': (self.pos[0],self.pos[1]),
+			'size': (self.size[0],self.size[1]),
 			'data': self.dataobject
 		}
 		return ret
+
+	def __setstate__(self,d):
+		self.icon=d['icon']
+		self.title=MyLabel(text=d['title'],font_size=14)
+		self.pos=d['size']
+		self.dataobject=d['data']
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
