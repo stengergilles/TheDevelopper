@@ -7,9 +7,13 @@ from widgets.mylabel import MyLabel
 class SchemaObject(MyFloatLayout):
 	
 	def __getstate__(self):
-		ret=self.__dict__.copy()
-		del ret['canvas']
-		del ret['_context']
+		ret={
+			'icon': self.icon,
+			'title': self.title.label.text,
+			'pos': self.pos,
+			'size': self.size,
+			'data': self.dataobject
+		}
 		return ret
 
 	def on_touch_down(self, touch):
