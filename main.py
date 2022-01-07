@@ -5,6 +5,7 @@ from kivy.graphics import Canvas
 from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.metrics import dp
+from kivy.uix.bubble import Bubble
 
 from kivy_addons.CustomModules import CustomGraphics
 
@@ -98,12 +99,16 @@ class SchemaApp(App):
 		self.open=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*Window.width,dp(20)),size=(dp(64),dp(64)),size_hint=(None,None))
 		self.open.factor=1
 		self.open.bind(pos=self.open.redraw,size=self.open.redraw,on_press=self._create_popup_workspace_open)
-		self.root.add_widget(self.open)
 		self.close=CircularButton(img='fileclose.png',pos=(int((1 - 2 * dp(64)/Window.width)*Window.width),int(dp(20))),size=(int(dp(64)),int(dp(64))),size_hint=(None,None))
 		self.close.factor=2
 		self.close.bind(pos=self.close.redraw,size=self.close.redraw,on_press=self._create_popup_workspace_save)
-		self.root.add_widget(self.close)
 		Window.bind(on_resize=self.on_window_resize)
+		self.bubble=Bubble()
+		self.bubble.size=(dp(128),dp(128))
+		self.bubble.size_hint=(None,None)
+		self.bubble.add_widget(self.open)
+		self.bubble.add_widget(self.close)
+		self.root.add_widget(self.bubble)
 		return self.root
 
 if __name__ == '__main__':
