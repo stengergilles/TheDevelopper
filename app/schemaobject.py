@@ -1,26 +1,21 @@
 from kivy.graphics import Color,Canvas,Ellipse,Line,Rectangle
+from data.dataobject import DataObject
 from widgets.myfloatlayout import MyFloatLayout
 from widgets.mygridlayout import MyGridLayout
 from kivy.metrics import sp,dp
-from widgets.mylabel import MyLabel
-
+from widgets.mylabel import MyLabel	
+	
 class SchemaObject(MyFloatLayout):
 	
-	def __getstate__(self):
+	def _getstate(self):
 		ret={
 			'icon': self.icon,
 			'title': self.title.label.text,
 			'pos': (self.pos[0],self.pos[1]),
 			'size': (self.size[0],self.size[1]),
-			'data': self.dataobject
+			'data': self.dataobject._getstate()
 		}
 		return ret
-
-	def __setstate__(self,d):
-		self.icon=d['icon']
-		self.title=MyLabel(text=d['title'],font_size=14)
-		self.pos=d['size']
-		self.dataobject=d['data']
 
 	def on_touch_down(self, touch):
 		if self.collide_point(*touch.pos):
@@ -75,3 +70,14 @@ def createSchemaObject(title=None,icon=None,dataobject=None):
 		newWidget.dataobject=dataobject
 		newWidget.add_widget(newWidget.dataobject.getLayout())				
 	return newWidget
+
+def deserialize(s=None):
+	dataobject=DataObject()
+	for k in s['data']['displayname'].keys():
+		v=s['data']['fields'][k]
+		setattr(dataobject,k,v)
+		dataobject.addField(name=k, displayname=s['data']['displayname'][k])
+	ret=createSchemaObject(title=s['title'],icon=s['icon'],dataobject=dataobject)
+	ret.pos=s['pos']
+	ret.size=s['size']
+	return ret

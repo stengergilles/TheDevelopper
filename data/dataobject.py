@@ -5,14 +5,14 @@ from widgets.mytextinput import MyTextInput
 class DataObject(object):
 	displayname=None
 
-	def __getstate__(self):
+	def _getstate(self):
 		ret={
-			'displayname': self.displayname
+			'displayname': self.displayname,
+			'fields': {}
 		}
+		for k in self.displayname.keys():
+			ret['fields'][k]=getattr(self,k).text
 		return ret
-
-	def __setstate__(self,d):
-		self.displayname=d['displayname']
 
 	def __init__(self):
 		self.displayname={}
@@ -31,6 +31,8 @@ class DataObject(object):
 			l.size=(l.texture_size[0]*1.2,l.texture_size[1]*2)
 			ret.add_widget(l)
 			t=MyTextInput(multiline=False,size_hint_y=None,size_hint_x=None,font_size='12dp')
+			t.text=getattr(self,i)
+			setattr(self,i,t)
 			texture=t._create_line_label("xxxxxxxxxx")
 			ret.add_widget(t)
 			if l.texture_size[1]+texture.size[0]>w:

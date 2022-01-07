@@ -13,8 +13,9 @@ from random import randint
 from tools.platform import getUserPath
 from dialogs.files import FileDialog
 from widgets.circularbutton import CircularButton
-from app.schemaobject import SchemaObject
+from app.schemaobject import SchemaObject, deserialize
 from app.schemaobject import createSchemaObject
+from app.schemaobject import deserialize as deserialize_schemaobject
 from data.dataobject import DataObject
 from tools.files import isjson
 from tools.files import save
@@ -37,22 +38,25 @@ class SchemaApp(App):
 					sourceObject=self, sourceProperty="workspaceRoot", title="Open Schema", onsubmit=self._loadCanvas)
 		self.openFile.showDialog()
 
+	def _create_popup_workspace_save(self,event):
+		if not hasattr(self, "saveFile"):
+			self.saveFile = FileDialog(
+				sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._saveCanvas)
+		else:
+			if self.openFile is None:
+				self.saveFile = FileDialog(
+					sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._saveCanvas)
+		self.saveFile.showDialog()
+
+	def _saveCanvas(self):
+		save(fname=self.workspaceRoot,root=self.root,tosave=SchemaObject)
+
 	def _loadCanvas(self):
 		if isjson(self.workspaceRoot):
 			for i in self.root.children:
 				if type(i) is SchemaObject:
 					self.root.remove_widget(i)
-			load(fname=self.workspaceRoot,root=self.root)
-		else:			
-			dataobject=DataObject()
-			dataobject.field1="Value 1"
-			dataobject.addField(name="field1",displayname="My Field 1")
-			dataobject.field2="Value 2"
-			dataobject.addField(name="field2",displayname="My Field 2")
-			newWidget=createSchemaObject(title='My First Object',icon='azure.png',dataobject=dataobject)
-			newWidget.pos=(randint(50,100),randint(50,100))
-			self.root.add_widget(newWidget)
-			save(fname="tmp.json",root=self.root,tosave=SchemaObject)
+			load(fname=self.workspaceRoot,root=self.root,toload=deserialize_schemaobject)
 			
 	def on_window_resize(self,window,width,height):
 		for i in self.root.children:
@@ -96,9 +100,8 @@ class SchemaApp(App):
 		self.root.add_widget(self.open)
 		self.close=CircularButton(img='fileclose.png',pos=(int((1 - 2 * dp(64)/Window.width)*Window.width),int(dp(20))),size=(int(dp(64)),int(dp(64))),size_hint=(None,None))
 		self.close.factor=2
-		self.close.bind(pos=self.close.redraw,size=self.close.redraw)
+		self.close.bind(pos=self.close.redraw,size=self.close.redraw,on_press=self._create_popup_workspace_save)
 		self.root.add_widget(self.close)
-		self._loadCanvas()
 		Window.bind(on_resize=self.on_window_resize)
 		return self.root
 
