@@ -1,1 +1,1 @@
-[{"icon": "azure.png", "title": "My First Object", "pos": {"py/tuple": [283.0, 282.0]}, "size": {"py/tuple": [100, 100]}, "data": {"displayname": {"field1": "My Field 1", "field2": "My Field 2"}, "fields": {"field1": "my value 1", "field2": "my value 2"}}}]
+[{"icon": "azure.png", "title": "My First Object", "pos": {"py/tuple": [283.0, 282.0]}, "size": {"py/tuple": [100.0, 100.0]}, "data": {"displayname": {"field1": "My Field 1", "field2": "My Field 2"}, "fields": {"field1": "my value 1", "field2": "my value 2"}}}]

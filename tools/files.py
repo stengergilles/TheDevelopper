@@ -2,7 +2,7 @@ import json
 import os
 
 import jsonpickle
-
+from kivy.metrics import dp
 
 def isjson(f=None):
     try:
@@ -26,4 +26,7 @@ def load(fname=None, root=None, toload=None):
     with open(fname, 'r') as file:
         zz = jsonpickle.decode(file.read())
         for i in zz:
+            w = toload(i)
+            w.size = (dp(w.size[0]), dp(w.size[1]))
+            w.pos = (dp(w.pos[0]), dp(w.pos[1]))
             root.add_widget(toload(i))

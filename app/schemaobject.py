@@ -4,7 +4,10 @@ from widgets.myfloatlayout import MyFloatLayout
 from widgets.mygridlayout import MyGridLayout
 from kivy.metrics import dp
 from widgets.mylabel import MyLabel
+from kivy.metrics import Metrics
 
+def px2dp(px):
+    return px/Metrics.density
 
 class SchemaObject(MyFloatLayout):
 
@@ -12,8 +15,8 @@ class SchemaObject(MyFloatLayout):
         ret = {
             'icon': self.icon,
             'title': self.title.label.text,
-            'pos': (self.pos[0], self.pos[1]),
-            'size': (self.size[0], self.size[1]),
+            'pos': (px2dp(self.pos[0]), px2dp(self.pos[1])),
+            'size': (px2dp(self.size[0]), px2dp(self.size[1])),
             'data': self.dataobject._getstate()
         }
         return ret
