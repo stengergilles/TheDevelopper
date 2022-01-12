@@ -64,6 +64,12 @@ class SchemaApp(App):
                 i.pos = ((1 - i.factor * i.size[0] / width) * width, 20)
 
     def on_touch_down(self, touch, event):
+        found = False
+        for i in self.root.children:
+            if i is self.bubble:
+                found = True
+        if found:
+            self.root.remove_widget(self.bubble)
         for i in self.root.children:
             if i.collide_point(*event.pos):
                 ret = i.on_touch_down(event)
@@ -75,14 +81,14 @@ class SchemaApp(App):
         self.moving = True
         self.prevpos = touch.pos
 
-    def on_touch_up(self, touch, *args):
+    def on_touch_up(self, touch, event):
         for i in self.root.children:
-            if i.collide_point(*touch.pos):
-                return i.on_touch_up(touch)
+            if i.collide_point(*event.pos):
+                return i.on_touch_up(event)
         self.moving = False
         self.prevpos = None
 
-    def on_touch_move(self, touch, *args):
+    def on_touch_move(self, touch, event):
         for i in self.root.children:
             if i.collide_point(*touch.pos):
                 return i.on_touch_move(touch)
