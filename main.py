@@ -1,11 +1,11 @@
 from kivy.app import App
 from widgets.myfloatlayout import MyFloatLayout
+from widgets.mycircularlayout import MyCircularLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.graphics import Canvas
 from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.metrics import dp
-from kivy.uix.bubble import Bubble
 
 from kivy_addons.CustomModules import CustomGraphics
 
@@ -97,7 +97,7 @@ class SchemaApp(App):
 		self.root.bind(on_touch_down=self.on_touch_down,on_touch_up=self.on_touch_up,on_touch_move=self.on_touch_move)
 		CustomGraphics.SetBG(self.root,bg_color=[0.5,0.5,0.5,0.5])
 #		self.open=CircularButton(img='fileopen.png',pos=((1 - dp(64)/Window.width)*Window.width,dp(2)),size=(dp(64),dp(64)),size_hint=(None,None))
-		self.open=CircularButton(img='fileopen.png')
+		self.open=CircularButton(img='fileopen.png',size=(dp(64),dp(64)))
 		self.open.factor=1
 		self.open.bind(pos=self.open.redraw,size=self.open.redraw,on_press=self._create_popup_workspace_open)
 #		self.close=CircularButton(img='fileclose.png',pos=(int((1 - 2 * dp(64)/Window.width)*Window.width),int(dp(2))),size=(int(dp(64)),int(dp(64))),size_hint=(None,None))
@@ -105,8 +105,8 @@ class SchemaApp(App):
 		self.close.factor=2
 		self.close.bind(pos=self.close.redraw,size=self.close.redraw,on_press=self._create_popup_workspace_save)
 		Window.bind(on_resize=self.on_window_resize)
-		self.bubble=Bubble()
-		self.bubble.size=(dp(128),dp(64))
+		self.bubble=MyCircularLayout()
+		self.bubble.size=(dp(256),dp(256))
 		self.bubble.size_hint=(None,None)
 		self.bubble.add_widget(self.open)
 		self.bubble.add_widget(self.close)
