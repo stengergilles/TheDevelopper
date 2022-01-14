@@ -22,6 +22,9 @@ class SchemaObject(MyFloatLayout):
         return ret
 
     def on_touch_down(self, touch):
+        for i in self.children:
+            if i.collide_point(*touch.pos):
+               return i.on_touch_down(touch)
         if self.collide_point(*touch.pos):
             touch.grab(self)
             return True
@@ -40,29 +43,29 @@ class SchemaObject(MyFloatLayout):
     def redraw(self, object, pos):
         self.canvas.before.clear()
         txtlength = 0
+        halfsize=(self.size[0]/2,self.size[1]/2)
         for i in self.children:
             if (hasattr(i, "tag")):
                 if i.tag == "title":
                     i.texture_update()
-                    i.pos = (self.pos[0] + self.size[0], self.pos[1] + self.size[1])
+                    i.pos = (self.pos[0] + halfsize[0], self.pos[1] + halfsize[1])
                     txtlength = i.label.texture.width / 2
             if type(i) is MyGridLayout:
-                i.pos = (self.pos[0] + self.size[0], self.pos[1])
+                i.pos = (self.pos[0] + halfsize[0] + int(dp(2)), self.pos[1] - halfsize[1] - int(dp(16)))
         with self.canvas.before:
             Color(1.0, 1.0, 1.0)
-            Line(points=(self.pos[0] + int(dp(12)), self.pos[1] + int(dp(12)), self.pos[0] + self.size[0],
+            Line(points=(self.pos[0] + int(dp(12)), self.pos[1] + int(dp(12)), self.pos[0] + halfsize[0],
                          self.pos[1] + int(dp(12))))
             if hasattr(self, "icon"):
                 Rectangle(pos=(self.pos[0] + int(dp(14)), self.pos[1] + int(dp(14))),
-                          size=(self.size[0] - int(dp(16)), self.size[1] - int(dp(16))), source=self.icon)
-            Line(points=(self.pos[0] + self.size[0], self.pos[1] + int(dp(12)), self.pos[0] + self.size[0],
-                         self.pos[1] + self.size[1]))
-            Line(points=(self.pos[0] + self.size[0], self.pos[1] + self.size[1], self.pos[0] + self.size[0] + txtlength,
-                         self.pos[1] + self.size[1]))
+                          size=(halfsize[0] - int(dp(16)), halfsize[1] - int(dp(16))), source=self.icon)
+            Line(points=(self.pos[0] + halfsize[0], self.pos[1] + int(dp(12)), self.pos[0] + halfsize[0],
+                         self.pos[1] + halfsize[1]))
+            Line(points=(self.pos[0] + halfsize[0], self.pos[1] + halfsize[1], self.pos[0] + halfsize[0] + txtlength,
+                         self.pos[1] + halfsize[1]))
             Ellipse(pos=self.pos, size=(int(dp(24)), int(dp(24))))
             Color(0.0, 0.0, 0.0)
             Ellipse(pos=(int(self.pos[0] + dp(2)), int(self.pos[1] + dp(2))), size=(int(dp(20)), int(dp(20))))
-
 
 def createSchemaObject(title=None, icon=None, dataobject=None):
     newWidget = SchemaObject()
@@ -72,7 +75,7 @@ def createSchemaObject(title=None, icon=None, dataobject=None):
     newWidget.add_widget(newWidget.title)
     newWidget.bind(pos=newWidget.redraw, size=newWidget.redraw)
     newWidget.size_hint = (None, None)
-    newWidget.size = (int(dp(100)), int(dp(100)))
+    newWidget.size = (int(dp(200)), int(dp(200)))
     if not icon is None:
         newWidget.icon = icon
     if not dataobject is None:

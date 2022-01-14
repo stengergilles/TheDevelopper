@@ -19,11 +19,7 @@ from tools.files import load
 
 class SchemaApp(App):
     root = None
-    open = None
-    close = None
     bubble = None
-    moving = None
-    prevpos = None
 
     workspaceRoot = StringProperty(getUserPath())
 
@@ -56,68 +52,20 @@ class SchemaApp(App):
             for i in self.root.children:
                 if type(i) is SchemaObject:
                     self.root.remove_widget(i)
-            load(fname=self.workspaceRoot, root=self.root, toload=deserialize_schemaobject)
-
-    def on_window_resize(self, window, width, height):
-        for i in self.root.children:
-            if type(i) is CircularButton:
-                i.pos = ((1 - i.factor * i.size[0] / width) * width, 20)
-
-    def on_touch_down(self, touch, event):
-        found = False
-        for i in self.root.children:
-            if i is self.bubble:
-                found = True
-        if found:
-            self.root.remove_widget(self.bubble)
-        for i in self.root.children:
-            if i.collide_point(*event.pos):
-                ret = i.on_touch_down(event)
-                if type(i) is MyCircularLayout:
-                    self.root.remove_widget(self.bubble)
-                return ret
-        self.root.add_widget(self.bubble)
-        self.bubble.pos = event.pos
-        self.moving = True
-        self.prevpos = touch.pos
-
-    def on_touch_up(self, touch, event):
-        for i in self.root.children:
-            if i.collide_point(*event.pos):
-                return i.on_touch_up(event)
-        self.moving = False
-        self.prevpos = None
-
-    def on_touch_move(self, touch, event):
-        for i in self.root.children:
-            if i.collide_point(*touch.pos):
-                return i.on_touch_move(touch)
-        if hasattr(self, "moving"):
-            if self.moving:
-                delta = ((touch.pos[0] - self.prevpos[0]), (touch.pos[1] - self.prevpos[1]))
-                self.prevpos = (touch.pos[0], touch.pos[1])
-                for i in self.root.children:
-                    if type(i) is SchemaObject:
-                        i.pos = (i.pos[0] + delta[0], i.pos[1] + delta[1])
+            load(fname=self.workspaceRoot, root=self.root,
+                 toload=deserialize_schemaobject)
 
     def build(self):
         self.title = "Schema Editor"
-        self.root = MyFloatLayout(size=(Window.width, Window.height))
-        self.root.bind(on_touch_down=self.on_touch_down, on_touch_up=self.on_touch_up, on_touch_move=self.on_touch_move)
-        CustomGraphics.SetBG(self.root, bg_color=[0.5, 0.5, 0.5, 0.5])
-        self.open = CircularButton(img='fileopen.png', size=(dp(32), dp(32)), size_hint=(None, None))
-        self.open.factor = 1
-        self.open.bind(pos=self.open.redraw, size=self.open.redraw, on_press=self._create_popup_workspace_open)
-        self.close = CircularButton(img='fileclose.png',size=(dp(32), dp(32)), size_hint=(None, None))
-        self.close.factor = 2
-        self.close.bind(pos=self.close.redraw, size=self.close.redraw, on_press=self._create_popup_workspace_save)
-        Window.bind(on_resize=self.on_window_resize)
+        open = CircularButton(img='fileopen.png', size=(dp(32), dp(32)), size_hint=(None, None), on_press=self._create_popup_workspace_open)
+        close = CircularButton(img='fileclose.png',size=(dp(32), dp(32)), size_hint=(None, None), on_press=self._create_popup_workspace_save)
         self.bubble = MyCircularLayout(degree_spacing=80, pos=(100, 100), size=(dp(100), dp(100)))
         self.bubble.size_hint = (None, None)
-        self.bubble.add_widget(self.open)
-        self.bubble.add_widget(self.close)
+        self.bubble.add_widget(open)
+        self.bubble.add_widget(close)
+        self.root = MyFloatLayout(menu=self.bubble,size=(Window.width, Window.height))
+        CustomGraphics.SetBG(self.root, bg_color=[0.5, 0.5, 0.5, 0.5])
         return self.root
-
 
 if __name__ == '__main__':
     SchemaApp().run()

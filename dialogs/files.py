@@ -28,7 +28,6 @@ class FileDialog:
 			self.popup.dismiss()
 		self._update(None,None)
 		self.popup = None
-		self.onsubmit()
 
 	def _create(self,sourceObject=None,sourceProperty=None,title=None,onsubmit=None):
 		self.onsubmit=onsubmit

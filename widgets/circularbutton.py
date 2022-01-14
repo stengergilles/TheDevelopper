@@ -12,8 +12,15 @@ class CircularButton(ButtonBehavior, Widget):
         super(CircularButton, self).__init__(**kwargs)
         self.source = img
         self.origsize = self.size.copy()
+        self.bind(pos=self.redraw,size=self.redraw,on_press=kwargs['on_press'])
         with self.canvas:
             Ellipse(pos=self.pos, size=self.size, source=img)
+
+    def on_touch_down(self, touch):
+        return super().on_touch_down(touch)
+
+    def on_touch_up(self, touch):
+        return super().on_touch_up(touch)
 
     def _resize(self):
         self.size = self.origsize
