@@ -18,7 +18,6 @@ from tools.files import load
 
 import os
 
-
 class SchemaApp(App):
     root = None
     mainmenu = None
