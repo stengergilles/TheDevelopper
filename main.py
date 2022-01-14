@@ -16,6 +16,7 @@ from tools.files import isjson
 from tools.files import save
 from tools.files import load
 
+import os
 
 class SchemaApp(App):
     root = None
@@ -36,24 +37,27 @@ class SchemaApp(App):
     def _create_popup_workspace_save(self, *args):
         if not hasattr(self, "saveFile"):
             self.saveFile = FileDialog(
-                sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._savecanvas)
+                sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._savecanvas, saveAs=True)
         else:
             if self.openFile is None:
                 self.saveFile = FileDialog(
-                    sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._savecanvas)
+                    sourceObject=self, sourceProperty="workspaceRoot", title="Save Schema", onsubmit=self._savecanvas, saveAs=True)
         self.saveFile.showDialog()
 
     def _savecanvas(self):
-        # Check if isDirectory
-        save(fname=self.workspaceRoot, root=self.root, tosave=SchemaObject)
+        if len(self.workspaceRoot):
+           save(fname=self.workspaceRoot, root=self.root, tosave=SchemaObject)
 
     def _loadcanvas(self):
-        if isjson(self.workspaceRoot):
+        if len(self.workspaceRoot) and isjson(self.workspaceRoot):
             for i in self.root.children:
                 if type(i) is SchemaObject:
                     self.root.remove_widget(i)
             load(fname=self.workspaceRoot, root=self.root,
                  toload=deserialize_schemaobject)
+        else:
+            if os.path.isfile(self.workspaceRoot):
+               self.workspaceRoot=os.path.dirname(self.workspaceRoot)
 
     def build(self):
         self.title = "Schema Editor"

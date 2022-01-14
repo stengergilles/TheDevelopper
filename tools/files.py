@@ -1,5 +1,6 @@
 import json
 import os
+from pathlib import Path
 
 import jsonpickle
 from kivy.metrics import dp
@@ -13,6 +14,8 @@ def isjson(f=None):
 
 
 def save(fname=None, root=None, tosave=None):
+    if not os.path.exists(fname):
+        Path(fname).touch()
     if os.path.isfile(fname):
         with open(fname, 'w') as file:
             line = []
