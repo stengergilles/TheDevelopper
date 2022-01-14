@@ -12,7 +12,8 @@ class CircularButton(ButtonBehavior, Widget):
         super(CircularButton, self).__init__(**kwargs)
         self.source = img
         self.origsize = self.size.copy()
-        self.bind(pos=self.redraw,size=self.redraw,on_press=kwargs['on_press'])
+        self.on_press=kwargs['on_press']
+        self.bind(pos=self.redraw,size=self.redraw)
         with self.canvas:
             Ellipse(pos=self.pos, size=self.size, source=img)
 
@@ -28,6 +29,7 @@ class CircularButton(ButtonBehavior, Widget):
     def on_press(self):
         self.size = (self.size[0] * 0.9, self.size[1] * 0.9)
         Clock.schedule_once(lambda dt: self._resize(), 0.2)
+        self.on_press()
 
     def collide_point(self, x, y):
         return Vector(x, y).distance(self.center) <= self.width / 2
