@@ -71,14 +71,13 @@ class SchemaObject(MyFloatLayout):
 
 
 def createschemaobject(title=None, icon=None, dataobject=None):
-    new_widget = SchemaObject()
+    new_widget = SchemaObject(size=(int(dp(200)), int(dp(200))))
     new_widget.canvas = Canvas()
     new_widget.title = MyLabel(text=title, font_size=14)
     new_widget.title.tag = "title"
     new_widget.add_widget(new_widget.title)
     new_widget.bind(pos=new_widget.redraw, size=new_widget.redraw)
     new_widget.size_hint = (None, None)
-    new_widget.size = (int(dp(200)), int(dp(200)))
     if icon is not None:
         new_widget.icon = icon
     if dataobject is not None:

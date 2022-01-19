@@ -1,8 +1,11 @@
 from kivy.uix.floatlayout import FloatLayout
 
-
 class MyFloatLayout(FloatLayout):
 
+    def on_size(self,*args):
+        width=args[1][0]
+        height=args[1][1]
+        
     def _child_exist(self,child=None):
         for i in self.children:
             if i == child:
@@ -44,6 +47,6 @@ class MyFloatLayout(FloatLayout):
               for i in self.children:
                   i.pos=(i.pos[0]+touch.dx,i.pos[1]+touch.dy)
 
-    def __init__(self,menu=None, **kwargs):
-        super(MyFloatLayout, self).__init__(**kwargs)
+    def __init__(self,menu=None,size=None, **kwargs):
+        super(MyFloatLayout, self).__init__(width=size[0],height=size[1],**kwargs)
         self.menu=menu

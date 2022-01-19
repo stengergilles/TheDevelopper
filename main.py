@@ -4,7 +4,6 @@ from widgets.mycircularlayout import MyCircularLayout
 from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.metrics import dp
-
 from kivy_addons.CustomModules import CustomGraphics
 
 from tools.platform import getUserPath
@@ -17,7 +16,7 @@ from tools.files import save
 from tools.files import load
 
 import os
-
+from pathlib import Path
 
 class SchemaApp(App):
     root = None
@@ -27,6 +26,8 @@ class SchemaApp(App):
 
     def _savecanvas(self):
         if len(self.workspaceRoot):
+            if not os.path.exists(self.workspaceRoot):
+               Path(self.workspaceRoot).touch()
             if os.path.isfile(self.workspaceRoot):
                 save(fname=self.workspaceRoot, root=self.root, tosave=SchemaObject)
 

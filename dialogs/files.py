@@ -19,7 +19,7 @@ class FileDialog:
 
     def _update(self, instance, others):
         value = self.fb.path.strip()
-        if hasattr(self, "saveas"):
+        if hasattr(self, "saveAs"):
             if os.path.isfile(value):
                 value = os.path.dirname(value)
             if len(self.fb.selection) and not len(self.saveAs.text):
