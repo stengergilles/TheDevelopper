@@ -9,6 +9,7 @@ class MyView(Widget):
 		self.title.pos=(self.pos[0]+10,self.pos[1]+self.size[1]-self.title.texture_size[1]-10)
 		self.content.size=(self.size[0]-20, self.size[1] - self.title.texture_size[1]-20)
 		self.content.pos=(self.pos[0]+10,self.pos[1]+10)
+		self.data.editorlayout()
 		
 	def __init__(self,viewtitle=None,content=None,**kwargs):
 		super(MyView,self).__init__(**kwargs)

@@ -1,6 +1,5 @@
-from tkinter import Grid
-from turtle import title, width
-from typing import Text
+from tkinter import Widget
+from turtle import title
 from widgets.circularbutton import CircularButton
 from widgets.mygridlayout import MyGridLayout
 from widgets.mylabel import MyLabel
@@ -8,9 +7,11 @@ from widgets.mytextinput import MyTextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.metrics import dp 
+from kivy.clock import Clock
 
 def showopeniconfile(*args):
 	pass
@@ -79,23 +80,45 @@ class DataObject(object):
         ret.col_width=title.width
         return ret
 
+    def editorlayout(self,*args):
+        editor=self.editordialog.children[0]
+        if editor.size[0] != editor.parent.size[0]:
+           editor.width=editor.parent.width
+        titleblock=editor.children[1]
+        titleblock.width=editor.width - dp(10)
+        iconlabel=titleblock.children[1]
+        iconblock=titleblock.children[0]
+        iconbutton=iconblock.children[0]
+        iconbutton.height=titleblock.row_height
+        iconbutton.width=titleblock.row_height
+        iconlabel.width=titleblock.col_width
+        iconblock.width=titleblock.width - titleblock.col_width
+        iconblock.height=titleblock.row_height
+
     def geteditor(self,size=None,pos=None):
+        if hasattr(self,'editor'):
+           return self.editor
         ret = ScrollView(do_scroll_x=False,do_scroll_y=True)
         ret.size_hint=(None,None)
         ret.pos_hint=(None,None)
+        ret.effect_cls='ScrollEffect'
         ret.size=size
         ret.pos=pos
         editor=StackLayout()
+        editor.size_hint=(None,None)
+        editor.size=(size[0],size[1]*2)
         titleblock=self.getfield(label="Node Title")
         titleblock.add_widget(Label(text="Node Icon:",halign='right',font_size='12dp',size_hint=(None,None),width=titleblock.col_width ,height=titleblock.row_height))
-        iconblock=StackLayout()
-        iconblock.orientation='lr-tb'
-        iconblock.size_hint=(None,None)
-        iconblock.width=titleblock.width - titleblock.col_width
-        iconblock.height=titleblock.row_height
-        iconblock.add_widget(TextInput(size_hint=(None,None),width=iconblock.width * 0.5,height=titleblock.row_height,font_size='12sp'))
-        iconblock.add_widget(CircularButton(img="fileopen.png",size_hint=(1,None),height=titleblock.row_height,on_press=showopeniconfile))
+        iconblock=BoxLayout(orientation='horizontal',size_hint=(None,None),size=(titleblock.width - titleblock.col_width,titleblock.row_height))
+        iconblock.add_widget(TextInput(size_hint=(0.95,None),height=titleblock.row_height,font_size='12sp'))
+        iconblock.add_widget(CircularButton(img="fileopen.png",size_hint=(None,None),width=titleblock.row_height,height=titleblock.row_height,on_press=showopeniconfile))
         titleblock.add_widget(iconblock)
         editor.add_widget(titleblock)
         ret.add_widget(editor)
+        table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
+        table.add_widget(Label(text="Content"))
+        table.cols=1
+        editor.add_widget(table)
+        self.editordialog=ret
+        Clock.schedule_once(self.editorlayout, 0.01)
         return ret
