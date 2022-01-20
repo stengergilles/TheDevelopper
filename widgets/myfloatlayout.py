@@ -1,10 +1,15 @@
 from kivy.uix.floatlayout import FloatLayout
+from widgets.myview import MyView
 
 class MyFloatLayout(FloatLayout):
 
     def on_size(self,*args):
         width=args[1][0]
         height=args[1][1]
+        for i in self.children:
+            if type(i) is MyView:
+               i.size=(width*0.8,(height/2)*0.9)
+
         
     def _child_exist(self,child=None):
         for i in self.children:
@@ -26,16 +31,19 @@ class MyFloatLayout(FloatLayout):
                  self.remove_widget(self.menu)
               return(i.on_touch_down(touch))
         if not self._child_exist(child=self.menu) and touch.is_double_tap:
-           self.add_widget(self.menu)
-           self.menu.center_x=touch.pos[0]
-           self.menu.center_y=touch.pos[1]
+           if self.menu:
+              self.add_widget(self.menu)
+              self.menu.center_x=touch.pos[0]
+              self.menu.center_y=touch.pos[1]
         else:
-           for i in self.menu.children:
-               if i.collide_point(*touch.pos):
-                  return i.on_touch_down(touch)
+           if self.menu:
+              for i in self.menu.children:
+                  if i.collide_point(*touch.pos):
+                     return i.on_touch_down(touch)
            if not touch.is_double_tap:
               self.moving=True
-           self.remove_widget(self.menu)
+           if self.menu:
+              self.remove_widget(self.menu)
 
     def on_touch_up(self,touch):
         if hasattr(self,"moving"):

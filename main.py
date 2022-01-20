@@ -1,6 +1,6 @@
 from kivy.app import App
+from data.dataobject import DataObject
 from widgets.myfloatlayout import MyFloatLayout
-from widgets.mycircularlayout import MyCircularLayout
 from kivy.core.window import Window
 from kivy.properties import StringProperty
 from kivy.metrics import dp
@@ -9,6 +9,8 @@ from kivy_addons.CustomModules import CustomGraphics
 from tools.platform import getUserPath
 from dialogs.files import FileDialog
 from widgets.circularbutton import CircularButton
+from widgets.myview import MyView
+from widgets.mycircularlayout import MyCircularLayout
 from app.schemaobject import SchemaObject
 from app.schemaobject import deserialize as deserialize_schemaobject
 from tools.files import isjson
@@ -43,7 +45,9 @@ class SchemaApp(App):
                     self.workspaceRoot = os.path.dirname(self.workspaceRoot)
 
     def add_node(self, *args):
-        pass
+        d=DataObject()
+        m=MyView(viewtitle="Add a Schema node",content=d,pos=(self.root.width*0.1,self.root.height*0.1),size=(self.root.width*0.8,(self.root.height/2)*0.9))
+        self.root.add_widget(m)
 
     def build(self):
         self.title = "Schema Editor"

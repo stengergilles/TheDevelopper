@@ -94,6 +94,5 @@ def deserialize(s=None):
         dataobject.addfield(name=k, displayname=s['data']['displayname'][k])
     ret = createschemaobject(title=s['title'], icon=s['icon'], dataobject=dataobject)
     ret.pos = s['pos']
-    #    ret.size = s['size']
     return ret
 
