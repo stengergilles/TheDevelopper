@@ -4,13 +4,14 @@ from kivy.graphics import Color, Ellipse
 from kivy.clock import Clock
 from kivy.vector import Vector
 
+import os
 
 class CircularButton(ButtonBehavior, Widget):
     source = None
 
     def __init__(self, img=None, **kwargs):
         super(CircularButton, self).__init__(**kwargs)
-        self.source = img
+        self.source = os.path.join('icons',img)
         self.origsize = self.size.copy()
         self.on_press=kwargs['on_press']
         self.bind(pos=self.redraw,size=self.redraw)
