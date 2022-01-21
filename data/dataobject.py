@@ -102,7 +102,7 @@ class DataObject(object):
         ret = ScrollView(do_scroll_x=False,do_scroll_y=True)
         ret.size_hint=(None,None)
         ret.pos_hint=(None,None)
-        ret.effect_cls=MyScrollEffect()
+        ret.effect_cls=MyScrollEffect
         ret.size=size
         ret.pos=pos
         editor=StackLayout()
