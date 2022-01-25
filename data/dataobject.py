@@ -4,7 +4,6 @@ from widgets.circularbutton import CircularButton
 from widgets.mygridlayout import MyGridLayout
 from widgets.mylabel import MyLabel
 from widgets.mytextinput import MyTextInput
-from widgets.tools.myscrolleffect import MyScrollEffect
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
@@ -102,7 +101,8 @@ class DataObject(object):
         ret = ScrollView(do_scroll_x=False,do_scroll_y=True)
         ret.size_hint=(None,None)
         ret.pos_hint=(None,None)
-        ret.effect_cls=MyScrollEffect
+        ret.effect_cls='ScrollEffect'
+        ret.always_overscroll=False
         ret.size=size
         ret.pos=pos
         editor=StackLayout()

@@ -1,3 +1,10 @@
+from kivy.lang.builder import Builder
+from kivy.uix.togglebutton import ToggleButton
+from kivy.properties import ListProperty
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.core.window import Window
+
 Builder.load_string('''
 # define how clabel looks and behaves
 <CLabel>:
