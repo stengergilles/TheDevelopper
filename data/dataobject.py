@@ -119,7 +119,7 @@ class DataObject(object):
         ret.add_widget(editor)
         table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
         dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
-        dg.grid.rows=1
+        dg.rows=1
         table.add_widget(dg)
         table.cols=1
         editor.add_widget(table)

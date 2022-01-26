@@ -1,9 +1,11 @@
+from turtle import bgcolor
 from kivy.lang.builder import Builder
 from kivy.uix.togglebutton import ToggleButton
 from kivy.properties import ListProperty
 from kivy.uix.label import Label
 from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
+from functools import partial
 
 Builder.load_string('''
 # define how clabel looks and behaves
@@ -46,9 +48,18 @@ class DataGrid(GridLayout):
         n = 0
         for hcell in header_data:
             header_str = "[b]" + str(hcell) + "[/b]"
-            self.add_widget(HeaderLabel(text=header_str, markup=True, size_hint_y=None,
-                                        height=40, id="Header_Label", size_hint_x=cols_size[n],
-                                        bgcolor=[0.108, 0.476, 0.611]))
+#            self.add_widget(HeaderLabel(text=header_str, markup=True, size_hint_y=None,
+#                                        height=40, id="Header_Label", size_hint_x=cols_size[n],
+#                                        bgcolor=[0.108, 0.476, 0.611]))
+            h=HeaderLabel(bgcolor=[0.108,0.476,0.611])
+            h.text=header_str
+            h.markup=True
+            h.size_hint_y=None
+            h.height=40
+            h.id="Header_Label"
+            h.size_hint_x=cols_size[n]
+            h.bgcolor=[0.108,0.476,0.611]
+            self.add_widget(h)
             n += 1
 
     def add_row(self, row_data, row_align, cols_size):
