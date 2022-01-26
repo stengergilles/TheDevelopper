@@ -48,9 +48,6 @@ class DataGrid(GridLayout):
         n = 0
         for hcell in header_data:
             header_str = "[b]" + str(hcell) + "[/b]"
-#            self.add_widget(HeaderLabel(text=header_str, markup=True, size_hint_y=None,
-#                                        height=40, id="Header_Label", size_hint_x=cols_size[n],
-#                                        bgcolor=[0.108, 0.476, 0.611]))
             h=HeaderLabel(bgcolor=[0.108,0.476,0.611])
             h.text=header_str
             h.markup=True
@@ -79,21 +76,17 @@ class DataGrid(GridLayout):
 
         n = 0
         for item in row_data:
-            cell = CLabel(text=('[color=000000]' + item + '[/color]'),
-                          # background_color_normal=ListProperty([1, 1, 1, 0.5]),
-                          # background_color_down = ListProperty([1, 1, 1, 1])
-                          background_normal="background_normal.png",
-                          background_down="background_pressed.png",
-                          bgcolor=[1, 1, 1],
-                          halign=row_align[n],
-                          markup=True,
-                          on_press=partial(change_on_press),
-                          on_release=partial(change_on_release),
-                          text_size=(0, None),
-                          size_hint_x=cols_size[n],
-                          size_hint_y=None,
-                          height=40,
-                          id=("row_" + str(self.counter) + "_col_" + str(n)))
+            cell = CLabel(text=('[color=000000]' + item + '[/color]'),bgcolor=[1,1,1])
+            cell.background_color_normal=ListProperty([1, 1, 1, 0.5])
+            cell.background_color_down = ListProperty([1, 1, 1, 1])
+            cell.halign=row_align[n]
+            cell.markup=True
+            cell.bind(on_press=change_on_press,on_release=change_on_release)
+            cell.text_size=(0, None)
+            cell.size_hint_x=cols_size[n]
+            cell.size_hint_y=None
+            cell.height=40
+            cell.id=("row_" + str(self.counter) + "_col_" + str(n))
             cell_width = Window.size[0] * cell.size_hint_x
             cell.text_size = (cell_width - 30, None)
             cell.texture_update()
@@ -101,7 +94,6 @@ class DataGrid(GridLayout):
             n += 1
         self.counter += 1
 
-    # self.rows += 1
     def remove_row(self, n_cols, instance, **kwargs):
         childs = self.parent.children
         selected = 0
