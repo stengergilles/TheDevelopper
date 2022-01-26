@@ -12,6 +12,7 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.metrics import dp 
 from kivy.clock import Clock
+from widgets.mydatagrid import DataGrid
 
 def showopeniconfile(*args):
 	pass
@@ -117,7 +118,9 @@ class DataObject(object):
         editor.add_widget(titleblock)
         ret.add_widget(editor)
         table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
-        table.add_widget(Label(text="Content"))
+        dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
+        dg.grid.rows=1
+        table.add_widget(dg)
         table.cols=1
         editor.add_widget(table)
         self.editordialog=ret
