@@ -121,9 +121,9 @@ class DataObject(object):
         table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
         dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
         dg.rows=1
-        zz=["['field1','First Field','Str']","['field2','Second Field','Boolean']"]
+        zz=[['field1','First Field','Str'],['field2','Second Field','Boolean'],['field3','Third Field','Date'],['field4','Fourth Field','Int']]
         for i in zz:
-            dg.add_row(row_data=json.loads(i),cols_size=[0.2,1,0.2],row_align=['center','center','center'])
+            dg.add_row(row_data=i,cols_size=[0.2,1,0.2],row_align=['center','center','center'])
         table.add_widget(dg)
         table.cols=1
         editor.add_widget(table)
