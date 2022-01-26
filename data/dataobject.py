@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from tkinter import Widget
 from turtle import title
 from widgets.circularbutton import CircularButton
@@ -96,6 +97,8 @@ class DataObject(object):
         iconlabel.width=titleblock.col_width
         iconblock.width=titleblock.width - titleblock.col_width
         iconblock.height=titleblock.row_height
+        datagrid=editor.children[0].children[0]
+        datagrid.pos=(titleblock.pos[0],editor.height-datagrid.height-iconblock.height*2 - dp(5))
 
     def geteditor(self,size=None,pos=None):
         if hasattr(self,'editor'):
@@ -120,6 +123,7 @@ class DataObject(object):
         ret.add_widget(editor)
         table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
         dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
+        dg.pos_hint=(None,None)
         dg.rows=1
         zz=[['field1','First Field','Str'],['field2','Second Field','Boolean'],['field3','Third Field','Date'],['field4','Fourth Field','Int']]
         for i in zz:
