@@ -13,6 +13,7 @@ from kivy.uix.textinput import TextInput
 from kivy.metrics import dp 
 from kivy.clock import Clock
 from widgets.mydatagrid import DataGrid
+import json
 
 def showopeniconfile(*args):
 	pass
@@ -120,7 +121,9 @@ class DataObject(object):
         table=GridLayout(size=(size[0],size[1]*2),size_hint=(None,None))
         dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
         dg.rows=1
-        dg.add_row(row_data=['field1','First Field','Str'],cols_size=[0.2,1,0.2],row_align=['center','center','center'])
+        zz=["['field1','First Field','Str']","['field2','Second Field','Boolean']"]
+        for i in zz:
+            dg.add_row(row_data=json.loads(i),cols_size=[0.2,1,0.2],row_align=['center','center','center'])
         table.add_widget(dg)
         table.cols=1
         editor.add_widget(table)

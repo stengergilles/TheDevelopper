@@ -43,7 +43,7 @@ class DataGrid(GridLayout):
         self.size_hint_y = None
         self.bind(minimum_height=self.setter('height'))
         self.cols = len(header_data)
-        self.spacing = [1, 1]
+        self.spacing = [0, 0]
         self.counter = 0
         n = 0
         for hcell in header_data:
