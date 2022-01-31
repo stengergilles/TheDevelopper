@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from tkinter import Widget
 from turtle import title
+from widgets.tools.stiffscrolleffect import StiffScrollEffect
 from widgets.circularbutton import CircularButton
 from widgets.mygridlayout import MyGridLayout
 from widgets.mylabel import MyLabel
@@ -106,7 +107,7 @@ class DataObject(object):
         ret = ScrollView(do_scroll_x=False,do_scroll_y=True)
         ret.size_hint=(None,None)
         ret.pos_hint=(None,None)
-        ret.effect_cls='ScrollEffect'
+        ret.effect_cls=StiffScrollEffect
         ret.always_overscroll=False
         ret.size=size
         ret.pos=pos
@@ -125,7 +126,11 @@ class DataObject(object):
         dg=DataGrid(['Name','Display Name','Type'],[0.2,1,0.2])
         dg.pos_hint=(None,None)
         dg.rows=1
-        zz=[['field1','First Field','Str'],['field2','Second Field','Boolean'],['field3','Third Field','Date'],['field4','Fourth Field','Int']]
+        zz=[]
+        i=0
+        while i<50:
+        	zz.append(['field'+str(i),'Field '+str(i),'str'])
+        	i += 1
         for i in zz:
             dg.add_row(row_data=i,cols_size=[0.2,1,0.2],row_align=['center','center','center'])
         table.add_widget(dg)
