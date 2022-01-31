@@ -1,3 +1,5 @@
+from dbm import ndbm
+from lib2to3.pytree import Node
 from kivymd.app import MDApp
 
 from app.nodeeditor import NodeEditor
@@ -6,19 +8,22 @@ from app.mainpanel import MainPanel
 class TestApp(MDApp):
 	
 	def load(self,*args):
-		print("Load")
+		pass
 		
 	def save(self,*args):
 		pass
 		
 	def newnode(self,*args):
-		pass
+		from app.nodeeditor import NodeEditor
+		data=[]
+		n=NodeEditor(data=data)
+		self.root.add_widget(n)
 		
 	def clear(self,*args):
 		pass
 	
 	def build(self):
-		root=MainPanel(menu=[
+		self.root=MainPanel(menu=[
 			{
 				'name':'file-load',
 				'icon':'file-import',
@@ -40,7 +45,7 @@ class TestApp(MDApp):
 				'callback':self.clear
 			}
 		])
-		return root
+		return self.root
 		
 TestApp().run()
 		
