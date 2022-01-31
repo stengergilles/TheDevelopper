@@ -20,5 +20,6 @@ class Menu(MDCircularLayout):
 			m=MDFloatingActionButton(icon=i['icon'],size_hint=(None,None),size=(dp(8),dp(8)))
 			m.bind(on_press=partial(self.buttonpress,n=i))
 			self.add_widget(m)
+		pass
 			
 			
