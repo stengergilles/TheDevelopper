@@ -6,7 +6,7 @@ from app.mainpanel import MainPanel
 class TestApp(MDApp):
 	
 	def load(self,*args):
-		pass
+		print("Load")
 		
 	def save(self,*args):
 		pass
@@ -20,18 +20,22 @@ class TestApp(MDApp):
 	def build(self):
 		root=MainPanel(menu=[
 			{
+				'name':'file-load',
 				'icon':'file-import',
 				'callback':self.load
 			},
 			{
+				'name':'file-save',
 				'icon':'file-export',
 				'callback':self.save
 			},
 			{
+				'name':'new-node',
 				'icon':'new-box',
 				'callback':self.newnode
 			},
 			{
+				'name':'clear-graph',
 				'icon':'nuke',
 				'callback':self.clear
 			}
