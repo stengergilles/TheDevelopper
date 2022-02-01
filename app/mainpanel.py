@@ -29,4 +29,3 @@ class MainPanel(FloatLayout):
 	def __init__(self,menu=None,**kwargs):
 		super(MainPanel,self).__init__(**kwargs)
 		self.m=Menu(data=menu,pos=(200,200))
-		self.add_widget(self.m)

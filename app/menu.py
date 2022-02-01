@@ -2,9 +2,23 @@ from kivymd.uix.circularlayout import MDCircularLayout
 from kivymd.uix.button import MDFloatingActionButton
 from kivy.metrics import dp
 from functools import partial
+from kivy.app import App
+from kivy.graphics import Ellipse,Color
 
 class Menu(MDCircularLayout):
 	data=None
+	
+	def drawbg(self):
+		if self.canvas:
+			c=App.get_running_app().theme_cls.opposite_bg_normal
+			c[3]=0
+			self.canvas.before.clear()
+			with self.canvas.before:
+				Color(c)
+				Ellipse(pos=self.pos,size=self.size)
+
+	def on_pos(self,*args):
+		self.drawbg()
 
 	def buttonpress(self,*args,**kwargs):
 		kwargs['n']['callback']()
@@ -20,6 +34,4 @@ class Menu(MDCircularLayout):
 			m=MDFloatingActionButton(icon=i['icon'],size_hint=(None,None),size=(dp(8),dp(8)))
 			m.bind(on_press=partial(self.buttonpress,n=i))
 			self.add_widget(m)
-		pass
-			
-			
+		self.drawbg()
