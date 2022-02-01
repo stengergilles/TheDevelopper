@@ -20,6 +20,7 @@ class NodeEditor(SchemaObject):
 			size_hint=(1.0,0.9)
 		)
 		tb=MDToolbar(size_hint=(1.0,0.1))
+		tb.left_action_items=[["dot-vertical",lambda x: self.save],["clock",lambda x: self.open]]
 		tb.title="Node Editor"
 		self.content=MDStackLayout()
 		self.content.add_widget(dt)
