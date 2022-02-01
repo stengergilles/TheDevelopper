@@ -10,7 +10,8 @@ class MainPanel(FloatLayout):
 		if not touch.is_double_tap:
 			self.moving=True
 		else:
-			self.m.pos=touch.pos
+			self.m.center_x=touch.pos[0]
+			self.m.center_y=touch.pos[1]
 			self.add_widget(self.m)
 		return super(MainPanel,self).on_touch_move(touch)
 		

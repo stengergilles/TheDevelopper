@@ -16,13 +16,12 @@ class NodeEditor(SchemaObject):
 				("Display Name",dp(30)),
 				("Type",dp(30))
 			],
-			row_data=self.data
+			row_data=self.data,
+			size_hint=(1.0,0.9)
 		)
-		tb=MDToolbar()
+		tb=MDToolbar(size_hint=(1.0,0.1))
 		tb.title="Node Editor"
 		self.content=MDStackLayout()
 		self.content.add_widget(dt)
 		self.content.add_widget(tb)
-		self.content.size=self.size
-		self.content.pos=self.pos
 		self.add_widget(self.content)
