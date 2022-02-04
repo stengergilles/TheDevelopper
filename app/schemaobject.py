@@ -1,9 +1,11 @@
 from kivy.uix.widget import Widget
+from kivy.uix.relativelayout import RelativeLayout
 
-class SchemaObject(Widget):
+class SchemaObject(RelativeLayout):
 	data=None
 	content=None
 	moving=False
+	pinned=False
 	
 	def __init__(self,data=None,**kwargs):
 		super(SchemaObject,self).__init__(**kwargs)
@@ -18,7 +20,8 @@ class SchemaObject(Widget):
 			self.content.size=v
 			
 	def on_touch_down(self,touch):
-		self.moving=True
+		if not self.pinned:
+			self.moving=True
 		return super(SchemaObject, self).on_touch_down(touch)
 		
 	def on_touch_move(self,touch):

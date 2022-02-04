@@ -22,12 +22,14 @@ class Menu(MDCircularLayout):
 
 	def buttonpress(self,*args,**kwargs):
 		kwargs['n']['callback']()
+		self.visible=False
 		self.parent.remove_widget(self)
 		
 	def __init__(self,data=None,**kwargs):
 		super(Menu,self).__init__(**kwargs)
+		self.visible=False
 		self.data=data
-		self.degree_spacing=30
+		self.degree_spacing=50
 		self.size_hint=(None,None)
 		self.size=(dp(200),dp(200))
 		for i in data:

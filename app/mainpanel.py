@@ -12,7 +12,9 @@ class MainPanel(FloatLayout):
 		else:
 			self.m.center_x=touch.pos[0]
 			self.m.center_y=touch.pos[1]
-			self.add_widget(self.m)
+			if not self.m.visible:
+				self.m.visible=True
+				self.add_widget(self.m)
 		return super(MainPanel,self).on_touch_move(touch)
 		
 	def on_touch_move(self,touch):

@@ -1,11 +1,15 @@
-from dbm import ndbm
-from lib2to3.pytree import Node
-from kivymd.app import MDApp
+from kivymd.app import MDApp 
 
 from app.nodeeditor import NodeEditor
 from app.mainpanel import MainPanel
 
+from kivy.core.window import Window
+
+import os
+
 class TestApp(MDApp):
+	
+	apppath=os.path.dirname(os.path.realpath(__file__))
 	
 	def load(self,*args):
 		pass
@@ -16,8 +20,13 @@ class TestApp(MDApp):
 	def newnode(self,*args):
 		from app.nodeeditor import NodeEditor
 		data=[]
-		n=NodeEditor(data=data)
+		n=NodeEditor(data=data,cb=self.newnodecb)
+		n.pinned=True
 		self.root.add_widget(n)
+		
+	def newnodecb(self,data):
+		print('coucou')
+		print('data='+str(data))
 		
 	def clear(self,*args):
 		pass
@@ -45,6 +54,7 @@ class TestApp(MDApp):
 				'callback':self.clear
 			}
 		])
+		self.theme_cls.theme_style="Light"
 		return self.root
 		
 TestApp().run()
