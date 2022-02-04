@@ -1,3 +1,6 @@
+from dataclasses import Field
+from re import T
+from turtle import textinput
 from app.schemaobject import SchemaObject
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
@@ -5,6 +8,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.toolbar import MDToolbar
 from kivymd.uix.textfield import MDTextFieldRect
+from kivy.uix.textinput import TextInput
 from kivymd.uix.label import MDLabel
 from kivymd.uix.filemanager import MDFileManager
 from kivy.app import App
@@ -41,16 +45,16 @@ class FieldTable(BoxLayout):
 				w=i.classref(size_hint=(1,None))
 				l.add_widget(w)
 			self.add_widget(l)
-			
+	
 	def gettable(self):
 			ret=[]
 			x=0
 			y=0
 			l=[]
-			for i in self.children:
-				if not type(i) is MDLabel:
+			for i in self.walk(restrict=True):
+				if not type(i) is MDLabel and not type(i) is GridLayout:
 					l.append(i.text)
-					x =x + 1
+					x = x + 1
 					if x > len(self.coldata):
 						x=0
 						y=y+1
@@ -99,9 +103,9 @@ class NodeEditor(SchemaObject):
 		self.tb.left_action_items=[["plus",lambda x: self.addline()],["file-image",lambda x: self.addimage()],["content-save",lambda x: self.save()],["step-backward",lambda x: self.cancel()]]
 		self.tb.title="Node Editor"
 		self.dt=FieldTable(coldata=[
-			coldef(n='FieldName',c=MDTextFieldRect),
-			coldef(n='DisplayName',c=MDTextFieldRect),
-			coldef(n='FieldType',c=MDTextFieldRect)
+			coldef(n='FieldName',c=TextInput),
+			coldef(n='DisplayName',c=TextInput),
+			coldef(n='FieldType',c=TextInput)
 		],size_hint=(1,None),height=1000)
 		self.dt.bind(minimum_height=self.dt.setter('height'))
 		self.s=ScrollView(do_scroll_y=True,size=self.size)
