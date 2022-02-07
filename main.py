@@ -7,6 +7,9 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 
 import os
+import sys
+
+import kivy
 
 class TestApp(MDApp):
 	
@@ -61,7 +64,11 @@ class TestApp(MDApp):
 		self.theme_cls.theme_style="Light"
 		Window.bind(size=self.resize)
 		return self.root
-		
+	
+if kivy.__version__ != '2.0.0':
+	print('Bad kivy version ' + kivy.__version__ + ' 2.0.0 required')
+	sys.exit(1)
+
 TestApp().run()
 		
 		
