@@ -3,6 +3,10 @@ from app.menu import Menu
 
 class MainPanel(FloatLayout):
 	
+	def on_size(self,*args):
+		for i in self.children:
+			i.on_size(args)
+		
 	def on_touch_down(self,touch):
 		for i in self.children:
 			if i.collide_point(*touch.pos):

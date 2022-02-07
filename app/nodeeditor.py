@@ -1,6 +1,3 @@
-from dataclasses import Field
-from re import T
-from turtle import textinput
 from app.schemaobject import SchemaObject
 from kivy.metrics import dp
 from kivy.uix.boxlayout import BoxLayout
@@ -13,6 +10,8 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.filemanager import MDFileManager
 from kivy.app import App
 from kivy.uix.image import Image
+from kivymd.uix.textfield import MDTextField
+from kivy.clock import Clock
 
 class coldef:
 	name=None
@@ -52,10 +51,10 @@ class FieldTable(BoxLayout):
 			y=0
 			l=[]
 			for i in self.walk(restrict=True):
-				if not type(i) is MDLabel and not type(i) is GridLayout:
+				if hasattr(i,"text"):
 					l.append(i.text)
 					x = x + 1
-					if x > len(self.coldata):
+					if x >= len(self.coldata):
 						x=0
 						y=y+1
 						ret.append(l)
@@ -65,6 +64,12 @@ class FieldTable(BoxLayout):
 class NodeEditor(SchemaObject):
 		
 	iconpath=None
+	
+	def on_size(self,*args):
+		pass
+	
+	def redraw(self,*args):
+		super(NodeEditor,self).redraw(args)
 		
 	def addline(self,*args):
 		self.dt.addline()
@@ -88,7 +93,8 @@ class NodeEditor(SchemaObject):
 	def save(self,*args):
 		data={
 			'icon': self.iconpath,
-			'fieldlist':self.dt.gettable()
+			'fieldlist':self.dt.gettable(),
+			'title':self.t.text
 		}
 		self.parent.remove_widget(self)
 		self.cb(data)
@@ -110,7 +116,9 @@ class NodeEditor(SchemaObject):
 		self.dt.bind(minimum_height=self.dt.setter('height'))
 		self.s=ScrollView(do_scroll_y=True,size=self.size)
 		self.s.add_widget(self.dt)
+		self.t=MDTextField(hint_text='Node Title')
 		self.content=BoxLayout(orientation='vertical')
+		self.content.add_widget(self.t)
 		self.content.add_widget(self.s)
 		self.content.add_widget(self.tb)
 		self.add_widget(self.content)
@@ -123,3 +131,5 @@ class NodeEditor(SchemaObject):
 		self.manager_open=False
 		self.icon=None
 		self.cb=cb
+		self.bind(size=self.redraw,pos=self.redraw)
+		Clock.schedule_once(self.redraw,0.05)

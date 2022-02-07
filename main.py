@@ -4,12 +4,16 @@ from app.nodeeditor import NodeEditor
 from app.mainpanel import MainPanel
 
 from kivy.core.window import Window
+from kivy.metrics import dp
 
 import os
 
 class TestApp(MDApp):
 	
 	apppath=os.path.dirname(os.path.realpath(__file__))
+	
+	def resize(self,*args):
+		self.root.on_size(args)
 	
 	def load(self,*args):
 		pass
@@ -19,14 +23,14 @@ class TestApp(MDApp):
 		
 	def newnode(self,*args):
 		from app.nodeeditor import NodeEditor
-		data=[]
-		n=NodeEditor(data=data,cb=self.newnodecb)
+		n=NodeEditor(data=None,cb=self.newnodecb)
 		n.pinned=True
 		self.root.add_widget(n)
 		
 	def newnodecb(self,data):
-		print('coucou')
-		print('data='+str(data))
+		from app.nodegraph import NodeGraph
+		n=NodeGraph(data=data,pos=(dp(100),dp(100)),size_hint=(None,None))
+		self.root.add_widget(n)
 		
 	def clear(self,*args):
 		pass
@@ -55,6 +59,7 @@ class TestApp(MDApp):
 			}
 		])
 		self.theme_cls.theme_style="Light"
+		Window.bind(size=self.resize)
 		return self.root
 		
 TestApp().run()
