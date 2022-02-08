@@ -20,7 +20,6 @@ class SchemaObject(RelativeLayout):
 		self.data=data
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
 		self.bgcolor[3]=1.0
-#		self.bind(pos=self.redraw,size=self.redraw)
 			
 	def on_touch_down(self,touch):
 		if not self.pinned:
