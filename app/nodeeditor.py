@@ -2,13 +2,14 @@ from app.schemaobject import SchemaObject
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.toolbar import MDToolbar
-from kivy.uix.textinput import TextInput
+from kivymd.uix.textfield import MDTextField
 from kivymd.uix.filemanager import MDFileManager
 from kivy.app import App
 from kivy.uix.image import Image
 from kivymd.uix.textfield import MDTextField
 from kivy.clock import Clock
 from widget.fieldtable import FieldTable,coldef
+from widget.typelist import TypeList
 
 class NodeEditor(SchemaObject):
 		
@@ -51,16 +52,22 @@ class NodeEditor(SchemaObject):
 	def cancel(self,*args):
 		if self.parent:
 			self.parent.remove_widget(self)
+	
+	def removeline(self,*args):
+		for i in self.dt.children:
+			if hasattr(i,'selected'):
+				if i.selected:
+					self.dt.remove_line(i)
 		
 	def __init__(self,data=None,cb=None,**kwargs):
 		super(NodeEditor,self).__init__(data=data,**kwargs)
 		self.tb=MDToolbar()
-		self.tb.left_action_items=[["plus",lambda x: self.addline()],["file-image",lambda x: self.addimage()],["content-save",lambda x: self.save()],["step-backward",lambda x: self.cancel()]]
+		self.tb.left_action_items=[["plus",lambda x: self.addline()],["minus",lambda x:self.removeline()],["file-image",lambda x: self.addimage()],["content-save",lambda x: self.save()],["step-backward",lambda x: self.cancel()]]
 		self.tb.title="Node Editor"
 		self.dt=FieldTable(coldata=[
-			coldef(n='FieldName',c=TextInput),
-			coldef(n='DisplayName',c=TextInput),
-			coldef(n='FieldType',c=TextInput)
+			coldef(n='FieldName',c=MDTextField),
+			coldef(n='DisplayName',c=MDTextField),
+			coldef(n='FieldType',c=TypeList)
 		],size_hint=(1,None),height=1000)
 		self.dt.bind(minimum_height=self.dt.setter('height'))
 		self.s=ScrollView(do_scroll_y=True,size=self.size)

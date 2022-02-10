@@ -13,6 +13,17 @@ class coldef:
 
 class FieldTable(BoxLayout):
 	
+	def on_touch_down(self,touch):
+		for i in self.children:
+			if hasattr(i,'selected'):
+				i.selected=False
+			else:
+				i.selected=False
+			if i.collide_point(*touch.pos):
+				i.selected=True
+				return i.on_touch_down(touch)
+		return False
+			
 	def __init__(self,coldata=None,**kwargs):
 		super(FieldTable,self).__init__(**kwargs)
 		self.orientation='vertical'
@@ -31,6 +42,7 @@ class FieldTable(BoxLayout):
 			l.cols=len(self.coldata)
 			for i in self.coldata:
 				w=i.classref(size_hint=(1,None))
+				w.bind()
 				l.add_widget(w)
 			self.add_widget(l)
 	
@@ -50,3 +62,8 @@ class FieldTable(BoxLayout):
 						l=[]
 			return ret
 			
+	def remove_line(self,w):
+		y=w.y
+		for i in self.children:
+			if i.y == y:
+				self.remove_widget(i)
