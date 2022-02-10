@@ -16,8 +16,9 @@ class NodeGraph(SchemaObject):
 		c=(self.c.center_x,self.c.center_y)
 #gniiii, kivy coordinates !!!!!
 		self.l.pos=(self.c.width,0)
-		self.f.pos=(0,self.l.pos[1]+self.l.height)
-		
+		self.l.texture_update()
+		self.l.size=self.l.texture.size
+		self.f.pos=(self.c.size[0],self.l.pos[1]+self.l.height+dp(1))
 		with self.canvas.before:
 			Color(0,0,0)
 			Line(points=[c, (c[0],0),(self.width,0)])

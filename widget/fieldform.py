@@ -3,7 +3,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivymd.uix.label import MDLabel
 from kivy.uix.textinput import TextInput
 from kivymd.uix.textfield import MDTextField
-from kivymd.uix.selectioncontrol import MDCheckBox
 
 class FieldForm(BoxLayout):
 	
