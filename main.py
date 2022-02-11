@@ -1,11 +1,11 @@
 from kivymd.app import MDApp 
-from kivymd.uix.filemanager import MDFileManager
 
 from app.nodeeditor import NodeEditor
 from app.mainpanel import MainPanel
 from app.nodegraph import NodeGraph
 from app.schemaobject import SchemaObject
 from tools.files import save
+from widget.file import FileDialog
 
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -22,29 +22,26 @@ class Mode(Enum):
 class TestApp(MDApp):
 	
 	apppath=os.path.dirname(os.path.realpath(__file__))
-	
+	currentfile=None
+
 	def select_file(self,path):
 		if self.mode == Mode.SAVE:
 			save(self.root,path)
 		else:
 			pass
-		self.fileexitmgr()
-	
-	def fileexitmgr(self,*args):
-		self.manager_open=False
-		self.file_manager.close()
-		self.mode=None
-	
+		self.fm.fileexitmgr()
+		self.remove_widget(self.fm)
+		
 	def resize(self,*args):
 		self.root.on_size(args)
 	
 	def load(self,*args):
-		pass
+		self.fm.mode=Mode.LOAD
+		self.add_widget(self.fm)
 		
 	def save(self,*args):
-		self.file_manager.show(self.apppath)
-		self.manager_open=True
-		self.mode=Mode.SAVE
+		self.fm.mode=Mode.SAVE
+		self.add_widget(self.fm)
 		
 	def newnode(self,*args):
 		n=NodeEditor(data=None,cb=self.newnodecb)
@@ -85,9 +82,7 @@ class TestApp(MDApp):
 		])
 		self.theme_cls.theme_style="Light"
 		Window.bind(size=self.resize)
-		self.file_manager = MDFileManager(exit_manager=self.fileexitmgr,select_path=self.select_file,preview=True )
-		self.manager_open=False
-		self.mode=None
+		self.fm=FileDialog(mode=Mode.SAVE,exitmgr=self.select_file)
 		return self.root
 	
 if kivy.__version__ != '2.0.0':
