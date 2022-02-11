@@ -3,10 +3,10 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.toolbar import MDToolbar
 from kivymd.uix.textfield import MDTextField
+from kivy.uix.textinput import TextInput
 from kivymd.uix.filemanager import MDFileManager
 from kivy.app import App
 from kivy.uix.image import Image
-from kivymd.uix.textfield import MDTextField
 from kivy.clock import Clock
 from widget.fieldtable import FieldTable,coldef
 from widget.typelist import TypeList
@@ -65,8 +65,8 @@ class NodeEditor(SchemaObject):
 		self.tb.left_action_items=[["plus",lambda x: self.addline()],["minus",lambda x:self.removeline()],["file-image",lambda x: self.addimage()],["content-save",lambda x: self.save()],["step-backward",lambda x: self.cancel()]]
 		self.tb.title="Node Editor"
 		self.dt=FieldTable(coldata=[
-			coldef(n='FieldName',c=MDTextField),
-			coldef(n='DisplayName',c=MDTextField),
+			coldef(n='FieldName',c=TextInput),
+			coldef(n='DisplayName',c=TextInput),
 			coldef(n='FieldType',c=TypeList)
 		],size_hint=(1,None),height=1000)
 		self.dt.bind(minimum_height=self.dt.setter('height'))

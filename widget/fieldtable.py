@@ -32,8 +32,6 @@ class FieldTable(BoxLayout):
 		h.cols=len(coldata)
 		for i in self.coldata:
 			c=MDLabel(text=i.name,size_hint=(1,None))
-			c.texture_update()
-			c.height=c.texture.size[1]
 			h.add_widget(c)
 		self.add_widget(h)
 		
@@ -45,6 +43,7 @@ class FieldTable(BoxLayout):
 				if hasattr(w,"text") and hasattr(w,"line_height"):
 					w.text="X"
 					w.height=w.line_height
+					l.height=w.height
 					w.text=""
 				if hasattr(w,"padding"):
 					w.padding=[0,0,0,0]

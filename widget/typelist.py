@@ -1,4 +1,4 @@
-from kivymd.uix.textfield import MDTextField
+from kivymd.uix.textfield import TextInput
 from kivymd.uix.list import OneLineIconListItem
 from kivymd.uix.menu import MDDropdownMenu
 from kivy.properties import StringProperty
@@ -7,7 +7,7 @@ from kivy.metrics import dp
 class IconListItem(OneLineIconListItem):
     icon = StringProperty()
 
-class TypeList(MDTextField):
+class TypeList(TextInput):
 	
 	def set_item(self,item):
 		self.text=item
