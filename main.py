@@ -37,12 +37,12 @@ class TestApp(MDApp):
 	
 	def load(self,*args):
 		self.fm.mode=Mode.LOAD
-		self.add_widget(self.fm)
+		self.root.add_widget(self.fm)
 		
 	def save(self,*args):
 		self.fm.mode=Mode.SAVE
-		self.add_widget(self.fm)
-		
+		self.root.add_widget(self.fm)
+
 	def newnode(self,*args):
 		n=NodeEditor(data=None,cb=self.newnodecb)
 		n.pinned=True
@@ -82,7 +82,7 @@ class TestApp(MDApp):
 		])
 		self.theme_cls.theme_style="Light"
 		Window.bind(size=self.resize)
-		self.fm=FileDialog(mode=Mode.SAVE,exitmgr=self.select_file)
+		self.fm=FileDialog(mode=Mode.SAVE,exitmgr=self.select_file,apppath=self.apppath)
 		return self.root
 	
 if kivy.__version__ != '2.0.0':
