@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = hostpython3==3.8.10,python3==3.8.10,kivy==1.10.1,jsonpickle
+requirements = hostpython3==3.9.7,python3==3.9.7,kivy==2.0.0,jsonpickle
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
