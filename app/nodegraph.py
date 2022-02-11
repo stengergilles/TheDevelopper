@@ -19,6 +19,10 @@ class NodeGraph(SchemaObject):
 		self.l.texture_update()
 		self.l.size=self.l.texture.size
 		self.f.pos=(self.c.size[0],self.l.pos[1]+self.l.height+dp(1))
+		if self.c.size[0] + self.f.width:
+			self.width=self.c.size[0] + self.f.width
+		if self.c.size[1] + self.f.height:
+			self.height=self.c.size[1]+self.f.height
 		with self.canvas.before:
 			Color(0,0,0)
 			Line(points=[c, (c[0],0),(self.width,0)])

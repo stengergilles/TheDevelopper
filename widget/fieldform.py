@@ -11,7 +11,7 @@ class FieldForm(BoxLayout):
 		super(FieldForm,self).__init__(**kwargs)
 		self.orientation='vertical'
 		self.rows=len(fielddef)-1
-		s = 1 if  len(fielddef) == 1 else 1/(len(fielddef)-1)
+		s = 1 if len(fielddef) == 1 else 1/(len(fielddef)-1)
 		self.fielddef=fielddef
 		total=0
 		for idx,val in enumerate(fielddef):
