@@ -48,6 +48,7 @@ requirements = hostpython3==3.9.7,python3==3.9.7,kivy==2.0.0,jsonpickle
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = %(source.dir)s/splash.png
 
 # (str) Icon of the application
 #icon.filename = %(source.dir)s/data/icon.png

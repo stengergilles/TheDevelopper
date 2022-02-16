@@ -25,7 +25,7 @@ class TheDevelopper(MDApp):
 
 	def select_file(self,path):
 		if self.mode == Mode.SAVE:
-			if save(self.panel,path):
+			if save(path):
 				Snackbar(text='File successfully Saved').open()
 		else:
 			pass

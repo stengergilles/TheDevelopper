@@ -7,12 +7,19 @@ from kivymd.uix.selectioncontrol import MDCheckbox
 
 class FieldForm(BoxLayout):
 	
-	def __init__(self,fielddef=None,**kwargs):
+	def update_field(self,*args):
+		if type(args[0]) is MDTextField:
+			self.data[args[0].f]=args[0].text
+		if type(args[0]) is MDCheckbox:
+			self.data[args[0].f]=args[1]
+		
+	def __init__(self,fielddef=None,data=None,**kwargs):
 		super(FieldForm,self).__init__(**kwargs)
 		self.orientation='vertical'
 		self.rows=len(fielddef)-1
 		s = 1 if len(fielddef) == 1 else 1/(len(fielddef)-1)
 		self.fielddef=fielddef
+		self.data=data
 		total=0
 		for idx,val in enumerate(fielddef):
 			if idx >=1:
@@ -22,6 +29,12 @@ class FieldForm(BoxLayout):
 					t.helper_text_mode='persistent'
 					t.text="X"
 					t.height=t.minimum_height
+					t.f=val[0]
+					t.bind(on_text_validate=self.update_field)
+					if t.f in self.data:
+						t.text=self.data[t.f]
+					else:
+						self.data[t.f]=t.text
 					self.add_widget(t)
 					t.text=""
 					total=total+t.height
@@ -39,6 +52,12 @@ class FieldForm(BoxLayout):
 						l.shorten=True
 						c=MDCheckbox(size_hint=(1,None))
 						c.height=l.texture.size[1]
+						c.f=val[0]
+						if c.f in self.data:
+							c.active=self.data[c.f]
+						else:
+							c.active=False
+						c.bind(active=self.update_field)
 						g.add_widget(c)
 						g.add_widget(l)
 						g.height=c.height
