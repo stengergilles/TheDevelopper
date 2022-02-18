@@ -30,6 +30,7 @@ class NodeGraph(SchemaObject):
 	def __init__(self,data=None,**kwargs):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		data['fieldsvalues']={}
+		data['type']=str(type(self))
 		if not 'size' in kwargs:
 			self.size=(dp(100),dp(100))
 		if data['icon']:

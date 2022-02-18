@@ -2,8 +2,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics import Line,Color,Rectangle
 from kivy.app import App
-
-schema=[]
+import app.settings
 
 class SchemaObject(RelativeLayout):
 	data=None
@@ -23,7 +22,7 @@ class SchemaObject(RelativeLayout):
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
 		self.bgcolor[3]=1.0
 		if data:
-			schema.append(data)
+			app.settings.schema.append(data)
 			
 	def on_touch_down(self,touch):
 		if not self.pinned:

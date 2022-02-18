@@ -4,7 +4,8 @@ from app.nodeeditor import NodeEditor
 from app.mainpanel import MainPanel
 from app.nodegraph import NodeGraph
 from app.schemaobject import SchemaObject
-from tools.files import save
+from tools.files import saveschema
+from tools.files import loadschema
 from widget.file import FileDialog
 from kivy.core.window import Window
 from kivy.metrics import dp
@@ -14,9 +15,11 @@ import sys
 import kivy
 from enum import Enum
 
+import app.settings 
+
 class Mode(Enum):
 	SAVE=1
-	LOAD=1
+	LOAD=2
 	
 class TheDevelopper(MDApp):
 	
@@ -25,22 +28,28 @@ class TheDevelopper(MDApp):
 
 	def select_file(self,path):
 		if self.mode == Mode.SAVE:
-			if save(path):
+			if saveschema(path):
 				Snackbar(text='File successfully Saved').open()
-		else:
-			pass
+		if self.mode == Mode.LOAD:
+			self.clear()
+			if loadschema(path):
+				self.schematowidget()
+				Snackbar(text='File successfully Loaded').open()
 		self.fm.fileexitmgr()
 		self.panel.remove_widget(self.fm)
+		self.fm=None
 		
 	def resize(self,*args):
 		self.panel.on_size(args)
 	
 	def load(self,*args):
 		self.mode=Mode.LOAD
+		self.fm=FileDialog(mode=Mode.LOAD,exitmgr=self.select_file,apppath=self.apppath)
 		self.panel.add_widget(self.fm)
 		
 	def save(self,*args):
 		self.mode=Mode.SAVE
+		self.fm=self.fm=FileDialog(mode=Mode.SAVE,exitmgr=self.select_file,apppath=self.apppath)
 		self.panel.add_widget(self.fm)
 
 	def newnode(self,*args):
@@ -56,6 +65,14 @@ class TheDevelopper(MDApp):
 		for i in self.panel.walk(restrict=True):
 			if isinstance(i,SchemaObject):
 				i.parent.remove_widget(i)
+		app.settings.schema=[]
+		
+	def schematowidget(self):
+		for i in app.settings.schema:
+			print(i)
+			z=type(i['type'])()
+			print('z='+str(z))
+		print('toto')
 
 	def makepanel(self):
 		self.panel=MainPanel(menu=[
@@ -82,7 +99,6 @@ class TheDevelopper(MDApp):
 		])
 		self.theme_cls.theme_style="Light"
 		Window.bind(size=self.resize)
-		self.fm=FileDialog(mode=Mode.SAVE,exitmgr=self.select_file,apppath=self.apppath)
 		return (self.panel)
 		
 	def build(self):
@@ -91,6 +107,8 @@ class TheDevelopper(MDApp):
 if kivy.__version__ != '2.0.0':
 	print('Bad kivy version ' + kivy.__version__ + ' 2.0.0 required')
 	sys.exit(1)
+	
+app.settings.init()
 
 if __name__ == '__main__':
 	TheDevelopper().run()

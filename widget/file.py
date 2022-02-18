@@ -16,8 +16,10 @@ class FileDialog(BoxLayout):
 		if self.filename:
 			if os.path.isdir(path):
 				self.exitmgr(os.path.join(path,self.filename.text))
-			else:
-				self.exitmgr(path)
+			if os.path.isfile(path):
+				self.exitmgr(path)				
+		else:
+			self.exitmgr(path)
 
 	def fileexitmgr(self,*args):
 		self.manager_open=False
@@ -33,7 +35,7 @@ class FileDialog(BoxLayout):
 		self.mode=mode
 		self.exitmgr=exitmgr
 		self.manager_open=False
-		self.file_manager = MDFileManager(exit_manager=self.fileexitmgr,select_path=self.select_path,preview=True)
+		self.file_manager = MDFileManager(exit_manager=self.fileexitmgr,select_path=self.select_path)
 		self.file_manager._window_manager=self
 		if self.mode==mode.SAVE:
 			self.filename=MDTextField(hint_text="New File")
