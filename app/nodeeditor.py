@@ -20,12 +20,7 @@ class NodeEditor(SchemaObject):
 		super(NodeEditor,self).redraw(args)
 #PAs tout compris
 		self.s.height=self.size[1]-self.tb.size[1]-self.t.size[1]
-		print('----')
-		print(self.size)
-		print(self.tb.size)
-		print(self.t.size)
-		print(self.s.size)
-
+		
 	def on_size(self,*args):
 		self.redraw(args)
 			

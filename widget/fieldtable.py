@@ -32,6 +32,9 @@ class FieldTable(BoxLayout):
 		h.cols=len(coldata)
 		for i in self.coldata:
 			c=MDLabel(text=i.name,size_hint=(1,None))
+			c.texture_update()
+			c.height=c.texture.size[1]
+			h.height=c.height
 			h.add_widget(c)
 		self.add_widget(h)
 		
