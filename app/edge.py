@@ -12,9 +12,11 @@ class SchemaEdge(SchemaObject):
 
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
-			with self.canvas.before:
-				Color(1,1,1,1)
-				Line(self.data['src'].pos,self.data['dst'].pos)
+			with self.parent.canvas.before:
+				Color(0,0,0,1)
+				src=self.data['src'].to_parent(self.data['src'].c.pos[0],self.data['src'].c.pos[1])
+				dst=self.data['dst'].to_parent(self.data['dst'].c.pos[0],self.data['dst'].c.pos[1])
+				Line(points=[src,dst])
 		return super().redraw(*args)
 	
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
@@ -23,3 +25,4 @@ class SchemaEdge(SchemaObject):
 		data['src']=src
 		data['dst']=dst
 		self.direction=dir
+		self.menuvisible=False

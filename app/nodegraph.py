@@ -1,3 +1,4 @@
+from tkinter import E
 from app.schemaobject import SchemaObject
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
@@ -11,9 +12,9 @@ from app.menu import Menu
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		e=SchemaEdge(data={})	
-		self.parent.add_widget(e)	
-		Clock.schedule_once(e.redraw,0.05)
+		self.e=SchemaEdge(data={},src=self.wantlink,dst=self)
+		self.parent.add_widget(self.e)	
+		Clock.schedule_once(self.e.redraw,0.05)
 		self.menuvisible=False
 		
 	def link2(self):
@@ -34,6 +35,7 @@ class NodeGraph(SchemaObject):
 	
 	def collide(self,object,touch):
 		self.wantlink=object
+		object.wantlink=self
 		self.m.center_x=touch.pos[0]
 		self.m.center_y=touch.pos[1]
 		if not self.menuvisible:
@@ -58,7 +60,11 @@ class NodeGraph(SchemaObject):
 		with self.canvas.before:
 			Color(0,0,0)
 			Line(points=[c, (c[0],0),(self.width,0)])
-		
+		if hasattr(self,"wantlink"):
+			if hasattr(self,"e"):
+				if self.e:
+					Clock.schedule_once(self.e.redraw,0.05)
+			
 	def __init__(self,data=None,**kwargs):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		data['fieldsvalues']={}
@@ -109,5 +115,3 @@ class NodeGraph(SchemaObject):
 		self.add_widget(self.f)
 		self.bind(pos=self.redraw,size=self.redraw)
 		Clock.schedule_once(self.redraw,0.05)
-		
-		

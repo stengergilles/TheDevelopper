@@ -51,7 +51,6 @@ class SchemaObject(RelativeLayout):
 							if i.menuvisible:
 								i.parent.remove_widget(i.m)
 								i.menuvisible=False
-
 		return super(SchemaObject,self).on_touch_move(touch)
 	
 	def on_touch_up(self,touch):
