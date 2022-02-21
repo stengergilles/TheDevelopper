@@ -10,17 +10,25 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from widget.fieldtable import FieldTable,coldef
 from widget.typelist import TypeList
+from kivy.metrics import dp 
 
 class NodeEditor(SchemaObject):
 		
 	iconpath=None
-	
-	def on_size(self,*args):
-		pass
-	
+
 	def redraw(self,*args):
 		super(NodeEditor,self).redraw(args)
-		
+#PAs tout compris
+		self.s.height=self.size[1]-self.tb.size[1]-self.t.size[1]
+		print('----')
+		print(self.size)
+		print(self.tb.size)
+		print(self.t.size)
+		print(self.s.size)
+
+	def on_size(self,*args):
+		self.redraw(args)
+			
 	def addline(self,*args):
 		self.dt.addline()
 		
@@ -70,15 +78,15 @@ class NodeEditor(SchemaObject):
 			coldef(n='FieldType',c=TypeList)
 		],size_hint=(1,None),height=1000)
 		self.dt.bind(minimum_height=self.dt.setter('height'))
-		self.s=ScrollView(do_scroll_y=True,size=self.size)
+		self.s=ScrollView(do_scroll_y=True,size_hint=(1,None),size=self.size)
 		self.s.add_widget(self.dt)
-		self.t=MDTextField(hint_text='Node Title')
-		self.content=BoxLayout(orientation='vertical')
+		self.t=MDTextField(hint_text='Node Title',size_hint=(1,None))
+		self.content=BoxLayout(orientation='vertical',padding=[0,0,0,0])
 		self.content.add_widget(self.t)
 		self.content.add_widget(self.s)
 		self.content.add_widget(self.tb)
 		self.add_widget(self.content)
-		self.s.size=(self.s.size[0]-self.tb.size[0],self.s.size[1]-self.s.size[1])
+		self.s.height=self.size[1]-self.s.size[1]-self.t.size[1]
 		self.file_manager = MDFileManager(
             exit_manager=self.exit_manager,
             select_path=self.select_image,
