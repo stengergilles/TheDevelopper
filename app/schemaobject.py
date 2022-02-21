@@ -46,6 +46,12 @@ class SchemaObject(RelativeLayout):
 						if hasattr(i,'collide'):
 							i.collide(self,touch)
 							return(False)
+					else:
+						if isinstance(i,SchemaObject):
+							if i.menuvisible:
+								i.parent.remove_widget(i.m)
+								i.menuvisible=False
+
 		return super(SchemaObject,self).on_touch_move(touch)
 	
 	def on_touch_up(self,touch):

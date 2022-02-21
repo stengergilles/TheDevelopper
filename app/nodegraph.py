@@ -11,7 +11,9 @@ from app.menu import Menu
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		print('link1')
+		e=SchemaEdge(data={})	
+		self.parent.add_widget(e)	
+		Clock.schedule_once(e.redraw,0.05)
 		self.menuvisible=False
 		
 	def link2(self):

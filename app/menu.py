@@ -24,7 +24,10 @@ class Menu(MDCircularLayout):
 		self.drawbg()
 
 	def buttonpress(self,*args,**kwargs):
-		kwargs['n']['callback']()
+		if kwargs['n'] is None:
+			pass
+		else:
+			kwargs['n']['callback']()
 		self.visible=False
 		self.parent.remove_widget(self)
 		
@@ -39,4 +42,7 @@ class Menu(MDCircularLayout):
 			m=MDFloatingActionButton(icon=i['icon'],size_hint=(None,None),size=(dp(8),dp(8)))
 			m.bind(on_press=partial(self.buttonpress,n=i))
 			self.add_widget(m)
+		m=MDFloatingActionButton(icon='backburger',size_hint=(None,None),size=(dp(8),dp(8)))
+		m.bind(on_press=partial(self.buttonpress,n=None))
+		self.add_widget(m)
 		self.drawbg()
