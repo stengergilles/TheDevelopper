@@ -1,12 +1,11 @@
-from json import dump
-from json import load
+import jsonpickle
 
 import app.settings
 
 def saveschema(path=None):
 	try:
 		with open(path,'w') as fp:
-			dump(app.settings.schema,fp)
+			fp.write(jsonpickle.encode(app.settings.schema))
 			fp.close()
 			return(True)
 	except Exception as e:
@@ -16,7 +15,7 @@ def saveschema(path=None):
 def loadschema(path=None):
 	try:
 		with open(path,'r') as fp:
-			app.settings.schema=load(fp)
+			app.settings.schema=jsonpickle.decode(fp.read())
 			return(True)
 	except Exception as e:
 		print(e)

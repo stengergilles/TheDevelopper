@@ -27,14 +27,19 @@ class TheDevelopper(MDApp):
 	currentfile=None
 
 	def select_file(self,path):
+		self.currentfile=path
 		if self.mode == Mode.SAVE:
 			if saveschema(path):
 				Snackbar(text='File successfully Saved').open()
+			else:
+				Snackbar(text='Error Saving File').open()
 		if self.mode == Mode.LOAD:
 			self.clear()
 			if loadschema(path):
 				self.schematowidget()
 				Snackbar(text='File successfully Loaded').open()
+			else:
+				Snackbar(text='Error loading file')
 		self.fm.fileexitmgr()
 		self.panel.remove_widget(self.fm)
 		self.fm=None
@@ -69,10 +74,12 @@ class TheDevelopper(MDApp):
 		
 	def schematowidget(self):
 		for i in app.settings.schema:
-			print(i)
-			z=type(i['type'])()
-			print('z='+str(z))
-		print('toto')
+#why i can be null ?
+			if i:
+				p=(dp(i['pos'][0]),dp(i['pos'][1]))
+				s=(dp(i['size'][0]),dp(i['size'][1]))
+				z=i['type'](data=i,pos=p,size_hint=(None,None))
+				self.panel.add_widget(z)
 
 	def makepanel(self):
 		self.panel=MainPanel(menu=[
