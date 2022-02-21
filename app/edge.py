@@ -9,13 +9,17 @@ class direction(Enum):
 	NONE=4
 	
 class SchemaEdge(SchemaObject):
+	
+	def on_size(self,*args):
+		pass
 
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
+			self.parent.canvas.before.clear()
 			with self.parent.canvas.before:
 				Color(0,0,0,1)
-				src=self.data['src'].to_parent(self.data['src'].c.pos[0],self.data['src'].c.pos[1])
-				dst=self.data['dst'].to_parent(self.data['dst'].c.pos[0],self.data['dst'].c.pos[1])
+				src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
+				dst=self.data['dst'].to_parent(self.data['dst'].c.center_x,self.data['dst'].c.center_y)
 				Line(points=[src,dst])
 		return super().redraw(*args)
 	
