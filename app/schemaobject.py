@@ -40,6 +40,12 @@ class SchemaObject(RelativeLayout):
 	def on_touch_move(self,touch):
 		if self.moving:
 			self.pos=touch.pos
+			for i in self.parent.children:
+				if not i is self:
+					if i.collide_point(*touch.pos):
+						if hasattr(i,'collide'):
+							i.collide(self,touch)
+							return(False)
 		return super(SchemaObject,self).on_touch_move(touch)
 	
 	def on_touch_up(self,touch):

@@ -74,7 +74,6 @@ class TheDevelopper(MDApp):
 		
 	def schematowidget(self):
 		for i in app.settings.schema:
-#why i can be null ?
 			if i:
 				p=(dp(i['pos'][0]),dp(i['pos'][1]))
 				s=(dp(i['size'][0]),dp(i['size'][1]))

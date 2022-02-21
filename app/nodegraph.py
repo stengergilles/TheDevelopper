@@ -5,8 +5,38 @@ from kivy.graphics import Line,Color,Rectangle
 from kivy.clock import Clock
 from kivy.metrics import dp
 from widget.fieldform import FieldForm
+from app.edge import SchemaEdge
+from app.menu import Menu
 
 class NodeGraph(SchemaObject):
+	
+	def link1(self):
+		print('link1')
+		self.menuvisible=False
+		
+	def link2(self):
+		print('link2')
+		self.menuvisible=False
+		
+	def link3(self):
+		print('link3')
+		self.menuvisible=False
+		
+	def link4(self):
+		print('link4')
+		self.menuvisible=False
+		
+	def group(self):
+		print('group')
+		self.menuvisible=False
+	
+	def collide(self,object,touch):
+		self.wantlink=object
+		self.m.center_x=touch.pos[0]
+		self.m.center_y=touch.pos[1]
+		if not self.menuvisible:
+			self.menuvisible=True
+			self.parent.add_widget(self.m)
 	
 	def on_size(self,*args):
 		pass
@@ -31,6 +61,34 @@ class NodeGraph(SchemaObject):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		data['fieldsvalues']={}
 		data['type']=type(self)
+		self.m=Menu(data=[
+			{
+				'name':'link1',
+				'icon':'arrow-left',
+				'callback':self.link1
+			},
+			{
+				'name':'link2',
+				'icon':'arrow-right',
+				'callback':self.link2
+			},
+			{
+				'name':'link3',
+				'icon':'arrow-all',
+				'callback':self.link3
+			},
+			{
+				'name':'link4',
+				'icon':'chart-line',
+				'callback':self.link4
+			},
+			{
+				'name':'link4',
+				'icon':'group',
+				'callback':self.group
+			}			
+		])
+		self.menuvisible=False
 		if not 'size' in kwargs:
 			self.size=(dp(100),dp(100))
 		if data['icon']:
