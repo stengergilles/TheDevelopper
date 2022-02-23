@@ -26,10 +26,10 @@ class SchemaEdge(SchemaObject):
 		return super().redraw(*args)
 		
 	def resolve(self,d=None):
-		print('d='+str(d))
-		for i in App.get_running_app().panel.children.walk(restrict=True):
-			if d['uuid'] == i.data['uuid'].hex:
-				return(i)
+		for i in App.get_running_app().panel.walk(restrict=True):
+			if isinstance(i,SchemaObject):
+				if d['uuid'].hex == i.data['uuid'].hex:
+					return(i)
 		return(None)
 	
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
@@ -45,6 +45,10 @@ class SchemaEdge(SchemaObject):
 		else:
 			if type(data['dst']) is dict:
 				data['dst']=self.resolve(data['dst'])
+		data['src'].wantlink=data['dst']
+		data['src'].wantlink.e=self
+		data['dst'].wantlink=data['src']
+		data['dst'].wantlink.e=self
 		self.direction=dir
 		self.menuvisible=False
 		Clock.schedule_once(self.redraw,0.05)

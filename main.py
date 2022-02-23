@@ -110,9 +110,9 @@ class TheDevelopper(MDApp):
 	def build(self):
 		return(self.makepanel())
 	
-if kivy.__version__ != '2.0.0':
-	print('Bad kivy version ' + kivy.__version__ + ' 2.0.0 required')
-	sys.exit(1)
+#if kivy.__version__ != '2.0.0':
+#	print('Bad kivy version ' + kivy.__version__ + ' 2.0.0 required')
+#	sys.exit(1)
 	
 app.settings.init()
 
