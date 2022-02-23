@@ -13,6 +13,7 @@ class NodeGraph(SchemaObject):
 	
 	def link1(self):
 		self.e=SchemaEdge(data={},src=self.wantlink,dst=self)
+		self.wantlink.e=self.e
 		self.parent.add_widget(self.e)	
 		Clock.schedule_once(self.e.redraw,0.05)
 		self.menuvisible=False

@@ -4,12 +4,21 @@ from kivy.graphics import Line,Color,Rectangle
 from kivy.app import App
 import app.settings
 from kivy.metrics import dp
+from uuid import uuid1
+import app.settings
 
 class SchemaObject(RelativeLayout):
 	data=None
 	moving=False
 	pinned=False
 	bgcol=None
+	
+	def __getstate__(self):
+		return self.data['uuid'].hex
+		
+	def __setstate__(self,state):
+		self.toresolve=state
+		app.settings.toresolv.append(self)
 	
 	def savelayout(self):
 		if self.data:
@@ -31,6 +40,7 @@ class SchemaObject(RelativeLayout):
 		if not data in app.settings.schema:
 			if not data is None:
 				app.settings.schema.append(data)
+		data['uuid']=uuid1()
 			
 	def on_touch_down(self,touch):
 		if not self.pinned:
