@@ -27,8 +27,10 @@ class SchemaEdge(SchemaObject):
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
 		data['type']=type(self)
-		data['src']=src
-		data['dst']=dst
+		if data['src'] is None:
+			data['src']=src
+		if data['dst'] is None:
+			data['dst']=dst
 		self.direction=dir
 		self.menuvisible=False
 		Clock.schedule_once(self.redraw,0.05)
