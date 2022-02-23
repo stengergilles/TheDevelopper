@@ -1,6 +1,7 @@
 from enum import Enum
 from app.schemaobject import SchemaObject
 from kivy.graphics import Line,Color
+from kivy.clock import Clock
 
 class direction(Enum):
 	SRCDST=1
@@ -30,3 +31,4 @@ class SchemaEdge(SchemaObject):
 		data['dst']=dst
 		self.direction=dir
 		self.menuvisible=False
+		Clock.schedule_once(self.redraw,0.05)

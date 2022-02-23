@@ -38,7 +38,6 @@ def loadschema(path=None):
 					r.append(resolve(i.toresolve))
 			for i in r:
 				z=haveref(i['uuid'])
-				print('after')
 				if z:
 					z[0][z[1]]=i
 			return(True)
