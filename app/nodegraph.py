@@ -11,6 +11,9 @@ from app.menu import Menu
 
 class NodeGraph(SchemaObject):
 	
+	def to_parent(self, x, y, **k):
+		return super().to_parent(x, y, **k)
+		
 	def link1(self):
 		self.e=SchemaEdge(data={},src=self.wantlink,dst=self)
 		self.wantlink.e=self.e
