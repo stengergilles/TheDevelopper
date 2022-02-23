@@ -20,7 +20,6 @@ def resolve(id=None):
 		return None
 		
 def haveref(id=None):
-	print(id)
 	for i in app.settings.schema:
 		for k,v in i.items():
 			if hasattr(v,'toresolve'):
