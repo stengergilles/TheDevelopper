@@ -17,7 +17,7 @@ class SchemaEdge(SchemaObject):
 
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
-			self.parent.canvas.before.clear()
+#			self.parent.canvas.before.clear()
 			with self.parent.canvas.before:
 				Color(0,0,0,1)
 				src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
@@ -35,20 +35,26 @@ class SchemaEdge(SchemaObject):
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
 		data['type']=type(self)
-		if data['src'] is None:
+		if 'src' in data:
+			if data['src'] is None:
+				data['src']=src
+			else:
+				if type(data['src']) is dict:
+					data['src']=self.resolve(data['src'])
+		else:
 			data['src']=src
+		if 'dst' in data:
+			if data['dst'] is None:
+				data['dst']=dst
+			else:
+				if type(data['dst']) is dict:
+					data['dst']=self.resolve(data['dst'])
 		else:
-			if type(data['src']) is dict:
-				data['src']=self.resolve(data['src'])
-		if data['dst'] is None:
 			data['dst']=dst
-		else:
-			if type(data['dst']) is dict:
-				data['dst']=self.resolve(data['dst'])
-		data['src'].wantlink=data['dst']
-		data['src'].wantlink.e=self
-		data['dst'].wantlink=data['src']
-		data['dst'].wantlink.e=self
+		data['src'].wantlink.append(data['dst'])
+		data['src'].wantlink[-1].e.append(self)
+		data['dst'].wantlink.append(data['src'])
+		data['dst'].wantlink[-1].e.append(self)
 		self.direction=dir
 		self.menuvisible=False
 		Clock.schedule_once(self.redraw,0.05)

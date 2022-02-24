@@ -12,14 +12,18 @@ from app.menu import Menu
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		self.e=SchemaEdge(data={},src=self.wantlink,dst=self)
-		self.wantlink.e=self.e
-		self.parent.add_widget(self.e)	
-		Clock.schedule_once(self.e.redraw,0.05)
+		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self)
+		self.e.append(s)
+		self.wantlink[-1].e.append(s)
+		self.parent.add_widget(s)	
+		Clock.schedule_once(s.redraw,0.05)
 		self.menuvisible=False
 		
 	def link2(self):
-		print('link2')
+		self.e=SchemaEdge(data={},src=self,dst=self.wantlink[-1])
+		self.wantlink.e=self.e
+		self.parent.add_widget(self.e)
+		Clock.schedule_once(self.e.redraw,0.05)
 		self.menuvisible=False
 		
 	def link3(self):
@@ -35,13 +39,14 @@ class NodeGraph(SchemaObject):
 		self.menuvisible=False
 	
 	def collide(self,object,touch):
-		self.wantlink=object
-		object.wantlink=self
-		self.m.center_x=touch.pos[0]
-		self.m.center_y=touch.pos[1]
-		if not self.menuvisible:
-			self.menuvisible=True
-			self.parent.add_widget(self.m)
+		if type(object) is NodeGraph:
+			self.wantlink.append(object)
+			object.wantlink.append(self)
+			self.m.center_x=touch.pos[0]
+			self.m.center_y=touch.pos[1]
+			if not self.menuvisible:
+				self.menuvisible=True
+				self.parent.add_widget(self.m)
 	
 	def on_size(self,*args):
 		pass
@@ -61,15 +66,16 @@ class NodeGraph(SchemaObject):
 		with self.canvas.before:
 			Color(0,0,0)
 			Line(points=[c, (c[0],0),(self.width,0)])
-		if hasattr(self,"wantlink"):
-			if hasattr(self,"e"):
-				if self.e:
-					Clock.schedule_once(self.e.redraw,0.05)
+		for i in self.wantlink:
+			for j in i.e:
+				Clock.schedule_once(j.redraw,0.05)
 			
 	def __init__(self,data=None,**kwargs):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		data['fieldsvalues']={}
 		data['type']=type(self)
+		self.wantlink=[]
+		self.e=[]
 		self.m=Menu(data=[
 			{
 				'name':'link1',

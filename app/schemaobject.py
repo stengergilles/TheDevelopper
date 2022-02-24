@@ -40,7 +40,7 @@ class SchemaObject(RelativeLayout):
 		if not data in app.settings.schema:
 			if not data is None:
 				app.settings.schema.append(data)
-		data['uuid']=uuid1()
+				data['uuid']=uuid1()
 			
 	def on_touch_down(self,touch):
 		if not self.pinned:
