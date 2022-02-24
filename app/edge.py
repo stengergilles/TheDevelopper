@@ -41,11 +41,15 @@ class SchemaEdge(SchemaObject):
 					self.size=(src[0]-dst[0],src[1]-dst[1])
 					src=(0,0)
 					dst=self.size
-			print("src="+str(src))
-			print("dst="+str(dst))
-			self.canvas.before.clear()
-			with self.canvas.before:
-				Color(0,0,0,1)
+			if self.l:
+				self.canvas.before.remove(self.l)
+			else:
+				self.canvas.before.add(Color(0,0,0,1))
+			self.l=Line(points=[src,dst])
+			self.canvas.before.add(self.l)
+#			self.canvas.before.clear()
+#			with self.canvas.before:
+#				Color(0,0,0,1)
 #				Line(points=[src,dst])
 		return super().redraw(*args)
 		
@@ -58,6 +62,7 @@ class SchemaEdge(SchemaObject):
 	
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
+		self.l=None
 		data['type']=type(self)
 		if 'src' in data:
 			if data['src'] is None:
@@ -76,7 +81,11 @@ class SchemaEdge(SchemaObject):
 		else:
 			data['dst']=dst
 		data['src'].wantlink.append(data['dst'])
+		if not hasattr(data['src'].wantlink[-1],'e'):
+			data['src'].wantlink[-1].e=[]
 		data['src'].wantlink[-1].e.append(self)
+		if not hasattr(data['dst'].wantlink[-1],'e'):
+			data['src'].wantlink[-1].e=[]
 		data['dst'].wantlink.append(data['src'])
 		data['dst'].wantlink[-1].e.append(self)
 		self.direction=dir
