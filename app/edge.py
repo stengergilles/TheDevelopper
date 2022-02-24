@@ -11,7 +11,16 @@ class direction(Enum):
 	NONE=4
 	
 class SchemaEdge(SchemaObject):
-	
+
+	def on_touch_move(self, touch):
+		return False
+
+	def on_touch_up(self, touch):
+		return False
+
+	def on_touch_down(self, touch):
+		return False
+
 	def on_size(self,*args):
 		pass
 
@@ -22,8 +31,8 @@ class SchemaEdge(SchemaObject):
 			if src[0] < dst[0]:
 				if src[1] < dst[1]:
 					self.pos=src
-					src=(0,0)
 					self.size=(dst[0] - src[0],dst[1] - src[1])
+					src=(0,0)
 					dst=self.size
 				else:
 					self.pos=(src[0],dst[1])
@@ -47,10 +56,6 @@ class SchemaEdge(SchemaObject):
 				self.canvas.before.add(Color(0,0,0,1))
 			self.l=Line(points=[src,dst])
 			self.canvas.before.add(self.l)
-#			self.canvas.before.clear()
-#			with self.canvas.before:
-#				Color(0,0,0,1)
-#				Line(points=[src,dst])
 		return super().redraw(*args)
 		
 	def resolve(self,d=None):
@@ -63,6 +68,7 @@ class SchemaEdge(SchemaObject):
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
 		self.l=None
+		self.pinned=True
 		data['type']=type(self)
 		if 'src' in data:
 			if data['src'] is None:

@@ -26,10 +26,10 @@ class SchemaObject(RelativeLayout):
 			self.data['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
 		
 	def redraw(self,*args):
-		if self.pinned:
-			with self.canvas.before:
-				Color(self.bgcolor)
-				Rectangle(pos=(0,0),size=self.size)
+#		if self.pinned:
+#			with self.canvas.before:
+#				Color(self.bgcolor)
+#				Rectangle(pos=(0,0),size=self.size)
 		self.savelayout()
 		
 	def __init__(self,data=None,**kwargs):
