@@ -17,12 +17,36 @@ class SchemaEdge(SchemaObject):
 
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
-#			self.parent.canvas.before.clear()
-			with self.parent.canvas.before:
+			src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
+			dst=self.data['dst'].to_parent(self.data['dst'].c.center_x,self.data['dst'].c.center_y)
+			if src[0] < dst[0]:
+				if src[1] < dst[1]:
+					self.pos=src
+					src=(0,0)
+					self.size=(dst[0] - src[0],dst[1] - src[1])
+					dst=self.size
+				else:
+					self.pos=(src[0],dst[1])
+					self.size=(dst[0]-src[0],src[1]-dst[1])
+					src=(self.size[0],0)
+					dst=(0,self.size[1])
+			else:
+				if src[1] < dst[1]: 
+					self.pos=(dst[0],src[1])
+					self.size=(src[0]-dst[0],dst[1]-src[1])
+					src=(self.size[0],0)
+					dst=(0,self.size[1])
+				else:
+					self.pos=dst	
+					self.size=(src[0]-dst[0],src[1]-dst[1])
+					src=(0,0)
+					dst=self.size
+			print("src="+str(src))
+			print("dst="+str(dst))
+			self.canvas.before.clear()
+			with self.canvas.before:
 				Color(0,0,0,1)
-				src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
-				dst=self.data['dst'].to_parent(self.data['dst'].c.center_x,self.data['dst'].c.center_y)
-				Line(points=[src,dst])
+#				Line(points=[src,dst])
 		return super().redraw(*args)
 		
 	def resolve(self,d=None):
