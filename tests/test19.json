@@ -1,0 +1,116 @@
+[
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "toto",
+        "uuid": {
+            "hex": "1a3555a5962111ecabf35414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": [
+            148.0,
+            48.0
+        ],
+        "pos": [
+            175.0,
+            211.00000000000003
+        ]
+    },
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "titi",
+        "uuid": {
+            "hex": "212b645f962111ecafd75414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": [
+            148.0,
+            48.0
+        ],
+        "pos": [
+            451.0,
+            371.0
+        ]
+    },
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "tutu",
+        "uuid": {
+            "hex": "27b0bda0962111eca3cc5414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": [
+            148.0,
+            48.0
+        ],
+        "pos": [
+            122.0,
+            390.00000000000006
+        ]
+    },
+    {
+        "uuid": {
+            "hex": "2beb0815962111ec9d8a5414f318fe74"
+        },
+        "type": {
+            "py/type": "app.edge.SchemaEdge"
+        },
+        "src": "27b0bda0962111eca3cc5414f318fe74",
+        "dst": "212b645f962111ecafd75414f318fe74",
+        "size": [
+            329.0,
+            19.000000000000057
+        ],
+        "pos": [
+            146.0,
+            395.0
+        ]
+    },
+    {
+        "uuid": {
+            "hex": "329bdf49962111eca0e15414f318fe74"
+        },
+        "type": {
+            "py/type": "app.edge.SchemaEdge"
+        },
+        "src": "1a3555a5962111ecabf35414f318fe74",
+        "dst": "27b0bda0962111eca3cc5414f318fe74",
+        "size": [
+            53.0,
+            179.00000000000003
+        ],
+        "pos": [
+            146.0,
+            235.00000000000003
+        ]
+    }
+]

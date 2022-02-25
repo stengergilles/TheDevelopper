@@ -1,0 +1,152 @@
+[
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "toto",
+        "uuid": {
+            "py/object": "uuid.UUID",
+            "hex": "19c3a090961f11ec92a85414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": {
+            "py/tuple": [
+                148.0,
+                48.0
+            ]
+        },
+        "pos": {
+            "py/tuple": [
+                399.0,
+                427.0
+            ]
+        }
+    },
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "titi",
+        "uuid": {
+            "py/object": "uuid.UUID",
+            "hex": "2c726e51961f11ecab755414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": {
+            "py/tuple": [
+                148.0,
+                48.0
+            ]
+        },
+        "pos": {
+            "py/tuple": [
+                456.99999999999994,
+                278.0
+            ]
+        }
+    },
+    {
+        "icon": null,
+        "fieldlist": [
+            [
+                "FieldName",
+                "DisplayName",
+                "FieldType"
+            ]
+        ],
+        "title": "tata",
+        "uuid": {
+            "py/object": "uuid.UUID",
+            "hex": "111bf6d5962011ec9f4e5414f318fe74"
+        },
+        "fieldsvalues": {},
+        "type": {
+            "py/type": "app.nodegraph.NodeGraph"
+        },
+        "size": {
+            "py/tuple": [
+                148.0,
+                48.0
+            ]
+        },
+        "pos": {
+            "py/tuple": [
+                178.0,
+                351.0
+            ]
+        }
+    },
+    {
+        "uuid": {
+            "py/object": "uuid.UUID",
+            "hex": "15888d21962011ecab675414f318fe74"
+        },
+        "type": {
+            "py/type": "app.edge.SchemaEdge"
+        },
+        "src": {
+            "py/object": "app.nodegraph.NodeGraph",
+            "py/state": "111bf6d5962011ec9f4e5414f318fe74"
+        },
+        "dst": {
+            "py/object": "app.nodegraph.NodeGraph",
+            "py/state": "2c726e51961f11ecab755414f318fe74"
+        },
+        "size": {
+            "py/tuple": [
+                278.99999999999994,
+                73.0
+            ]
+        },
+        "pos": {
+            "py/tuple": [
+                202.0,
+                302.0
+            ]
+        }
+    },
+    {
+        "uuid": {
+            "py/object": "uuid.UUID",
+            "hex": "287cc181962011ecaa685414f318fe74"
+        },
+        "type": {
+            "py/type": "app.edge.SchemaEdge"
+        },
+        "src": {
+            "py/id": 18
+        },
+        "dst": {
+            "py/object": "app.nodegraph.NodeGraph",
+            "py/state": "19c3a090961f11ec92a85414f318fe74"
+        },
+        "size": {
+            "py/tuple": [
+                221.0,
+                76.0
+            ]
+        },
+        "pos": {
+            "py/tuple": [
+                202.0,
+                375.0
+            ]
+        }
+    }
+]

@@ -63,9 +63,8 @@ class SchemaEdge(SchemaObject):
 	def resolve(self,d=None):
 		for i in App.get_running_app().panel.walk(restrict=True):
 			if isinstance(i,SchemaObject):
-				if d['uuid'].hex == i.data['uuid'].hex:
+				if d == i.data['uuid']['hex']:
 					return(i)
-		print('unresolved')
 		return(None)
 	
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
@@ -77,16 +76,14 @@ class SchemaEdge(SchemaObject):
 			if data['src'] is None:
 				data['src']=src
 			else:
-				if type(data['src']) is dict:
-					data['src']=self.resolve(data['src'])
+				data['src']=self.resolve(data['src'])
 		else:
 			data['src']=src
 		if 'dst' in data:
 			if data['dst'] is None:
 				data['dst']=dst
 			else:
-				if type(data['dst']) is dict:
-					data['dst']=self.resolve(data['dst'])
+				data['dst']=self.resolve(data['dst'])
 		else:
 			data['dst']=dst
 		if not hasattr(data['src'],'wantlink'):

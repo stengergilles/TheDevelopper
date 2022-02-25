@@ -14,6 +14,7 @@ class SchemaObject(RelativeLayout):
 	bgcol=None
 	
 	def __getstate__(self):
+		print("Saving State:" + str(self) + " " + self.data['uuid'].hex)
 		return self.data['uuid'].hex
 		
 	def __setstate__(self,state):

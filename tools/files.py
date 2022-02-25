@@ -6,10 +6,8 @@ import app.settings
 def saveschema(path=None):
 	try:
 		with open(path,'w') as fp:
-			fp.write(jsonpickle.encode(app.settings.schema))
+			fp.write(jsonpickle.encode(app.settings.schema,unpicklable=False))
 			fp.close()
-			for i in app.settings.schema:
-				print(i)
 			return(True)
 	except Exception as e:
 		print(e)
