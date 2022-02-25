@@ -26,6 +26,8 @@ class SchemaEdge(SchemaObject):
 
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
+			self.data['src'].create()
+			self.data['dst'].create()
 			src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
 			dst=self.data['dst'].to_parent(self.data['dst'].c.center_x,self.data['dst'].c.center_y)
 			if src[0] < dst[0]:
@@ -63,6 +65,7 @@ class SchemaEdge(SchemaObject):
 			if isinstance(i,SchemaObject):
 				if d['uuid'].hex == i.data['uuid'].hex:
 					return(i)
+		print('unresolved')
 		return(None)
 	
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
@@ -86,13 +89,17 @@ class SchemaEdge(SchemaObject):
 					data['dst']=self.resolve(data['dst'])
 		else:
 			data['dst']=dst
+		if not hasattr(data['src'],'wantlink'):
+			data['src'].wantlink=[]
 		data['src'].wantlink.append(data['dst'])
 		if not hasattr(data['src'].wantlink[-1],'e'):
 			data['src'].wantlink[-1].e=[]
 		data['src'].wantlink[-1].e.append(self)
+		if not hasattr(data['dst'],'wantlink'):
+			data['dst'].wantlink=[]
+		data['dst'].wantlink.append(data['src'])
 		if not hasattr(data['dst'].wantlink[-1],'e'):
 			data['src'].wantlink[-1].e=[]
-		data['dst'].wantlink.append(data['src'])
 		data['dst'].wantlink[-1].e.append(self)
 		self.direction=dir
 		self.menuvisible=False

@@ -8,6 +8,8 @@ def saveschema(path=None):
 		with open(path,'w') as fp:
 			fp.write(jsonpickle.encode(app.settings.schema))
 			fp.close()
+			for i in app.settings.schema:
+				print(i)
 			return(True)
 	except Exception as e:
 		print(e)

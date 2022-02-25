@@ -53,6 +53,7 @@ class NodeGraph(SchemaObject):
 	
 	def redraw(self,*args):
 		super(NodeGraph,self).redraw(args)
+		self.create()
 		c=(self.c.center_x,self.c.center_y)
 #gniiii, kivy coordinates !!!!!
 		self.l.pos=(self.c.width,0)
@@ -70,55 +71,62 @@ class NodeGraph(SchemaObject):
 			for j in i.e:
 				Clock.schedule_once(j.redraw,0.05)
 			
+	def create(self):
+		if self.data['icon']:
+			i=self.data['icon']
+		else:
+			i='android'
+		if self.data['title']:
+			t=self.data['title']
+		else:
+			t='Untitled Node'
+		if not hasattr(self,'l'):
+			self.l=MDLabel(text=t,size_hint=(1,None),halign='left',font_style='Caption')
+			self.add_widget(self.l)
+		if not hasattr(self,'c'):
+			self.c=MDIconButton(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(16),dp(16)))
+			self.add_widget(self.c)
+		if not hasattr(self,'m'):
+			self.m=Menu(data=[
+				{
+					'name':'link1',
+					'icon':'arrow-left',
+					'callback':self.link1
+				},
+				{
+					'name':'link2',
+					'icon':'arrow-right',
+					'callback':self.link2
+				},
+				{
+					'name':'link3',
+					'icon':'arrow-all',
+					'callback':self.link3
+				},
+				{
+					'name':'link4',
+					'icon':'chart-line',
+					'callback':self.link4
+				},
+				{
+					'name':'link4',
+					'icon':'group',
+					'callback':self.group
+				}			
+			])
+			self.menuvisible=False
+		if not hasattr(self,'f'):
+			self.f=FieldForm(fielddef=self.data['fieldlist'],data=self.data['fieldsvalues'],width=self.size[0],height=self.size[1],pos=(dp(16),0),size_hint=(None,None))
+			self.add_widget(self.f)
+	
 	def __init__(self,data=None,**kwargs):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		data['fieldsvalues']={}
 		data['type']=type(self)
 		self.wantlink=[]
 		self.e=[]
-		self.m=Menu(data=[
-			{
-				'name':'link1',
-				'icon':'arrow-left',
-				'callback':self.link1
-			},
-			{
-				'name':'link2',
-				'icon':'arrow-right',
-				'callback':self.link2
-			},
-			{
-				'name':'link3',
-				'icon':'arrow-all',
-				'callback':self.link3
-			},
-			{
-				'name':'link4',
-				'icon':'chart-line',
-				'callback':self.link4
-			},
-			{
-				'name':'link4',
-				'icon':'group',
-				'callback':self.group
-			}			
-		])
-		self.menuvisible=False
 		if not 'size' in kwargs:
 			self.size=(dp(100),dp(100))
-		if data['icon']:
-			i=data['icon']
-		else:
-			i='android'
-		if data['title']:
-			t=data['title']
-		else:
-			t='Untitled Node'
-		self.c=MDIconButton(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(16),dp(16)))
-		self.l=MDLabel(text=t,size_hint=(1,None),halign='left',font_style='Caption')
-		self.f=FieldForm(fielddef=self.data['fieldlist'],data=data['fieldsvalues'],width=self.size[0],height=self.size[1],pos=(dp(16),0),size_hint=(None,None))
-		self.add_widget(self.l)
-		self.add_widget(self.c)
-		self.add_widget(self.f)
+		self.create()
 		self.bind(pos=self.redraw,size=self.redraw)
 		Clock.schedule_once(self.redraw,0.05)

@@ -37,10 +37,10 @@ class SchemaObject(RelativeLayout):
 		self.data=data
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
 		self.bgcolor[3]=1.0
-		if not data in app.settings.schema:
-			if not data is None:
-				app.settings.schema.append(data)
-				data['uuid']=uuid1()
+		if not self.data in app.settings.schema:
+			if not self.data is None:
+				app.settings.schema.append(self.data)
+				self.data['uuid']=uuid1()
 			
 	def on_touch_down(self,touch):
 		if not self.pinned:
