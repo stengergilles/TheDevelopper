@@ -27,24 +27,30 @@ class SchemaObject(RelativeLayout):
 			self.data['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
 		
 	def redraw(self,*args):
-#		if self.pinned:
-#			with self.canvas.before:
-#				Color(self.bgcolor)
-#				Rectangle(pos=(0,0),size=self.size)
+		if self.pinned:
+			if not self.r:
+				self.canvas.before.add(Color(self.bgcolor))
+			else:
+				self.canvas.before.remove(self.r)
+			self.r=Rectangle(pos=(0,0),size=self.size)
+			self.canvas.before.add(self.r)
 		self.savelayout()
 		
 	def __init__(self,data=None,**kwargs):
 		super(SchemaObject,self).__init__(**kwargs)
 		self.data=data
+		self.pinned=False
+		self.filter=False
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
 		self.bgcolor[3]=1.0
 		if not self.data in app.settings.schema:
 			if not self.data is None:
 				app.settings.schema.append(self.data)
 				self.data['uuid']=uuid1()
-			
+		self.r=None
+
 	def on_touch_down(self,touch):
-		if not self.pinned:
+		if not self.pinned and not self.filter:
 			self.moving=True
 		return super(SchemaObject, self).on_touch_down(touch)
 		

@@ -70,7 +70,7 @@ class SchemaEdge(SchemaObject):
 	def __init__(self,data=None,src=None,dst=None,dir=None,**kwargs):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
 		self.l=None
-		self.pinned=True
+		self.filter=True
 		data['type']=type(self)
 		if 'src' in data:
 			if data['src'] is None:
