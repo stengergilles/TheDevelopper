@@ -8,9 +8,6 @@ from kivy.graphics import Ellipse,Color
 class Menu(MDCircularLayout):
 	data=None
 	
-	def on_size(self,*args):
-		pass
-	
 	def drawbg(self):
 		if self.canvas:
 			c=App.get_running_app().theme_cls.opposite_bg_normal
@@ -24,6 +21,7 @@ class Menu(MDCircularLayout):
 		self.drawbg()
 
 	def buttonpress(self,*args,**kwargs):
+		print('press')
 		if kwargs['n'] is None:
 			pass
 		else:

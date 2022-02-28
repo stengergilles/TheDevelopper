@@ -12,9 +12,6 @@ class direction(Enum):
 	
 class SchemaEdge(SchemaObject):
 
-	def on_size(self,*args):
-		pass
-
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
 			self.data['src'].create()
@@ -62,6 +59,10 @@ class SchemaEdge(SchemaObject):
 		super(SchemaEdge,self).__init__(data=data,**kwargs)
 		self.l=None
 		self.filter=True
+		if not dir:
+			data['dir']=direction.NONE
+		else:
+			data['dir']=dir
 		data['type']=type(self)
 		if 'src' in data:
 			if data['src'] is None:
@@ -91,4 +92,4 @@ class SchemaEdge(SchemaObject):
 		data['dst'].wantlink[-1].e.append(self)
 		self.direction=dir
 		self.menuvisible=False
-		Clock.schedule_once(self.redraw,0.05)
+		Clock.schedule_once(self.redraw,0.005)

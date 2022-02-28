@@ -118,15 +118,11 @@ class TheDevelopper(MDApp):
 			}
 		])
 		self.theme_cls.theme_style="Light"
-		Window.bind(size=self.resize)
+#		Window.bind(size=self.resize)
 		return (self.panel)
 		
 	def build(self):
 		return(self.makepanel())
-	
-#if kivy.__version__ != '2.0.0':
-#	print('Bad kivy version ' + kivy.__version__ + ' 2.0.0 required')
-#	sys.exit(1)
 	
 app.settings.init()
 

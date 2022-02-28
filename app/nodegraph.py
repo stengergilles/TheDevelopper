@@ -1,18 +1,19 @@
-from tkinter import E
+
 from app.schemaobject import SchemaObject
 from kivymd.uix.button import MDIconButton
-from kivymd.uix.label import MDLabel
+from kivymd.uix.label import MDLabel,MDIcon
 from kivy.graphics import Line,Color,Rectangle
 from kivy.clock import Clock
 from kivy.metrics import dp
 from widget.fieldform import FieldForm
 from app.edge import SchemaEdge
 from app.menu import Menu
+from app.edge import direction
 
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self)
+		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self,dir=direction.SRCDST)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
 		self.parent.add_widget(s)	
@@ -20,10 +21,11 @@ class NodeGraph(SchemaObject):
 		self.menuvisible=False
 		
 	def link2(self):
-		self.e=SchemaEdge(data={},src=self,dst=self.wantlink[-1])
-		self.wantlink.e=self.e
-		self.parent.add_widget(self.e)
-		Clock.schedule_once(self.e.redraw,0.05)
+		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=direction.DSTSRC)
+		self.e.append(s)
+		self.wantlink[-1].e.append(s)
+		self.parent.add_widget(s)	
+		Clock.schedule_once(s.redraw,0.05)
 		self.menuvisible=False
 		
 	def link3(self):
@@ -48,30 +50,21 @@ class NodeGraph(SchemaObject):
 				self.menuvisible=True
 				self.parent.add_widget(self.m)
 	
-	def on_size(self,*args):
-		pass
-	
 	def redraw(self,*args):
 		super(NodeGraph,self).redraw(args)
 		self.create()
-		c=(self.c.center_x,self.c.center_y)
-#gniiii, kivy coordinates !!!!!
-		self.l.pos=(self.c.width,0)
-		self.l.texture_update()
-		self.l.size=self.l.texture.size
-		self.f.pos=(self.c.size[0],self.l.pos[1]+self.l.height+dp(1))
-		if self.c.size[0] + self.f.width:
-			self.width=self.c.size[0] + self.f.width
-		if self.c.size[1] + self.f.height:
-			self.height=self.c.size[1]+self.f.height
-		with self.canvas.before:
-			Color(0,0,0)
-			Line(points=[c, (c[0],0),(self.width,0)])
+		if not self.li:
+			self.canvas.before.add(Color(0,0,0))
+		else:
+			self.canvas.before.remove(self.li)
+		self.li=Line(points=[(0,0),(self.width,0),(self.width,self.height)])
+		self.canvas.before.add(self.li)
 		for i in self.wantlink:
 			for j in i.e:
 				Clock.schedule_once(j.redraw,0.05)
 			
 	def create(self):
+		self.li=None
 		if self.data['icon']:
 			i=self.data['icon']
 		else:
@@ -81,10 +74,10 @@ class NodeGraph(SchemaObject):
 		else:
 			t='Untitled Node'
 		if not hasattr(self,'l'):
-			self.l=MDLabel(text=t,size_hint=(1,None),halign='left',font_style='Caption')
+			self.l=MDLabel(text=t,size_hint=(None,None),halign='left',font_style='Caption',pos=(dp(25),0))
 			self.add_widget(self.l)
 		if not hasattr(self,'c'):
-			self.c=MDIconButton(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(16),dp(16)))
+			self.c=MDIcon(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(24),dp(24)))
 			self.add_widget(self.c)
 		if not hasattr(self,'m'):
 			self.m=Menu(data=[
@@ -116,7 +109,7 @@ class NodeGraph(SchemaObject):
 			])
 			self.menuvisible=False
 		if not hasattr(self,'f'):
-			self.f=FieldForm(fielddef=self.data['fieldlist'],data=self.data['fieldsvalues'],width=self.size[0],height=self.size[1],pos=(dp(16),0),size_hint=(None,None))
+			self.f=FieldForm(fielddef=self.data['fieldlist'],data=self.data['fieldsvalues'],width=self.size[0]-dp(25),height=self.size[1],pos=(dp(25),self.l.height),size_hint=(None,None))
 			self.add_widget(self.f)
 	
 	def __init__(self,data=None,**kwargs):
@@ -129,4 +122,4 @@ class NodeGraph(SchemaObject):
 			self.size=(dp(100),dp(100))
 		self.create()
 		self.bind(pos=self.redraw,size=self.redraw)
-		Clock.schedule_once(self.redraw,0.05)
+		Clock.schedule_once(self.redraw,0.005)

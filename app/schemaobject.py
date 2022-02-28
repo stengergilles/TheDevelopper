@@ -49,27 +49,28 @@ class SchemaObject(RelativeLayout):
 				self.data['uuid']=uuid1()
 		self.r=None
 
-	def on_touch_down(self,touch):
+	def my_touch_down(self,touch):
 		if not self.pinned and not self.filter:
 			self.moving=True
+			return(True)
 		return super(SchemaObject, self).on_touch_down(touch)
 		
 	def on_touch_move(self,touch):
-		if self.moving:
-			self.pos=touch.pos
-			for i in self.parent.children:
-				if not i is self:
-					if i.collide_point(*touch.pos):
-						if hasattr(i,'collide'):
-							i.collide(self,touch)
-							return(False)
-					else:
-						if isinstance(i,SchemaObject):
-							if i.menuvisible:
-								i.parent.remove_widget(i.m)
-								i.menuvisible=False
-		return super(SchemaObject,self).on_touch_move(touch)
+#		if self.moving:
+#			self.pos=touch.pos
+#			for i in self.parent.children:
+#				if not i is self:
+#					if i.collide_point(*touch.pos):
+#						if hasattr(i,'collide'):
+#							i.collide(self,touch)
+#							return(False)
+#					else:
+#						if isinstance(i,SchemaObject):
+#							if i.menuvisible:
+#								i.parent.remove_widget(i.m)
+#								i.menuvisible=False
+#		return super(SchemaObject,self).on_touch_move(touch)
 	
-	def on_touch_up(self,touch):
-		self.moving=False
-		return super(SchemaObject,self).on_touch_up(touch)
+#	def on_touch_up(self,touch):
+#		self.moving=False
+#		return super(SchemaObject,self).on_touch_up(touch)
