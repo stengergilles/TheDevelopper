@@ -21,7 +21,6 @@ class Menu(MDCircularLayout):
 		self.drawbg()
 
 	def buttonpress(self,*args,**kwargs):
-		print('press')
 		if kwargs['n'] is None:
 			pass
 		else:

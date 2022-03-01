@@ -1,4 +1,5 @@
 from kivy.uix.widget import Widget
+from kivymd.uix.label import MDIcon
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics import Line,Color,Rectangle
 from kivy.app import App
@@ -52,30 +53,29 @@ class SchemaObject(RelativeLayout):
 
 	def my_touch_down(self,object,touch):
 		if not object.pinned and not object.filter:
+			f=None
+			for i in object.walk(restrict=True):
+				if not i is object:
+					if i.collide_point(*i.to_widget(*touch.pos)):
+						f=i
+			if f:
+				if not f is MDIcon:
+					return i.dispatch('on_touch_down',touch)
 			object.moving=True
-			return(True)
-		return False
+			return False
+		else:
+			return True
 		
 	def my_touch_move(self,object,touch):
 		if object.moving:
 			object.pos=touch.pos
-			for i in self.parent.walk(restrict=True):
-				if not i is object:
-					if i.collide_point(*touch.pos):
-						if hasattr(i,'collide'):
-							i.collide(self,touch)
-							return True
-					else:
-						if isinstance(i,SchemaObject):
-							if i.menuvisible:
-								i.parent.remove_widget(i.m)
-								i.menuvisible=False
 			return True
 		else:
-			return False
+			return object.on_touch_move(touch)
 	
 	def my_touch_up(self,object,touch):
 		if object.moving:
 			object.moving=False
 			return True
-		return False
+		else:
+			return object.on_touch_up(touch)

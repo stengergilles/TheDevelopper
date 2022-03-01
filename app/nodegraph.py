@@ -13,11 +13,12 @@ from app.edge import direction
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
+		print('link1')
 		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self,dir=direction.SRCDST)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
 		self.parent.add_widget(s)	
-		Clock.schedule_once(s.redraw,0.05)
+		Clock.schedule_once(s.redraw,0.005)
 		self.menuvisible=False
 		
 	def link2(self):
@@ -25,7 +26,7 @@ class NodeGraph(SchemaObject):
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
 		self.parent.add_widget(s)	
-		Clock.schedule_once(s.redraw,0.05)
+		Clock.schedule_once(s.redraw,0.005)
 		self.menuvisible=False
 		
 	def link3(self):
@@ -44,14 +45,15 @@ class NodeGraph(SchemaObject):
 		if type(object) is NodeGraph:
 			self.wantlink.append(object)
 			object.wantlink.append(self)
-			self.m.center_x=touch.pos[0]
-			self.m.center_y=touch.pos[1]
-			if not self.menuvisible:
-				self.menuvisible=True
-				self.parent.add_widget(self.m)
+			object.m.center_x=touch.pos[0]
+			object.m.center_y=touch.pos[1]
+			if not object.menuvisible:
+				object.menuvisible=True
+				object.parent.add_widget(object.m)
 	
 	def redraw(self,*args):
 		super(NodeGraph,self).redraw(args)
+		self.height=self.f.height+self.l.height
 		self.create()
 		if not self.li:
 			self.canvas.before.add(Color(0,0,0))
