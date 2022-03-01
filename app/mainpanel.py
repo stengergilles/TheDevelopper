@@ -8,7 +8,7 @@ class MainPanel(FloatLayout):
     def my_touch_down(self, object, touch):
         for i in object.walk(restrict=True):
             if i.collide_point(*touch.pos) and not i is object:
-                return i.dispatch('on_touch_down', touch)
+                return i.on_touch_down(touch)
         if touch.is_double_tap:
             object.m.center_x = touch.pos[0]
             object.m.center_y = touch.pos[1]

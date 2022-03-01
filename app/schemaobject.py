@@ -13,7 +13,8 @@ class SchemaObject(RelativeLayout):
 	moving=False
 	pinned=False
 	bgcol=None
-	
+	z=None
+
 	def __getstate__(self):
 		return self.data['uuid'].hex
 		
@@ -59,9 +60,8 @@ class SchemaObject(RelativeLayout):
 					if i.collide_point(*i.to_widget(*touch.pos)):
 						f=i
 			if f:
-				if not f is MDIcon:
-					return i.dispatch('on_touch_down',touch)
-			object.moving=True
+				if type(f) is MDIcon:
+					object.moving=True
 			return False
 		else:
 			return True
@@ -69,6 +69,10 @@ class SchemaObject(RelativeLayout):
 	def my_touch_move(self,object,touch):
 		if object.moving:
 			object.pos=touch.pos
+			for i in object.parent.walk(restrict=True):
+				if i.collide_point(*touch.pos) and not i is object and not i is object.parent and hasattr(i,'collide'):
+					self.z=i
+					i.collide(object,touch)
 			return True
 		else:
 			return object.on_touch_move(touch)

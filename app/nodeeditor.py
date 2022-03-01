@@ -25,6 +25,7 @@ class NodeEditor(SchemaObject):
 		self.redraw(args)
 			
 	def addline(self,*args):
+		print('addline')
 		self.dt.addline()
 		
 	def select_image(self,path):

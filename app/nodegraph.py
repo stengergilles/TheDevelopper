@@ -20,6 +20,7 @@ class NodeGraph(SchemaObject):
 		self.parent.add_widget(s)	
 		Clock.schedule_once(s.redraw,0.005)
 		self.menuvisible=False
+		self.remove_widget(self.m)
 		
 	def link2(self):
 		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=direction.DSTSRC)
@@ -28,18 +29,22 @@ class NodeGraph(SchemaObject):
 		self.parent.add_widget(s)	
 		Clock.schedule_once(s.redraw,0.005)
 		self.menuvisible=False
+		self.remove_widget(self.m)
 		
 	def link3(self):
 		print('link3')
 		self.menuvisible=False
+		self.remove_widget(self.m)
 		
 	def link4(self):
 		print('link4')
 		self.menuvisible=False
+		self.remove_widget(self.m)
 		
 	def group(self):
 		print('group')
 		self.menuvisible=False
+		self.remove_widget(self.m)
 	
 	def collide(self,object,touch):
 		if type(object) is NodeGraph:

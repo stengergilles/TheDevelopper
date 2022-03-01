@@ -12,6 +12,30 @@ class direction(Enum):
 	
 class SchemaEdge(SchemaObject):
 
+	def my_touch_down(self, object, touch):
+		print('down')
+		if object.data['src'].menuvisible:
+			object.data['src'].menuvisible=False
+			object.data['src'].remove_widget(object.data['src'].m)
+		if object.data['dst'].menuvisible:
+			object.data['dst'].menuvisible=False
+			object.data['dst'].remove_widget(object.data['dst'].m)
+		return False
+
+	def my_touch_move(self, object, touch):
+		print('move')
+		return False
+
+	def my_touch_up(self, object, touch):
+		print('up')
+		if object.data['src'].menuvisible:
+			object.data['src'].menuvisible=False
+			object.data['src'].remove_widget(object.data['src'].m)
+		if object.data['dst'].menuvisible:
+			object.data['dst'].menuvisible=False
+			object.data['dst'].remove_widget(object.data['dst'].m)
+		return False
+		
 	def redraw(self, *args):
 		if self.data['src'] and self.data['dst']:
 			self.data['src'].create()
@@ -92,4 +116,6 @@ class SchemaEdge(SchemaObject):
 		data['dst'].wantlink[-1].e.append(self)
 		self.direction=dir
 		self.menuvisible=False
+		self.bind(on_touch_down=self.my_touch_down,
+                  on_touch_move=self.my_touch_move, on_touch_up=self.my_touch_up)
 		Clock.schedule_once(self.redraw,0.005)
