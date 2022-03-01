@@ -62,7 +62,14 @@ class SchemaObject(RelativeLayout):
 			if f:
 				if type(f) is MDIcon:
 					object.moving=True
-			return False
+					return True
+				else:
+					if not hasattr(f,'on_touch'):
+						return True
+					else:
+						return f.on_touch(touch)
+			else:
+				return(True)
 		else:
 			return True
 		

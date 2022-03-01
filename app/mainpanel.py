@@ -18,6 +18,7 @@ class MainPanel(FloatLayout):
                 return True
         else:
             self.moving = True
+            return True
         return False
 
     def my_touch_move(self, object, touch):

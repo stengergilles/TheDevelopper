@@ -14,12 +14,14 @@ class SchemaEdge(SchemaObject):
 
 	def my_touch_down(self, object, touch):
 		print('down')
-		if object.data['src'].menuvisible:
-			object.data['src'].menuvisible=False
-			object.data['src'].remove_widget(object.data['src'].m)
-		if object.data['dst'].menuvisible:
-			object.data['dst'].menuvisible=False
-			object.data['dst'].remove_widget(object.data['dst'].m)
+		if object.data['src'].menuvisible or object.data['dst'].menuvisible:
+			if object.data['src'].menuvisible:
+				object.data['src'].menuvisible=False
+				object.data['src'].remove_widget(object.data['src'].m)
+			if object.data['dst'].menuvisible:
+				object.data['dst'].menuvisible=False
+				object.data['dst'].remove_widget(object.data['dst'].m)
+			return(True)
 		return False
 
 	def my_touch_move(self, object, touch):
@@ -28,12 +30,14 @@ class SchemaEdge(SchemaObject):
 
 	def my_touch_up(self, object, touch):
 		print('up')
-		if object.data['src'].menuvisible:
-			object.data['src'].menuvisible=False
-			object.data['src'].remove_widget(object.data['src'].m)
-		if object.data['dst'].menuvisible:
-			object.data['dst'].menuvisible=False
-			object.data['dst'].remove_widget(object.data['dst'].m)
+		if object.data['src'].menuvisible or object.data['dst'].menuvisible:
+			if object.data['src'].menuvisible:
+				object.data['src'].menuvisible=False
+				object.data['src'].remove_widget(object.data['src'].m)
+			if object.data['dst'].menuvisible:
+				object.data['dst'].menuvisible=False
+				object.data['dst'].remove_widget(object.data['dst'].m)
+			return(True)
 		return False
 		
 	def redraw(self, *args):
