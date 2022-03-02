@@ -60,6 +60,8 @@ class SchemaObject(RelativeLayout):
 					else:
 						return i.on_touch_down(touch)
 			return True
+		else:
+			print("Pinned")
 		
 	def my_touch_move(self,object,touch):
 		if object.moving:

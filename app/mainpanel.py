@@ -6,12 +6,15 @@ from app.schemaobject import SchemaObject
 class MainPanel(FloatLayout):
 
 	def my_touch_down(self, object, touch):
-		for i in object.walk_reverse():
+		for i in object.walk(restrict=True):
 			f=i.collide_point(*touch.pos)
 			if f and isinstance(i, SchemaObject):
 				if i.size == object.size:
 					return i.on_touch_down(touch)
 				else:
+					if object.m.visible:
+						object.m.visible=False
+						object.remove_widget(object.m)
 					return i.my_touch_down(i, touch)
 			else:
 				if f and not i is object:
@@ -29,12 +32,12 @@ class MainPanel(FloatLayout):
 
 	def my_touch_move(self, object, touch):
 		if object.moving:
-			for i in object.walk_reverse():
+			for i in object.walk(restrict=True):
 				if isinstance(i, SchemaObject):
 					i.pos = (i.pos[0]+touch.dx, i.pos[1]+touch.dy)
 			return True
 		else:
-			for i in object.walk_reverse():
+			for i in object.walk(restrict=True):
 				if isinstance(i,SchemaObject) and i.moving:
 					return i.my_touch_move(i,touch)
 			return True
@@ -44,7 +47,7 @@ class MainPanel(FloatLayout):
 			object.moving = False
 			return True
 		else:
-			for i in object.walk_reverse():
+			for i in object.walk(restrict=True):
 				if i.collide_point(*touch.pos) and not i is object:
 					if hasattr(i,'my_touch_up'):
 						return i.my_touch_up(i,touch)

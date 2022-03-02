@@ -1,5 +1,6 @@
 from app.schemaobject import SchemaObject
 from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.snackbar import Snackbar
 from kivy.uix.scrollview import ScrollView
 from kivymd.uix.toolbar import MDToolbar
 from kivymd.uix.textfield import MDTextField
@@ -50,6 +51,11 @@ class NodeEditor(SchemaObject):
 			'title':self.t.text
 		}
 		self.parent.remove_widget(self)
+		for i in data['fieldlist']:
+			for j in i:
+				if j == '':
+					Snackbar(text='Aaarg, all field definitions must be complete').open()
+					return False
 		self.cb(data)
 		
 	def cancel(self,*args):

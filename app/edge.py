@@ -1,6 +1,6 @@
 from enum import Enum
 from app.schemaobject import SchemaObject
-from kivy.graphics import Line,Color
+from kivy.graphics import Line,Color,Rectangle
 from kivy.clock import Clock
 from kivy.app import App
 
