@@ -49,44 +49,31 @@ class SchemaObject(RelativeLayout):
 				app.settings.schema.append(self.data)
 				self.data['uuid']=uuid1()
 		self.r=None
-		self.bind(on_touch_down=self.my_touch_down,
-                  on_touch_move=self.my_touch_move, on_touch_up=self.my_touch_up)
 
 	def my_touch_down(self,object,touch):
+		print('will move')
 		if not object.pinned and not object.filter:
-			f=None
-			for i in object.walk(restrict=True):
-				if not i is object:
-					if i.collide_point(*i.to_widget(*touch.pos)):
-						f=i
-			if f:
-				if type(f) is MDIcon:
-					object.moving=True
-					return True
-				else:
-					if not hasattr(f,'on_touch'):
-						return True
-					else:
-						return f.on_touch(touch)
-			else:
-				return(True)
-		else:
-			return True
+			object.moving=True
+			object.pos=touch.pos
+		return True
 		
 	def my_touch_move(self,object,touch):
+		print('child move'+str(object.moving))
 		if object.moving:
 			object.pos=touch.pos
+			print('real move'+str(object.pos))
 			for i in object.parent.walk(restrict=True):
 				if i.collide_point(*touch.pos) and not i is object and not i is object.parent and hasattr(i,'collide'):
 					self.z=i
 					i.collide(object,touch)
 			return True
 		else:
-			return object.on_touch_move(touch)
+			return True
 	
 	def my_touch_up(self,object,touch):
 		if object.moving:
+			object.pos=touch.pos
 			object.moving=False
 			return True
 		else:
-			return object.on_touch_up(touch)
+			return True

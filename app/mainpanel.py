@@ -7,8 +7,8 @@ class MainPanel(FloatLayout):
 
     def my_touch_down(self, object, touch):
         for i in object.walk(restrict=True):
-            if i.collide_point(*touch.pos) and not i is object:
-                return i.on_touch_down(touch)
+            if i.collide_point(*touch.pos) and isinstance(i,SchemaObject):
+                return i.my_touch_down(i,touch)
         if touch.is_double_tap:
             object.m.center_x = touch.pos[0]
             object.m.center_y = touch.pos[1]
@@ -19,7 +19,7 @@ class MainPanel(FloatLayout):
         else:
             self.moving = True
             return True
-        return False
+        return super(MainPanel,self).on_touch_down(touch)
 
     def my_touch_move(self, object, touch):
         if object.moving:
@@ -27,13 +27,23 @@ class MainPanel(FloatLayout):
                 if isinstance(i, SchemaObject):
                     i.pos = (i.pos[0]+touch.dx, i.pos[1]+touch.dy)
             return True
-        return False
+        else:
+        	for i in object.walk(restrict=True):
+        		if i.collide_point(*touch.pos) and isinstance(i,SchemaObject):
+        			return i.my_touch_move(i,touch)
+        	return True
+        return True
 
     def my_touch_up(self, object, touch):
         if object.moving:
             object.moving = False
             return True
-        return False
+        else:
+        	for i in object.walk(restrict=True):
+        		if i.collide_point(*touch.pos) and not i is object:
+        			if hasattr(i,'my_touch_up'):
+        				return i.my_touch_up(i,touch)
+        return True
 
     def __init__(self, menu=None, **kwargs):
         super(MainPanel, self).__init__(**kwargs)
