@@ -13,23 +13,27 @@ from app.edge import direction
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		print('link1')
 		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self,dir=direction.SRCDST)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
-		self.parent.add_widget(s)	
-		Clock.schedule_once(s.redraw,0.005)
+		self.parent.add_widget(s)
 		self.menuvisible=False
 		self.remove_widget(self.m)
+		self.wantlink[-1].menuvisible=False
+		self.wantlink[-1].remove_widget(self.wantlink[-1].m)
+		Clock.schedule_once(s.redraw,0.005)
 		
 	def link2(self):
+		print('link2')
 		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=direction.DSTSRC)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
-		self.parent.add_widget(s)	
-		Clock.schedule_once(s.redraw,0.005)
+		self.parent.add_widget(s)
 		self.menuvisible=False
+		self.wantlink[-1].menuvisible=False
+		self.wantlink[-1].remove_widget(self.wantlink[-1].m)
 		self.remove_widget(self.m)
+		Clock.schedule_once(s.redraw,0.005)
 		
 	def link3(self):
 		print('link3')
@@ -118,6 +122,8 @@ class NodeGraph(SchemaObject):
 			])
 			self.menuvisible=False
 		if not hasattr(self,'f'):
+			if not 'fieldsvalues' in self.data:
+				self.data['fieldsvalues']={}
 			self.f=FieldForm(fielddef=self.data['fieldlist'],data=self.data['fieldsvalues'],width=self.size[0]-dp(25),height=self.size[1],pos=(dp(25),self.l.height),size_hint=(None,None))
 			self.add_widget(self.f)
 	
@@ -125,7 +131,7 @@ class NodeGraph(SchemaObject):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
 		if not data:
 			data['fieldsvalues']={}
-			data['type']=type(self)
+		data['type']=type(self)
 		self.wantlink=[]
 		self.e=[]
 		if not 'size' in kwargs:
