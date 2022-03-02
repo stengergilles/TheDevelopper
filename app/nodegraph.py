@@ -47,6 +47,8 @@ class NodeGraph(SchemaObject):
 		self.remove_widget(self.m)
 	
 	def collide(self,object,touch):
+		if object in self.wantlink:
+			return True
 		if type(object) is NodeGraph:
 			self.wantlink.append(object)
 			object.wantlink.append(self)
@@ -121,8 +123,9 @@ class NodeGraph(SchemaObject):
 	
 	def __init__(self,data=None,**kwargs):
 		super(NodeGraph,self).__init__(data=data,**kwargs)
-		data['fieldsvalues']={}
-		data['type']=type(self)
+		if not data:
+			data['fieldsvalues']={}
+			data['type']=type(self)
 		self.wantlink=[]
 		self.e=[]
 		if not 'size' in kwargs:

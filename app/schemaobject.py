@@ -51,20 +51,21 @@ class SchemaObject(RelativeLayout):
 		self.r=None
 
 	def my_touch_down(self,object,touch):
-		print('will move')
 		if not object.pinned and not object.filter:
-			object.moving=True
-			object.pos=touch.pos
-		return True
+			for i in object.walk(restrict=True):
+				if not i is object and i.collide_point(*i.to_widget(*touch.pos)):
+					if isinstance(i,MDIcon):
+						object.moving=True
+						object.pos=touch.pos
+					else:
+						return i.on_touch_down(touch)
+			return True
 		
 	def my_touch_move(self,object,touch):
-		print('child move'+str(object.moving))
 		if object.moving:
 			object.pos=touch.pos
-			print('real move'+str(object.pos))
 			for i in object.parent.walk(restrict=True):
 				if i.collide_point(*touch.pos) and not i is object and not i is object.parent and hasattr(i,'collide'):
-					self.z=i
 					i.collide(object,touch)
 			return True
 		else:

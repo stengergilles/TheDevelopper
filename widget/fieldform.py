@@ -29,6 +29,7 @@ class FieldForm(BoxLayout):
 					t.helper_text_mode='persistent'
 					t.text="X"
 					t.height=t.minimum_height
+					t.text=""
 					t.f=val[0]
 					t.bind(on_text_validate=self.update_field)
 					if t.f in self.data:
