@@ -50,12 +50,12 @@ class NodeEditor(SchemaObject):
 			'fieldlist':self.dt.gettable(),
 			'title':self.t.text
 		}
-		self.parent.remove_widget(self)
 		for i in data['fieldlist']:
 			for j in i:
 				if j == '':
 					Snackbar(text='Aaarg, all field definitions must be complete').open()
 					return False
+		self.parent.remove_widget(self)
 		self.cb(data)
 		
 	def cancel(self,*args):

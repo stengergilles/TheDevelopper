@@ -37,7 +37,6 @@ class FieldForm(BoxLayout):
 					else:
 						self.data[t.f]=t.text
 					self.add_widget(t)
-					t.text=""
 					total=total+t.height
 					if val[2] == 'Integer':
 						t.input_filter='int'
