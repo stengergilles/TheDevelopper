@@ -17,7 +17,7 @@ class SchemaEdge(SchemaObject):
 			self.data['src'].create()
 			self.data['dst'].create()
 			cs=self.data['src'].c.size[0]/2
-			ss=max(self.size[0],self.size[1])*0.1
+			ss=max(self.size[0],self.size[1])*0.01
 			t1=None
 			t2=None
 			src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
@@ -46,6 +46,15 @@ class SchemaEdge(SchemaObject):
 					src=(src[0]-cs,src[1]+cs)
 					dst=(0,self.size[1])
 					dst=(dst[0]+cs,dst[1]-cs)
+					if self.data['dir']==direction.SRCDST:
+						t1=Triangle(points=[dst[0],dst[1],dst[0],dst[1]-ss,dst[0]+ss,dst[1]])
+					else:
+						if self.data['dir']==direction.DSTSRC:
+							t1=Triangle(points=[src[0],src[1],src[0],src[1]+ss,src[0]+ss,src[1]])
+						else:
+							if self.data['dir']==direction.BOTH:
+								t1=Triangle(points=[dst[0],dst[1],dst[0]-ss,dst[1],dst[0],dst[1]-ss])
+								t2=Triangle(points=[src,src[0],src[1]+ss,src[0]+ss,src[1]])
 			else:
 				if src[1] < dst[1]: 
 					self.pos=(dst[0],src[1])
