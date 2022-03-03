@@ -17,7 +17,7 @@ class SchemaEdge(SchemaObject):
 			self.data['src'].create()
 			self.data['dst'].create()
 			cs=self.data['src'].c.size[0]/2
-			ss=max(self.size[0],self.size[1])*0.01
+			ss=max(self.size[0],self.size[1])*0.1
 			t1=None
 			t2=None
 			src=self.data['src'].to_parent(self.data['src'].c.center_x,self.data['src'].c.center_y)
@@ -37,8 +37,8 @@ class SchemaEdge(SchemaObject):
 							t1=Triangle(points=[src[0],src[1],src[0],src[1]+ss,src[0]+ss,src[1]])
 						else:
 							if self.data['dir']==direction.BOTH:
-								t1=Triangle(points=[dst[0],dst1,(dst[0]-ss,dst[1]),(dst[0],dst[1]-ss)])
-								t2=Triangle(points=[src,(src[0],src[1]+ss),(src[0]+ss,src[1])])
+								t1=Triangle(points=[dst[0],dst[1],dst[0]-ss,dst[1],dst[0],dst[1]-ss])
+								t2=Triangle(points=[src,src[0],src[1]+ss,src[0]+ss,src[1]])
 				else:
 					self.pos=(src[0],dst[1])
 					self.size=(dst[0]-src[0],src[1]-dst[1])
@@ -67,8 +67,10 @@ class SchemaEdge(SchemaObject):
 				self.canvas.before.add(Color(0,0,0,1))
 			if self.p1:
 				self.canvas.before.remove(self.p1)
+				self.p1=None
 			if self.p2:
 				self.canvas.before.remove(self.p2)
+				self.p2=None
 			if t1:
 				self.p1=t1
 				print('add1')
