@@ -2,12 +2,14 @@ from kivy.uix.floatlayout import FloatLayout
 from app.menu import Menu
 from app.schemaobject import SchemaObject
 
-
 class MainPanel(FloatLayout):
-
+		
 	def my_touch_down(self, object, touch):
 		for i in object.walk(restrict=True):
 			f=i.collide_point(*touch.pos)
+			if hasattr(i,'filter'):
+				if i.filter:
+					f=False
 			if f and isinstance(i, SchemaObject):
 				if i.size == object.size:
 					return i.on_touch_down(touch)
@@ -18,6 +20,7 @@ class MainPanel(FloatLayout):
 					return i.my_touch_down(i, touch)
 			else:
 				if f and not i is object:
+					print('obj'+str(i))
 					return i.on_touch_down(touch)
 		if touch.is_double_tap:
 			object.m.center_x = touch.pos[0]

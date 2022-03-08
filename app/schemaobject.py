@@ -43,7 +43,7 @@ class SchemaObject(RelativeLayout):
 		self.pinned=False
 		self.filter=False
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
-		self.bgcolor[3]=1.0
+#		self.bgcolor[3]=1.0
 		if not self.data in app.settings.schema:
 			if not self.data is None:
 				app.settings.schema.append(self.data)

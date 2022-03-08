@@ -1,4 +1,4 @@
-
+from kivy.app import App
 from app.schemaobject import SchemaObject
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel,MDIcon
@@ -8,12 +8,11 @@ from kivy.metrics import dp
 from widget.fieldform import FieldForm
 from app.edge import SchemaEdge
 from app.menu import Menu
-from app.edge import direction
 
 class NodeGraph(SchemaObject):
 	
 	def link1(self):
-		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self,dir=direction.SRCDST)
+		s=SchemaEdge(data={},src=self.wantlink[-1],dst=self,dir=1)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
 		self.parent.add_widget(s)
@@ -24,8 +23,7 @@ class NodeGraph(SchemaObject):
 		Clock.schedule_once(s.redraw,0.005)
 		
 	def link2(self):
-		print('link2')
-		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=direction.DSTSRC)
+		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=2)
 		self.e.append(s)
 		self.wantlink[-1].e.append(s)
 		self.parent.add_widget(s)
@@ -36,13 +34,23 @@ class NodeGraph(SchemaObject):
 		Clock.schedule_once(s.redraw,0.005)
 		
 	def link3(self):
-		print('link3')
+		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=3)
+		self.e.append(s)
+		self.wantlink[-1].e.append(s)
+		self.parent.add_widget(s)
 		self.menuvisible=False
+		self.wantlink[-1].menuvisible=False
+		self.wantlink[-1].remove_widget(self.wantlink[-1].m)
 		self.remove_widget(self.m)
 		
 	def link4(self):
-		print('link4')
+		s=SchemaEdge(data={},dst=self.wantlink[-1],src=self,dir=4)
+		self.e.append(s)
+		self.wantlink[-1].e.append(s)
+		self.parent.add_widget(s)
 		self.menuvisible=False
+		self.wantlink[-1].menuvisible=False
+		self.wantlink[-1].remove_widget(self.wantlink[-1].m)
 		self.remove_widget(self.m)
 		
 	def group(self):
@@ -67,7 +75,8 @@ class NodeGraph(SchemaObject):
 		self.height=self.f.height+self.l.height
 		self.create()
 		if not self.li:
-			self.canvas.before.add(Color(0,0,0))
+			x=App.get_running_app().theme_cls.primary_color
+			self.canvas.before.add(Color(x[0],x[1],x[2],x[3]))
 		else:
 			self.canvas.before.remove(self.li)
 		self.li=Line(points=[(0,0),(self.width,0),(self.width,self.height)])
@@ -87,7 +96,7 @@ class NodeGraph(SchemaObject):
 		else:
 			t='Untitled Node'
 		if not hasattr(self,'l'):
-			self.l=MDLabel(text=t,size_hint=(None,None),halign='left',font_style='Caption',pos=(dp(25),0))
+			self.l=MDLabel(text=t,size_hint=(None,None),halign='left',font_style='Caption',pos=(dp(25),0),theme_text_color="Hint")
 			self.add_widget(self.l)
 		if not hasattr(self,'c'):
 			self.c=MDIcon(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(24),dp(24)))

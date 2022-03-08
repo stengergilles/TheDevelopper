@@ -58,9 +58,6 @@ class TheDevelopper(MDApp):
 		self.panel.remove_widget(self.fm)
 		self.fm=None
 		
-	def resize(self,*args):
-		self.panel.on_size(args)
-	
 	def load(self,*args):
 		self.mode=Mode.LOAD
 		self.fm=FileDialog(mode=Mode.LOAD,exitmgr=self.select_file,apppath=self.apppath)
@@ -118,7 +115,7 @@ class TheDevelopper(MDApp):
 			}
 		])
 		self.theme_cls.theme_style="Light"
-#		Window.bind(size=self.resize)
+		self.theme_cls.primary_palette="Blue"
 		return (self.panel)
 		
 	def build(self):

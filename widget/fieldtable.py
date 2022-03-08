@@ -33,7 +33,7 @@ class FieldTable(BoxLayout):
         h = GridLayout(size_hint=(1, None))
         h.cols = len(coldata)
         for i in self.coldata:
-            c = MDLabel(text=i.name, size_hint=(1, None),shorten=True)
+            c = MDLabel(text=i.name, size_hint=(1, None),shorten=True,theme_text_color="Hint")
             c.texture_update()
             c.height = c.texture.size[1]
             h.height = c.height
