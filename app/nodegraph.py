@@ -1,13 +1,27 @@
 from kivy.app import App
 from app.schemaobject import SchemaObject
 from kivymd.uix.button import MDIconButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel,MDIcon
 from kivy.graphics import Line,Color,Rectangle
 from kivy.clock import Clock
+from kivy.uix.boxlayout import BoxLayout
 from kivy.metrics import dp
 from widget.fieldform import FieldForm
 from app.edge import SchemaEdge
 from app.menu import Menu
+from app.group import SchemaGroup
+
+class GroupDialog(BoxLayout):
+	def __init__(self,**kwargs):
+		super(GroupDialog,self).__init__(**kwargs)
+		self.orientation="vertical"
+		self.size_hint=(1,None)
+		self.height="48dp"
+		self.groupname=MDTextField(hint_text="Group Name")
+		self.add_widget(self.groupname)
 
 class NodeGraph(SchemaObject):
 	
@@ -54,9 +68,32 @@ class NodeGraph(SchemaObject):
 		self.remove_widget(self.m)
 		
 	def group(self):
-		print('group')
+		dst=self.wantlink[-1]
+		src=self
+		groupname=None
+		d=MDDialog(title="Group Name",
+			type="custom",
+			content_cls=GroupDialog(),
+			buttons=[
+				MDFlatButton(
+                        text="CANCEL",
+                        theme_text_color="Custom",
+                        text_color=App.get_running_app().theme_cls.primary_color,
+                        on_press=lambda *x: d.dismiss()
+                    ),
+                    MDFlatButton(
+                        text="OK",
+                        theme_text_color="Custom",
+                        text_color=App.get_running_app().theme_cls.primary_color,
+						on_press=lambda *x: groupname="toto"
+                    )
+				])
+		d.open()
+		if groupname:
+			print('groupname='+groupname)			
 		self.menuvisible=False
 		self.remove_widget(self.m)
+		
 	
 	def collide(self,object,touch):
 		if object in self.wantlink:
@@ -99,7 +136,7 @@ class NodeGraph(SchemaObject):
 			self.l=MDLabel(text=t,size_hint=(None,None),halign='left',font_style='Caption',pos=(dp(25),0),theme_text_color="Hint")
 			self.add_widget(self.l)
 		if not hasattr(self,'c'):
-			self.c=MDIcon(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(24),dp(24)))
+			self.c=MDIcon(icon=i,pos=(0,0),size_hint=(None,None),size=(dp(24),dp(24)),theme_text_color="Hint")
 			self.add_widget(self.c)
 		if not hasattr(self,'m'):
 			self.m=Menu(data=[
