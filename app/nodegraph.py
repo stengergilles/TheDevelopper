@@ -65,32 +65,23 @@ class NodeGraph(SchemaObject):
 		self.menuvisible=False
 		self.wantlink[-1].menuvisible=False
 		self.wantlink[-1].remove_widget(self.wantlink[-1].m)
-		self.remove_widget(self.m)
-		
+		self.remove_widget(self.m)	
+	
+	def ongroup(self,*args):
+		groupname=self.d.content_cls.children[0].text
+
 	def group(self):
 		dst=self.wantlink[-1]
 		src=self
-		groupname=None
-		d=MDDialog(title="Group Name",
+		self.d=MDDialog(
+			title="Group Name",
 			type="custom",
 			content_cls=GroupDialog(),
 			buttons=[
-				MDFlatButton(
-                        text="CANCEL",
-                        theme_text_color="Custom",
-                        text_color=App.get_running_app().theme_cls.primary_color,
-                        on_press=lambda *x: d.dismiss()
-                    ),
-                    MDFlatButton(
-                        text="OK",
-                        theme_text_color="Custom",
-                        text_color=App.get_running_app().theme_cls.primary_color,
-						on_press=lambda *x: groupname="toto"
-                    )
+				MDFlatButton(text="CANCEL",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=lambda *x: d.dismiss()),
+                MDFlatButton(text="OK",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=self.ongroup)
 				])
-		d.open()
-		if groupname:
-			print('groupname='+groupname)			
+		self.d.open()			
 		self.menuvisible=False
 		self.remove_widget(self.m)
 		
