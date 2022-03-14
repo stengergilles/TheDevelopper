@@ -63,6 +63,8 @@ class SchemaObject(RelativeLayout):
 						object.moving=True
 						object.pos=touch.pos
 					else:
+						print('titi')
+						object.moving=False
 						if zzf:
 							return True
 						else:
