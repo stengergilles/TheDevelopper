@@ -15,6 +15,7 @@ from app.menu import Menu
 from app.group import SchemaGroup
 
 class GroupDialog(BoxLayout):
+	
 	def __init__(self,**kwargs):
 		super(GroupDialog,self).__init__(**kwargs)
 		self.orientation="vertical"
@@ -69,34 +70,41 @@ class NodeGraph(SchemaObject):
 	
 	def ongroup(self,*args):
 		groupname=self.d.content_cls.children[0].text
+		data={
+			"name": groupname
+		}
+		g=SchemaGroup(data=data,pos=(100,100),size=(200,200))
+		self.parent.add_widget(g)
+		g.addNode(self)
+		g.addNode(self.wantlink[-1])
+		self.d.dismiss()
 
 	def group(self):
-		dst=self.wantlink[-1]
-		src=self
-		self.d=MDDialog(
-			title="Group Name",
-			type="custom",
-			content_cls=GroupDialog(),
-			buttons=[
-				MDFlatButton(text="CANCEL",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=lambda *x: d.dismiss()),
-                MDFlatButton(text="OK",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=self.ongroup)
-				])
-		self.d.open()			
+		if type(self.wantlink[-1]) is SchemaGroup:
+			self.wantlink[-1].addNode(self)
+		else:
+			self.d=MDDialog(
+				title="Group Name",
+				type="custom",
+				content_cls=GroupDialog(),
+				buttons=[
+					MDFlatButton(text="CANCEL",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=lambda *x: self.d.dismiss()),
+ 	               MDFlatButton(text="OK",theme_text_color="Custom",text_color=App.get_running_app().theme_cls.primary_color,on_press=self.ongroup)
+					])
+			self.d.open()			
 		self.menuvisible=False
-		self.remove_widget(self.m)
-		
+		self.remove_widget(self.m)	
 	
 	def collide(self,object,touch):
-		if object in self.wantlink:
-			return True
 		if type(object) is NodeGraph:
-			self.wantlink.append(object)
-			object.wantlink.append(self)
-			object.m.center_x=touch.pos[0]
-			object.m.center_y=touch.pos[1]
-			if not object.menuvisible:
-				object.menuvisible=True
-				object.parent.add_widget(object.m)
+			if object.parent == self.parent:
+				self.wantlink.append(object)
+				object.wantlink.append(self)
+				object.m.center_x=touch.pos[0]
+				object.m.center_y=touch.pos[1]
+				if not object.menuvisible:
+					object.menuvisible=True
+					object.parent.add_widget(object.m)
 	
 	def redraw(self,*args):
 		super(NodeGraph,self).redraw(args)

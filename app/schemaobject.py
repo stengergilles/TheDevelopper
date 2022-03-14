@@ -35,6 +35,11 @@ class SchemaObject(RelativeLayout):
 				self.canvas.before.remove(self.r)
 			self.r=Rectangle(pos=(0,0),size=self.size)
 			self.canvas.before.add(self.r)
+		if hasattr(self,'moving'):
+			if hasattr(self,'menuvisible'):
+				if self.moving and self.menuvisible:
+					self.menuvisible=False
+					self.parent.remove_widget(self.m)
 		self.savelayout()
 		
 	def __init__(self,data=None,**kwargs):
@@ -43,7 +48,6 @@ class SchemaObject(RelativeLayout):
 		self.pinned=False
 		self.filter=False
 		self.bgcolor=App.get_running_app().theme_cls.bg_normal
-#		self.bgcolor[3]=1.0
 		if not self.data in app.settings.schema:
 			if not self.data is None:
 				app.settings.schema.append(self.data)
