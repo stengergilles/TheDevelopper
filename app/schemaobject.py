@@ -55,18 +55,27 @@ class SchemaObject(RelativeLayout):
 		self.r=None
 
 	def my_touch_down(self,object,touch):
+		if "SchemaGroup" in str(type(object)):
+			wantmove=False
+			zz=None
+			for i in object.walk(restrict=True):
+				if i.collide_point(*i.to_widget(*touch.pos)):
+					if isinstance(i,MDIcon):
+						wantmove=True
+					zz=i
+			if not wantmove:
+				return zz.on_touch_down(touch)
 		if not object.pinned and not object.filter:
 			for i in object.walk(restrict=True):
 				if not i is object and i.collide_point(*i.to_widget(*touch.pos)):
-					zzf="SchemaGroup" in str(type(i.parent))
-					if isinstance(i,MDIcon) and not zzf:
+					if isinstance(i,MDIcon) and not "SchemaGroup" in str(type(i.parent)):
 						object.moving=True
 						object.pos=touch.pos
 					else:
-						print('titi')
 						object.moving=False
-						if zzf:
-							return True
+						if "SchemaGroup" in str(type(i.parent)):
+							i.parent.moving=True
+							i.parent.pos=touch.pos
 						else:
 							return i.on_touch_down(touch)
 			return True
