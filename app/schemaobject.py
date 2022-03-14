@@ -58,11 +58,15 @@ class SchemaObject(RelativeLayout):
 		if not object.pinned and not object.filter:
 			for i in object.walk(restrict=True):
 				if not i is object and i.collide_point(*i.to_widget(*touch.pos)):
-					if isinstance(i,MDIcon):
+					zzf="SchemaGroup" in str(type(i.parent))
+					if isinstance(i,MDIcon) and not zzf:
 						object.moving=True
 						object.pos=touch.pos
 					else:
-						return i.on_touch_down(touch)
+						if zzf:
+							return True
+						else:
+							return i.on_touch_down(touch)
 			return True
 		else:
 			print("Pinned")
