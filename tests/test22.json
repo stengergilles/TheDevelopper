@@ -1,1 +1,0 @@
-[{"icon": null, "fieldlist": [["FieldName", "DisplayName", "FieldType"], ["field1", "tutu", ""]], "title": "toto", "uuid": {"hex": "c86953389a0a11ecb94c17c8fbda54a7"}, "fieldsvalues": {"field1": "X"}, "type": {"py/type": "app.nodegraph.NodeGraph"}, "size": [100.0, 145.0], "pos": [100.0, 100.0]}]

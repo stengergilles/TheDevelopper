@@ -13,8 +13,7 @@ class Menu(MDCircularLayout):
 			pass
 		else:
 			kwargs['n']['callback']()
-		self.visible=False
-		self.parent.remove_widget(self)
+		self.parent.dismiss_menu()
 		
 	def __init__(self,data=None,**kwargs):
 		super(Menu,self).__init__(**kwargs)
@@ -27,6 +26,4 @@ class Menu(MDCircularLayout):
 			m=MDFloatingActionButton(icon=i['icon'],size_hint=(None,None),size=(dp(8),dp(8)))
 			m.bind(on_press=partial(self.buttonpress,n=i))
 			self.add_widget(m)
-		m=MDFloatingActionButton(icon='backburger',size_hint=(None,None),size=(dp(8),dp(8)))
-		m.bind(on_press=partial(self.buttonpress,n=None))
-		self.add_widget(m)
+		
