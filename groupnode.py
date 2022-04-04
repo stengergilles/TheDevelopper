@@ -6,6 +6,12 @@ from kivy.properties import StringProperty,ListProperty,BooleanProperty
 from kivy.clock import Clock
 from kivy.graphics import Rectangle,Color,Line,Triangle
 from  kivy.metrics import dp
+from kivymd.uix.label import MDIcon
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.textfield import MDTextField
+from kivymd.uix.button import MDFlatButton
+
+from groupeditor import EditGroupDialog
 
 import commons
 
@@ -59,6 +65,9 @@ class ProxyStackLayout(StackLayout):
 		
 	def get_panel_canvas(self):
 		return self.parent.parent.parent.canvas
+		
+	def get_real_parent(self):
+		return self.parent.parent.parent
 		
 	def __init__(self,**kwargs):
 		super(ProxyStackLayout,self).__init__(**kwargs)
@@ -125,7 +134,10 @@ class GroupNode(RelativeLayout):
 	def on_touch_down(self,touch):
 		if self.collide_point(*touch.pos):
 			if self.in_handle(touch):
-				self.moving=True
+				if touch.is_double_tap:
+					self.edit_group()
+				else:
+					self.moving=True
 				return True
 			else:
 				return False
@@ -153,6 +165,29 @@ class GroupNode(RelativeLayout):
 		else:
 			if not self in commons.schema:
 				commons.schema.append(self)
+				
+	def edit_group(self,*args):
+		p=self.parent.get_real_parent()
+		if args:
+			v=p.d.content_cls.nodetitle.text
+			if v!= "":
+				self.title=v
+			p.dismiss()
+		else:
+			p.havemodal=True
+			p.d=MDDialog(
+				title='Edit Group',
+				type='custom',
+				content_cls=EditGroupDialog(),
+				buttons=[
+					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.parent.theme_primary_color(),on_press=lambda *x: self.dismiss()),
+					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.parent.theme_primary_color(),on_press=lambda *x: self.edit_group('back'))
+				],
+				pos_hint={'center_x':0.5,'center_y':0.5},
+				auto_dismiss=False
+			)
+			p.d.content_cls.nodetitle.hint_text=self._title.text
+			p.add_widget(p.d)	
 	
 	def __init__(self,id=None,title='Untitled Group',**kwargs):
 		self._trigger=Clock.create_trigger(self.draw)

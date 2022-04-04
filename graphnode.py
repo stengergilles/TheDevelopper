@@ -9,6 +9,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.button import MDFlatButton
 from groupeditor import EditGroupDialog
+from nodeeditor import EditNodeDialog
 from groupnode import GroupNode,ProxyStackLayout
 from menu import Menu
 from enum import IntEnum
@@ -151,6 +152,9 @@ class GraphNode(RelativeLayout):
 				self.moving=True
 				return True
 			else:
+				if self._title.collide_point(*self.to_widget(*touch.pos)):
+					self.edit_title()
+					return True
 				return False
 		else:
 			return False
@@ -267,6 +271,29 @@ class GraphNode(RelativeLayout):
 				if isinstance(i,GraphNode) and not i is self:
 					i._trigger()
 		return False
+		
+	def edit_title(self,*args):
+		p=self.parent.get_real_parent()
+		if args:
+			v=p.d.content_cls.nodetitle.text
+			if v!= "":
+				self.title=v
+			p.dismiss()
+		else:
+			p.havemodal=True
+			p.d=MDDialog(
+				title='Edit Node',
+				type='custom',
+				content_cls=EditNodeDialog(),
+				buttons=[
+					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.parent.theme_primary_color(),on_press=lambda *x: self.dismiss()),
+					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.parent.theme_primary_color(),on_press=lambda *x: self.edit_title('back'))
+				],
+				pos_hint={'center_x':0.5,'center_y':0.5},
+				auto_dismiss=False
+			)
+			p.d.content_cls.nodetitle.hint_text=self._title.text
+			p.add_widget(p.d)	
 		
 	def __init__(self,title='Untitled Node',id=None,**kwargs):
 		self._trigger=Clock.create_trigger(self.draw)

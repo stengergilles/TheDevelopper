@@ -19,6 +19,9 @@ import commons
 
 class MainPanel(FloatLayout):
 	
+	def get_real_parent(self):
+		return self
+	
 	def get_node_by_id(self,id):
 		for i in self.walk(restrict=True):
 			if hasattr(i,'id'):
