@@ -25,7 +25,7 @@ class ProxyStackLayout(StackLayout):
 		           prevy=i.y
 	    return h,l
 	    
-	def count_width(self,widget):
+	def count_width(self):
 		w=0
 		for i in self.walk(restrict=True):
 			if isinstance(i,RelativeLayout):
@@ -41,7 +41,9 @@ class ProxyStackLayout(StackLayout):
 		if c >= self.parent.height:
 		    self.parent.height=c+dp(2)
 		    self.parent.parent.height=c+self.parent.parent._title.height
-		w=self.count_width(widget)
+		w=self.count_width()
+		if widget.width>w:
+			w=widget.width+dp(2)
 		if w>self.width:
 			self.parent.parent.width=w+dp(2)
 		self.parent.parent._trigger()
