@@ -93,6 +93,14 @@ class GroupNode(RelativeLayout):
 		self._title.text=value
 		self._trigger()
 		return True
+		
+	def dismiss(self):
+		s=self.parent.parent.parent.parent
+		if not hasattr(s,'d'):
+			s=self.parent
+		s.havemodal=False
+		s.d.dismiss(force=True)
+		s.remove_widget(s.d)
 
 	def layout(self,*args):
 		if self.parent:
@@ -187,6 +195,7 @@ class GroupNode(RelativeLayout):
 				auto_dismiss=False
 			)
 			p.d.content_cls.nodetitle.hint_text=self._title.text
+			p.d.content_cls.groupdata=self
 			p.add_widget(p.d)	
 	
 	def __init__(self,id=None,title='Untitled Group',**kwargs):

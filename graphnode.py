@@ -228,7 +228,6 @@ class GraphNode(RelativeLayout):
 				self.handle=Rectangle(pos=(0,0),size=(self.handle_w,self.handle_h))
 				self.canvas.before.add(self.handle)
 			for i in self.links:
-				print('link:'+str(i))
 				if i.color:
 					pc.remove(i.color)
 				i.color=self.parent.primary_color_light()
