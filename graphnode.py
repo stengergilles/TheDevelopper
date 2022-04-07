@@ -15,6 +15,7 @@ from menu import Menu
 from enum import IntEnum
 from math import sqrt
 from uuid import uuid4
+from trash import Trash
 
 import commons
 
@@ -177,12 +178,38 @@ class GraphNode(RelativeLayout):
 			if isinstance(tgt,GroupNode):
 				self.parent.remove_widget(self)
 				tgt._content.add_widget(self)
-			return True
+				return True
+			if isinstance(tgt,Trash):
+				self.parent.remove_widget(self)
+				return True
 		else:
 			return False
 			
 	def on_parent(self,instance,p):
 		if p is None:
+			for j in self.links:
+				if j.src is self:
+					if j.line:
+						commons.mainpanel.canvas.remove(j.line)
+					if j.triangle:
+						commons.mainpanel.canvas.remove(j.triangle)
+					if j.triangle2:
+						commons.mainpanel.canvas.remove(j.triangle2)
+					if j.color:
+						commons.mainpanel.canvas.remove(j.color)
+			for i in commons.mainpanel.get_node_target_link(self):
+					for j in i.links:
+						if self is j.dst:
+							if j.line:
+								commons.mainpanel.canvas.remove(j.line)
+							if j.triangle:
+								commons.mainpanel.canvas.remove(j.triangle)
+							if j.triangle2:
+								commons.mainpanel.canvas.remove(j.triangle2)
+							if j.color:
+								commons.mainpanel.canvas.remove(j.color)
+							i.links.remove(j)
+							
 			commons.schema.remove(self)
 		else:
 			if not self in commons.schema:
@@ -306,7 +333,7 @@ class GraphNode(RelativeLayout):
 		self.main_background=None
 		self.handle_color=None
 		self._title=Label(text=self.title,size_hint=(None,None),max_lines=1,text_size=(None,None),valign='middle')
-		self._icon=MDIcon(icon='circle',pos=(0,0),font_size=self._title.font_size,padding=(0,0))
+		self._icon=MDIcon(theme_text_color="Custom",text_color=commons.mainpanel.theme_primary_color(),icon='circle',pos=(0,0),font_size=self._title.font_size,padding=(0,0))
 		self.add_widget(self._title)
 		self.add_widget(self._icon)
 		self.title=title

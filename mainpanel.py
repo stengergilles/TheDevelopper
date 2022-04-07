@@ -12,6 +12,7 @@ from graphnode import GraphNode
 from groupnode import GroupNode
 from filedialog import FileSaveDialog
 from filedialog import FileLoadDialog
+from trash import Trash
 
 import os
 
@@ -28,6 +29,15 @@ class MainPanel(FloatLayout):
 				if i.id==id:
 					return i
 		return None
+		
+	def get_node_target_link(self,node):
+		ret=[]
+		for i in self.walk(restrict=True):
+			if hasattr(i,'links'):
+				for j in i.links:
+					if j.dst is node:
+						ret.append(i)
+		return ret
 	
 	def dismiss_menu(self):
 		if hasattr(self,'m'):
@@ -163,7 +173,7 @@ class MainPanel(FloatLayout):
 		
 	def translate_childs(self,dx=None,dy=None):
 		for i in self.walk(restrict=True):
-			if not i is self and isinstance(i,RelativeLayout) and not isinstance(i.parent.parent.parent,GroupNode):
+			if not i is self and isinstance(i,RelativeLayout) and not isinstance(i.parent.parent.parent,GroupNode) and not isinstance(i,Trash):
 				i.pos=(i.pos[0]+dx,i.pos[1]+dy)
 
 	def show_menu(self,m=None,x=None,y=None,data=None):
@@ -232,3 +242,4 @@ class MainPanel(FloatLayout):
 		])
 		self.menuvisible=False
 		self.havemodal=False
+		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))

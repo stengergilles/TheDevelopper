@@ -4,14 +4,20 @@ from pydoc import locate
 from kivy.metrics import dp
 from kivy.clock import Clock
 
+import os
+
 def init():
 	global start_dir
 	global schema
 	global mainpanel
+	global program_path
+	global icon_path
 	start_dir=None
 	schema=[]
 	mainpanel=None
 	Clock.max_iteration=1500
+	program_path = os.path.dirname(os.path.realpath(__file__))
+	icon_path=os.path.join(program_path,'icons')
 	
 def filesave(filename=None):
 	text="["
