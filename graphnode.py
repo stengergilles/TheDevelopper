@@ -16,6 +16,7 @@ from enum import IntEnum
 from math import sqrt
 from uuid import uuid4
 from trash import Trash
+from form import Form
 
 import commons
 
@@ -56,7 +57,12 @@ class GraphNode(RelativeLayout):
 		ret['id']=self.id
 		ret['title']=self.title
 		ret['links']=[]
-		ret['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
+		if not hasattr(self,'factor'):
+			ret['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
+		else:
+			x=(self.pos[0]-self.base[0]+self.translateright)/self.factor[0]
+			y=(self.pos[1]-self.base[1]+self.translatetop)/self.factor[1]
+			ret['pos']=(x/dp(1),y/dp(1))
 		ret['size']=(self.size[0]/dp(1),self.size[1]/dp(1))
 		for i in self.links:
 			ret['links'].append({
@@ -65,6 +71,7 @@ class GraphNode(RelativeLayout):
 				'kind':int(i.kind),
 				'linkclass':str(Link)
 			})
+		ret['fields']=self._form.serialize()
 		return ret	
 	
 	def dismiss(self):
@@ -77,7 +84,7 @@ class GraphNode(RelativeLayout):
 	
 	def new_group(self,*args):
 		if args:
-			v=self.parent.d.content_cls.getvaluebytype(t=MDTextField,f='text')
+			v=self.parent.d.content_cls.nodetitle.text
 			g=GroupNode(title=v,size=(dp(100),dp(100)),size_hint=(None,None),pos=(self.parent.width/2,self.parent.height/2))
 			self.parent.add_widget(g)
 			self.parent.remove_widget(self.parent.m.data)
@@ -152,7 +159,7 @@ class GraphNode(RelativeLayout):
 			if self.in_handle(touch):
 				self.moving=True
 				return True
-			else:
+			else:			
 				if self._title.collide_point(*self.to_widget(*touch.pos)):
 					self.edit_title()
 					return True
@@ -162,6 +169,12 @@ class GraphNode(RelativeLayout):
 		
 	def on_touch_move(self,touch):
 		if self.moving:
+			if hasattr(self,'_form'):
+				if not self.isingroup() and self._form.count:
+					p=touch.pos
+					dx=p[0]-self.x
+					dy=p[1]-self.y
+					self._form.pos=(self._form.x+dx,self._form.y+dy)		
 			self.pos=touch.pos
 			return True
 		else:
@@ -187,6 +200,11 @@ class GraphNode(RelativeLayout):
 			
 	def on_parent(self,instance,p):
 		if p is None:
+			commons.mainpanel.remove_widget(self._form)
+			if self.flinecolor:
+				commons.mainpanel.canvas.remove(self.flinecolor)
+			if self.fline:
+				commons.mainpanel.canvas.remove(self.fline)
 			for j in self.links:
 				if j.src is self:
 					if j.line:
@@ -208,12 +226,22 @@ class GraphNode(RelativeLayout):
 								commons.mainpanel.canvas.remove(j.triangle2)
 							if j.color:
 								commons.mainpanel.canvas.remove(j.color)
-							i.links.remove(j)
-							
+							i.links.remove(j)						
 			commons.schema.remove(self)
 		else:
 			if not self in commons.schema:
 				commons.schema.append(self)
+				if type(p) is ProxyStackLayout:
+					commons.mainpanel.remove_widget(self._form)
+					if self.flinecolor:
+						commons.mainpanel.canvas.remove(self.flinecolor)
+					if self.fline:
+						commons.mainpanel.canvas.remove(self.fline)
+					self.fline=None
+					self.flinecolor=None
+				if p is commons.mainpanel:
+					self._form.pos=(self.x+dp(60),self.y+dp(100))
+					p.add_widget(self._form)
 		if isinstance(p,ProxyStackLayout):
 			p.layout(instance)
 		return True
@@ -284,13 +312,23 @@ class GraphNode(RelativeLayout):
 					pc.add(i.triangle)
 				if i.triangle2:
 					pc.add(i.triangle2)
+			if not self.isingroup() and self._form.count:
+				if self.flinecolor:
+					pc.remove(self.flinecolor)
+				self.flinecolor=self.parent.primary_color_light()
+				pc.add(self.flinecolor)
+				if self.fline:
+					pc.remove(self.fline)
+				zz=self.to_parent(self._icon.size[0]/2,self._icon.size[1]/2)
+				self.fline=Line(points=[zz[0],zz[1],self._form.pos[0],self._form.pos[1]])
+				pc.add(self.fline)
 		return False
 									
 	def on_size(self,*args):
 		self._trigger()
 		return False
 		
-	def on_pos(self,*args):
+	def on_pos(self,instance,p):	
 		self._trigger()
 		if self.parent:
 			for i in self.parent.walk(restrict=True):
@@ -302,6 +340,11 @@ class GraphNode(RelativeLayout):
 		p=self.parent.get_real_parent()
 		if args:
 			v=p.d.content_cls.nodetitle.text
+			for i in p.d.content_cls.members.walk(restrict=True):
+				if type(i) is MDTextField:
+					f=self._form.find_field(i.text)
+					if f is None:
+						self._form.add_field(name=i.text)
 			if v!= "":
 				self.title=v
 			p.dismiss()
@@ -319,9 +362,10 @@ class GraphNode(RelativeLayout):
 				auto_dismiss=False
 			)
 			p.d.content_cls.nodetitle.hint_text=self._title.text
+			p.d.content_cls.nodedata=self
 			p.add_widget(p.d)	
 		
-	def __init__(self,title='Untitled Node',id=None,**kwargs):
+	def __init__(self,title='Untitled Node',id=None,fields=None,**kwargs):
 		self._trigger=Clock.create_trigger(self.draw)
 		super(GraphNode,self).__init__(**kwargs)
 		if not id:
@@ -332,6 +376,15 @@ class GraphNode(RelativeLayout):
 		self.handle=None
 		self.main_background=None
 		self.handle_color=None
+		self.fline=None
+		self.flinecolor=None
+		self._form=Form()
+		self._form.pos=(self.x+dp(60),self.y+dp(100))
+		if fields:
+			for i in fields:
+				for k in i:
+					self._form.add_field(name=k,value=i[k],default="")
+		commons.mainpanel.add_widget(self._form)
 		self._title=Label(text=self.title,size_hint=(None,None),max_lines=1,text_size=(None,None),valign='middle')
 		self._icon=MDIcon(theme_text_color="Custom",text_color=commons.mainpanel.theme_primary_color(),icon='circle',pos=(0,0),font_size=self._title.font_size,padding=(0,0))
 		self.add_widget(self._title)
@@ -359,4 +412,3 @@ class GraphNode(RelativeLayout):
 			'callback':self.new_group
 		}])
 		commons.schema.append(self)
-		

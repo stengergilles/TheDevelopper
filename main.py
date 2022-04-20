@@ -31,7 +31,7 @@ class TheDevelopper(MDApp):
 		Window.softinput_mode='below_target'
 	
 	def makepanel(self):
-		self.root=MainPanel(app=self,pos=(0,0),size=(Window.width,Window.height),size_hint=(None,None))	
+		self.root=MainPanel(app=self,pos=(0,0),size=(Window.width,Window.height),size_hint=(None,None))
 		return(self.root)
 	
 	def build(self):

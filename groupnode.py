@@ -23,13 +23,15 @@ class ProxyStackLayout(StackLayout):
 	    h=0
 	    l=None
 	    prevy=0
+	    count=0
 	    for i in self.walk(restrict=True):
+	        l=i
 	        if isinstance(i,RelativeLayout):
 	           if i.y != prevy:
-		           l=i
 		           h=h+i.height+dp(2)
 		           prevy=i.y
-	    return h,l
+		           count=count+1
+	    return h,l,count
 	    
 	def count_width(self):
 		w=0
@@ -40,16 +42,16 @@ class ProxyStackLayout(StackLayout):
 		return w
 	
 	def layout(self,widget):
-		c,l=self.count_height()
+		c,l,lgth=self.count_height()
 		if l:
-			if l.width + widget.width > self.width:
-				c = c+widget.height+dp(2)
+			if c + widget.height > self.height:
+				c = self.height+widget.height
 		if c >= self.parent.height:
-		    self.parent.height=c+dp(2)
-		    self.parent.parent.height=c+self.parent.parent._title.height
+		    self.parent.height=c+dp(4)
+		    self.parent.parent.height=c+self.parent.parent._title.height+dp(4)
 		w=self.count_width()
 		if widget.width>w:
-			w=widget.width+dp(2)
+			w=widget.width+dp(4)
 		if w>self.width:
 			self.parent.parent.width=w+dp(2)
 		self.parent.parent._trigger()
@@ -82,7 +84,12 @@ class GroupNode(RelativeLayout):
 		ret['id']=self.id
 		ret['title']=self.title
 		ret['members']=[]
-		ret['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
+		if not hasattr(self,'factor'):
+			ret['pos']=(self.pos[0]/dp(1),self.pos[1]/dp(1))
+		else:
+			x=(self.pos[0]-self.base[0]+self.translateright)/self.factor[0]
+			y=(self.pos[1]-self.base[1]+self.translatetop)/self.factor[1]
+			ret['pos']=(x/dp(1),y/dp(1))
 		ret['size']=(self.size[0]/dp(1),self.size[1]/dp(1))
 		for i in self._content.walk(restrict=True):
 			if isinstance(i,RelativeLayout):

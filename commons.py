@@ -60,7 +60,8 @@ def fileload(filename=None):
 						size=size,
 						title=i['title'],
 						size_hint=(None,None),
-						id=i['id']
+						id=i['id'],
+						fields=i['fields']
 					)		
 					mainpanel.add_widget(w)
 #resolv links

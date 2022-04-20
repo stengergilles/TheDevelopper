@@ -13,6 +13,10 @@ from groupnode import GroupNode
 from filedialog import FileSaveDialog
 from filedialog import FileLoadDialog
 from trash import Trash
+from form import Form
+from field import Field
+
+from editor import Editor
 
 import os
 
@@ -55,9 +59,12 @@ class MainPanel(FloatLayout):
 	
 	def new_node(self,*args):
 		if args:
-			v=self.d.content_cls.getvaluebytype(t=MDTextField,f='text')
+			v=self.d.content_cls.nodetitle.text
 			w=GraphNode(size=(dp(100),dp(100)),size_hint=(None,None),pos=self.m.pos)
 			w.title=v
+			for i in self.d.content_cls.members.walk(restrict=True):
+				if type(i) is MDTextField:
+					w._form.add_field(name=i.text,value="",default="")
 			self.add_widget(w)
 			self.dismiss()
 		else:
@@ -73,6 +80,7 @@ class MainPanel(FloatLayout):
 				pos_hint={'center_x':0.5,'center_y':0.5},
 				auto_dismiss=False
 			)
+			self.d.content_cls.data=self
 			self.add_widget(self.d)
 		
 	def load_graph(self,*args):
@@ -130,14 +138,65 @@ class MainPanel(FloatLayout):
 		
 	def nuke_graph(self):
 		for i in self.walk(restrict=True):
-			if type(i) is GraphNode:
+			if type(i) is GraphNode or type(i) is Editor:
 				i.parent.remove_widget(i)
 				i=None
 		for i in self.walk(restrict=True):
 			if type(i) is GroupNode:
 				i.parent.remove_widget(i)
 				i=None
-		self.canvas.clear()
+		
+	def center_and_fit(self,x,y,w,h):		
+# compute bounds
+		minx=-1
+		maxx=0
+		miny=-1
+		maxy=0
+		for i in self.walk(restrict=True):
+			if not type(i) is Editor:
+				if i.x >maxx:
+					maxx=i.x
+				if i.x <minx:
+					minx=x
+				else:
+					if minx==-1:
+						minx=i.x
+				if i.y > maxy:
+					maxy=i.y
+				if i.y<miny:
+					miny=i.y
+				else:
+					if miny==-1:
+						miny=i.y
+		minw=maxx-minx
+		minh=maxy-miny
+		tw=w/minw
+		th=h/minh
+		for i in self.walk(restrict=True):
+			if isinstance(i,GraphNode) or isinstance(i,GroupNode):
+				i.pos=(x+i.x*tw,y+i.y*th)
+				if i.top>self.height:
+					i.translatetop=(i.top-self.height)
+					i.y=i.y-i.translatetop
+				else:
+					i.translatetop=0
+				if i.right>self.width:
+					i.translateright=i.right-self.width
+					i.x=i.x-i.translateright
+				else:
+					i.translateright=0
+				i.factor=(tw,th)
+				i.base=(x,y)
+				if isinstance(i,GroupNode):
+					i._trigger()
+								
+	def code_graph(self):
+		self.editor.x=0.05*self.width
+		self.editor.y=0.05*self.height
+		self.editor.size=(self.width*0.9,self.height*0.5)
+		self.add_widget(self.editor)
+		self.center_and_fit(0.05*self.width,self.height*0.55,self.width*0.9,self.height*0.45)
+		self.editoractive=True
 	
 	def text_color(self):
 		x=self.app.theme_cls.text_color
@@ -173,7 +232,7 @@ class MainPanel(FloatLayout):
 		
 	def translate_childs(self,dx=None,dy=None):
 		for i in self.walk(restrict=True):
-			if not i is self and isinstance(i,RelativeLayout) and not isinstance(i.parent.parent.parent,GroupNode) and not isinstance(i,Trash):
+			if not i is self and isinstance(i,RelativeLayout) and not isinstance(i.parent.parent.parent,GroupNode) and not isinstance(i,Trash) or isinstance(i,Form) or isinstance(i,Field):
 				i.pos=(i.pos[0]+dx,i.pos[1]+dy)
 
 	def show_menu(self,m=None,x=None,y=None,data=None):
@@ -188,6 +247,18 @@ class MainPanel(FloatLayout):
 		if self.have_children_touch(*args):
 			return super(MainPanel,self).on_touch_down(*args)
 		else:
+			if self.editoractive==True:
+				self.remove_widget(self.editor)
+				self.editoractive=False
+				for i in self.walk(restrict=True):
+					if hasattr(i,'factor'):
+						x=(i.pos[0]-i.base[0]+i.translateright)/i.factor[0]
+						y=(i.pos[1]-i.base[1]+i.translatetop)/i.factor[1]
+						i.pos=(x,y)
+						delattr(i,'factor')
+						delattr(i,'base')
+						delattr(i,'translatetop')
+						delattr(i,'translateright')
 			touch=args[0]
 			if not touch.is_double_tap:
 				self.moving=True
@@ -238,8 +309,14 @@ class MainPanel(FloatLayout):
 			'icon':'nuke',
 			'name':'Nuke',
 			'callback':self.nuke_graph
+		},{
+			'icon':'book-edit',
+			'name':'Editor',
+			'callback':self.code_graph
 		}
 		])
 		self.menuvisible=False
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
+		self.editor=Editor()
+		self.editoractive=False
