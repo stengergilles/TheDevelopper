@@ -44,7 +44,8 @@ class EditGroupDialog(MyDialog):
 			self.height=self.root.height+self.nodetitle.height
 		else:
 			if c==0:
-				self.height=value[1]*4
+				self.root.height=value[1]*4
+				self.height=self.root.height+self.nodetitle.height
 	
 	def __init__(self,**kwargs):
 		super(EditGroupDialog,self).__init__(**kwargs)
@@ -56,3 +57,4 @@ class EditGroupDialog(MyDialog):
 		self.members.bind(size=self.myresize)
 		self.root.add_widget(self.members)
 		self.add_widget(self.root)
+		self.myresize(None,(None,dp(30)))

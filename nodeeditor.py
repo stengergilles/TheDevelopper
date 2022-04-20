@@ -55,7 +55,7 @@ class EditNodeDialog(MyDialog):
 		
 	def __init__(self,**kwargs):
 		super(EditNodeDialog,self).__init__(**kwargs)
-		self.height=dp(70)
+		self.height=dp(100)
 		self.members=BoxLayout(size_hint=(1,None),orientation='vertical')
 		self.members.height=dp(48)
 		self.add_widget(self.members)
