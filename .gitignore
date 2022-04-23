@@ -10,6 +10,8 @@ __pycache__/
 .Python
 build/
 .buildozer/
+.idea/
+.vscode/
 develop-eggs/
 dist/
 downloads/
