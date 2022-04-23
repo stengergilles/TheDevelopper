@@ -12,6 +12,7 @@ from graphnode import GraphNode
 from groupnode import GroupNode
 from filedialog import FileSaveDialog
 from filedialog import FileLoadDialog
+from graphlabel import GraphLabel
 from trash import Trash
 from form import Form
 from field import Field
@@ -217,6 +218,9 @@ class MainPanel(FloatLayout):
 	def theme_primary_color(self):
 		return self.app.theme_cls.primary_color
 		
+	def theme_background_color(self):
+		return self.app.theme_cls.bg_normal
+		
 	def have_children_touch(self,touch,excl=None):
 		if hasattr(self,'d'):
 			if self.havemodal and self.d.collide_point(*touch.pos):
@@ -250,6 +254,12 @@ class MainPanel(FloatLayout):
 			if self.editoractive==True:
 				self.remove_widget(self.editor)
 				self.editoractive=False
+				n=GraphLabel()
+				n.title='New Label'
+				n.body=self.editor.c.text
+				self.editor.text=""
+				n.pos=(self.width*0.2,self.height*0.2)
+				self.add_widget(n)
 				for i in self.walk(restrict=True):
 					if hasattr(i,'factor'):
 						x=(i.pos[0]-i.base[0]+i.translateright)/i.factor[0]
