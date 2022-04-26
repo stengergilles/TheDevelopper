@@ -10,7 +10,7 @@ package.name = TheDevelopper
 package.domain = com.lovers
 
 # (str) Source code where the main.py live
-source.dir = ../..
+source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
 source.include_exts = py,png,jpg,kv,atlas
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = kivy==2.0.0,kivymd,python3,sdl2_ttf==2.0.15,pillow
+requirements = kivy==2.0.0,kivymd,python3,sdl2_ttf==2.0.15,pillow,pygments
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -94,7 +94,7 @@ fullscreen = 1
 
 # (int) Minimum API your APK will support.
 #android.minapi = 21
-android.minapi = 27
+android.minapi = 21
 
 # (int) Android SDK version to use
 #android.sdk = 20
@@ -103,19 +103,16 @@ android.minapi = 27
 #android.ndk = 19b
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
-#android.ndk_api = 21
-android.ndk_api = 27
+android.ndk_api = 21
 
 # (bool) Use --private data storage (True) or --dir public storage (False)
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
 #android.ndk_path =
-android.ndk_path=/data/data/com.termux/files/home/android-ndk-r23b
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path =
-android.sdk_path = /data/data/com.termux/files/home/android-sdk
 
 # (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
@@ -225,7 +222,7 @@ android.accept_sdk_license = True
 #android.copy_libs = 1
 
 # (str) The Android arch to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
-android.archs = arm64-v8a
+android.archs = arm64-v8a, armeabi-v7a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing
@@ -239,7 +236,7 @@ android.archs = arm64-v8a
 #p4a.fork = kivy
 
 # (str) python-for-android branch to use, defaults to master
-p4a.branch = develop
+p4a.branch = master
 
 # (str) python-for-android git clone directory (if empty, it will be automatically cloned from github)
 #p4a.source_dir =
