@@ -255,9 +255,14 @@ class MainPanel(FloatLayout):
 				self.remove_widget(self.editor)
 				self.editoractive=False
 				n=GraphLabel()
-				n.title='New Label'
+				if self.editor.getlinecount()>0:
+					t=self.editor.getline(0)
+					if t != "":
+						n.title=t
+						if n.title == "" and self.editor.c.text != "":
+							n.title=self.editor.c.text
 				n.body=self.editor.c.text
-				self.editor.text=""
+				self.editor.c.text=""
 				n.pos=(self.width*0.2,self.height*0.2)
 				self.add_widget(n)
 				for i in self.walk(restrict=True):

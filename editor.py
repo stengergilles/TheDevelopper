@@ -7,6 +7,12 @@ from kivy.metrics import dp
 
 class Editor(BoxLayout):
 	
+	def getlinecount(self):
+		return self.c.text.count('\n')
+		
+	def getline(self,l):
+		return self.c.text.split('\n')[l]
+	
 	def on_parent(self,instance,value):
 		if self.parent:
 			self.c.background_color=self.parent.theme_background_color()
