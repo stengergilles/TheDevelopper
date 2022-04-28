@@ -3,7 +3,7 @@ import importlib
 from pydoc import locate
 from kivy.metrics import dp
 from kivy.clock import Clock
-
+import traceback
 import os
 
 def init():
@@ -23,6 +23,7 @@ def filesave(filename=None):
 	text="["
 	for i in schema:
 		s=i.serialize()
+		print(str(s))
 		s['type']=str(type(i))
 		text=text+json.dumps(s)+","
 	text=(text+"]").replace(",]","]")
@@ -49,9 +50,22 @@ def fileload(filename=None):
 			myschema=json.load(file)
 			grnode=locate('graphnode.GraphNode')
 			group=locate('groupnode.GroupNode')
+			label=locate('graphlabel.GraphLabel')
 #load nodes
 			for i in myschema:
 				classtype=resolvtype(i['type'])
+				if classtype is label:
+					size=(dp(i['size'][0]),dp(i['size'][1]))
+					pos=(dp(i['pos'][0]),dp(i['pos'][1]))
+					w=classtype(
+						pos=pos,
+						size=size,
+						title=i['title'],
+						size_hint=(None,None),
+						id=i['id'],
+						body=i['text']
+					)		
+					mainpanel.add_widget(w)
 				if classtype is grnode:
 					size=(dp(i['size'][0]),dp(i['size'][1]))
 					pos=(dp(i['pos'][0]),dp(i['pos'][1]))
@@ -95,6 +109,6 @@ def fileload(filename=None):
 					mainpanel.add_widget(g)
 				
 	except Exception as e:
-		print(str(e))
+		print(traceback.format_exc())
 		return str(e),False	
 	return None,True
