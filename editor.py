@@ -12,6 +12,9 @@ class Editor(BoxLayout):
 		
 	def getline(self,l):
 		return self.c.text.split('\n')[l]
+		
+	def getlines(self):
+		return self.c.text.split('\n')
 	
 	def on_parent(self,instance,value):
 		if self.parent:
