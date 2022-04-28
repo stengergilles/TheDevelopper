@@ -17,10 +17,18 @@ import asyncio
 
 class TheDevelopper(MDApp):
 	
+	def permissioncallback(self,*args):
+		print('callback')
+	
 	def config_app(self):
 		commons.init()
 		if platform == 'android':
 			from android import storage
+			try:
+				from android.permissions import request_permissions, Permission
+				request_permissions([Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE],self.permissioncallback)
+			except:
+				pass
 			commons.start_dir=storage.primary_external_storage_path()
 		if platform == 'linux':
 			commons.start_dir=os.getenv('HOME')
