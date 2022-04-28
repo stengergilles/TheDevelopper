@@ -101,7 +101,7 @@ class MainPanel(FloatLayout):
 			self.d=MDDialog(
 				title='File Load',
 				type='custom',
-				content_cls=FileLoadDialog(),
+				content_cls=self.fl,
 				buttons=[
 					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.dismiss()),
 					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.load_graph('back'))
@@ -127,7 +127,7 @@ class MainPanel(FloatLayout):
 			self.d=MDDialog(
 				title='File Save',
 				type='custom',
-				content_cls=FileSaveDialog(),
+				content_cls=self.fs,
 				buttons=[
 					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.dismiss()),
 					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.save_graph('back'))
@@ -139,7 +139,7 @@ class MainPanel(FloatLayout):
 		
 	def nuke_graph(self):
 		for i in self.walk(restrict=True):
-			if type(i) is GraphNode or type(i) is Editor:
+			if type(i) is GraphNode or type(i) is Editor or type(i) is GraphLabel:
 				i.parent.remove_widget(i)
 				i=None
 		for i in self.walk(restrict=True):
@@ -341,3 +341,5 @@ class MainPanel(FloatLayout):
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
 		self.editor=Editor()
 		self.editoractive=False
+		self.fl=FileLoadDialog()
+		self.fs=FileSaveDialog()

@@ -15,7 +15,7 @@ def init():
 	start_dir=None
 	schema=[]
 	mainpanel=None
-	Clock.max_iteration=1500
+	Clock.max_iteration=6000
 	program_path = os.path.dirname(os.path.realpath(__file__))
 	icon_path=os.path.join(program_path,'icons')
 	

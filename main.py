@@ -19,7 +19,6 @@ import logging
 import cProfile,pstats
 from pstats import SortKey
 
-
 class TheDevelopper(MDApp):
 	
 	def config_app(self):
@@ -48,17 +47,16 @@ class TheDevelopper(MDApp):
 		self.config_app()
 		return(self.makepanel())
 		
-	def on_start(self):
-		self.profile=cProfile.Profile()
-		self.profile.enable()
+#	def on_start(self):
+#		self.profile=cProfile.Profile()
+#		self.profile.enable()
 		
-	def on_stop(self):
-		self.profile.disable()
-		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
+#	def on_stop(self):
+#		self.profile.disable()
+#		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
 		
 if __name__ == '__main__':
-	Config.set('kivy','clock','interrupt')
-#	logging.getLogger().disabled=True
+	Config.set('kivy','clock','free_only')
 	a=TheDevelopper()
 	loop=asyncio.get_event_loop()
 	loop.run_until_complete(a.async_run())

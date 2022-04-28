@@ -7,6 +7,7 @@ from kivymd.uix.label import MDIcon,MDLabel
 import commons
 from kivy.metrics import dp
 from uuid import uuid4
+from trash import Trash
 
 class GraphLabel(RelativeLayout):
 	
@@ -80,6 +81,9 @@ class GraphLabel(RelativeLayout):
 		if self.moving:
 			self.moving=False
 			self._trigger()
+			tgt=self.parent.have_children_touch(touch,excl=self)
+			if isinstance(tgt,Trash):
+				self.parent.remove_widget(self)
 			return True
 		else:
 			return False

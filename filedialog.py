@@ -35,8 +35,8 @@ class FileSaveDialog(MyDialog):
 		self.size=(dp(800),dp(600))
 		self.d=MDFileManager(exit_manager=self.exit_manager, select_path=self.select_path,size_hint=(1,1))
 		self.d._window_manager=self
-		self.add_widget(self.d)
 		self.d.show(commons.start_dir)
+		self.add_widget(self.d)
 		self.f=MDTextField(hint_text='File to Save',size_hint=(1,None))
 		self.add_widget(self.f)
 		
@@ -62,8 +62,8 @@ class FileLoadDialog(MyDialog):
 	def __init__(self,**kwargs):
 		super(FileLoadDialog,self).__init__(**kwargs)
 		self.size=(dp(800),dp(600))
-		self.d=MDFileManager(exit_manager=self.exit_manager, select_path=self.select_path,size_hint=(1,1))
 		self.auto_dismiss=True
+		self.d=MDFileManager(exit_manager=self.exit_manager, select_path=self.select_path,size_hint=(1,1))
 		self.d._window_manager=self
-		self.add_widget(self.d)
 		self.d.show(commons.start_dir)
+		self.add_widget(self.d)
