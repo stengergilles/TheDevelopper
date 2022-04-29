@@ -51,7 +51,11 @@ class GraphLabel(RelativeLayout):
 			self.b.text_size=(self.width,self.height*0.8)
 	
 	def edit_label(self):
-		pass
+		self.parent.editor.c.text=self.t.text+'\n'+self.b.text
+		self.parent.editor.label=self
+		z=self.parent
+		self.parent.remove_widget(self)
+		z.code_graph()
 		
 	def in_handle(self,touch):
 		i=self.to_widget(*touch.pos)

@@ -253,12 +253,14 @@ class MainPanel(FloatLayout):
 			if self.editoractive==True:
 				self.remove_widget(self.editor)
 				self.editoractive=False
-				n=GraphLabel()
+				if hasattr(self.editor,'label'):
+					n=self.editor.label
+				else:
+					n=GraphLabel()
 				if self.editor.getlinecount()>0:
 					t=self.editor.getline(0)
 					b=self.editor.getlines()[1:]
 					n.body='\n'.join(b)
-					print('joined'+str(b))
 					if t != "":
 						n.title=t
 						if n.title == "" and self.editor.c.text != "":
