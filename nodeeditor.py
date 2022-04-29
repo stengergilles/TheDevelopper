@@ -6,6 +6,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.textfield import MDTextField
 from mydialog import MyDialog
+from editor import Editor
 
 class EditNodeDialog(MyDialog):
 	

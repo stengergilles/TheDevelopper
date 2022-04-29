@@ -22,6 +22,7 @@ from trash import Trash
 
 import commons
 import os
+import re
 
 class MainPanel(FloatLayout):
 	
@@ -318,7 +319,16 @@ class MainPanel(FloatLayout):
 		
 	def create_widget3(self,*args):
 		self.editor=Editor()
-			
+	
+	def change_title(self,instance,value):
+		self.modtitle=MDTextField(text=self.graphtitle.text,pos_hint={'top':1},size_hint=(1,0.05))
+		t=self.modtitle.text
+		re.sub( "[.*]", "" ,t)
+		print(t)
+		self.modtitle.text=t
+		self.remove_widget(self.graphtitle)
+		self.add_widget(self.modtitle)
+		
 	def __init__(self,app=None,**kwargs):
 		super(MainPanel,self).__init__(**kwargs)
 		self.app=app
@@ -350,7 +360,9 @@ class MainPanel(FloatLayout):
 		self.menuvisible=False
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
-		self.add_widget(MDLabel(halign='center',text='graph title',pos_hint={'top':1},size_hint=(1,0.05)))
+		self.graphtitle=MDLabel(halign='center',text='[ref=title]graph title[/ref]',pos_hint={'top':1},size_hint=(1,0.05),markup=True)
+		self.graphtitle.bind(on_ref_press=self.change_title)
+		self.add_widget(self.graphtitle)
 		self.editoractive=False
 		Clock.schedule_once(self.create_widget1,0)
 		Clock.schedule_once(self.create_widget2,0)

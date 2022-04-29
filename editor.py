@@ -1,6 +1,7 @@
 from kivy.extras.highlight import PythonLexer
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.codeinput import CodeInput
+import commons
 
 class Editor(BoxLayout):
 	
@@ -15,8 +16,8 @@ class Editor(BoxLayout):
 	
 	def on_parent(self,instance,value):
 		if self.parent:
-			self.c.background_color=self.parent.theme_background_color()
-			self.c.foreground_color=self.parent.theme_primary_color()
+			self.c.background_color=commons.mainpanel.theme_background_color()
+			self.c.foreground_color=commons.mainpanel.theme_primary_color()
 
 	def __init__(self,**kwargs):
 		super(Editor,self).__init__(**kwargs)

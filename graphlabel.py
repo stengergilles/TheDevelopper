@@ -70,6 +70,7 @@ class GraphLabel(RelativeLayout):
 					self.edit_label()
 				else:
 					self.moving=True
+					self.savedpos=self.pos
 				return True
 			else:
 				return False
@@ -78,7 +79,9 @@ class GraphLabel(RelativeLayout):
 		
 	def on_touch_move(self,touch):
 		if self.moving:
-			self.pos=touch.pos
+			dx=(touch.pos[0]-self.savedpos[0])
+			dy=(touch.pos[1]-self.savedpos[1])
+			self.pos=(self.pos[0]+dx,self.pos[1]+dy)
 			return True
 		else:
 			return False
