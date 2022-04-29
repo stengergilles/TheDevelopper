@@ -15,6 +15,7 @@ from kivymd.uix.button import MDFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.textfield import MDTextField
+from kivymd.uix.label import MDLabel
 from menu import Menu
 from nodeeditor import EditNodeDialog
 from trash import Trash
@@ -349,6 +350,7 @@ class MainPanel(FloatLayout):
 		self.menuvisible=False
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
+		self.add_widget(MDLabel(halign='center',text='graph title',pos_hint={'top':1},size_hint=(1,0.05)))
 		self.editoractive=False
 		Clock.schedule_once(self.create_widget1,0)
 		Clock.schedule_once(self.create_widget2,0)
