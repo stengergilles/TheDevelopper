@@ -19,7 +19,7 @@ class Editor(BoxLayout):
 	def on_parent(self,instance,value):
 		if self.parent:
 			self.c.background_color=self.parent.theme_background_color()
-			self.c.foreground_color==self.parent.theme_primary_color()
+			self.c.foreground_color=self.parent.theme_primary_color()
 
 	def __init__(self,**kwargs):
 		super(Editor,self).__init__(**kwargs)

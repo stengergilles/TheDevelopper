@@ -10,17 +10,16 @@ from menu import Menu
 from nodeeditor import EditNodeDialog
 from graphnode import GraphNode
 from groupnode import GroupNode
-from filedialog import FileSaveDialog
-from filedialog import FileLoadDialog
 from graphlabel import GraphLabel
 from trash import Trash
 from form import Form
 from field import Field
-
+from filedialog import FileSaveDialog
+from filedialog import FileLoadDialog
 from editor import Editor
+from kivy.clock import Clock
 
 import os
-
 import commons
 
 class MainPanel(FloatLayout):
@@ -308,6 +307,11 @@ class MainPanel(FloatLayout):
 				return True
 		return False
 		
+	def create_widgets(self,*args):
+		self.fl=FileLoadDialog()
+		self.fs=FileSaveDialog()
+		self.editor=Editor()
+			
 	def __init__(self,app=None,**kwargs):
 		super(MainPanel,self).__init__(**kwargs)
 		self.app=app
@@ -339,7 +343,5 @@ class MainPanel(FloatLayout):
 		self.menuvisible=False
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
-		self.editor=Editor()
 		self.editoractive=False
-		self.fl=FileLoadDialog()
-		self.fs=FileSaveDialog()
+		Clock.schedule_once(self.create_widgets,0.05)
