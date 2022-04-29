@@ -136,3 +136,5 @@ dmypy.json
 kivy_addons/**
 
 *.apk
+
+**/*.AppImage
