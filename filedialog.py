@@ -1,7 +1,7 @@
-from mydialog import MyDialog
+from kivy.metrics import dp
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.uix.textfield import MDTextField
-from kivy.metrics import dp
+from mydialog import MyDialog
 
 import commons
 

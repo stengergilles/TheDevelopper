@@ -1,28 +1,26 @@
-from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.graphics import Color
-from kivy.metrics import dp
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDFlatButton
-from kivymd.uix.snackbar import Snackbar
-from menu import Menu
-from nodeeditor import EditNodeDialog
+from editor import Editor
+from field import Field
+from filedialog import FileLoadDialog
+from filedialog import FileSaveDialog
+from form import Form
+from graphlabel import GraphLabel
 from graphnode import GraphNode
 from groupnode import GroupNode
-from graphlabel import GraphLabel
-from trash import Trash
-from form import Form
-from field import Field
-from filedialog import FileSaveDialog
-from filedialog import FileLoadDialog
-from editor import Editor
 from kivy.clock import Clock
-from kivy.core.window import Window
+from kivy.graphics import Color
+from kivy.metrics import dp
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.snackbar import Snackbar
+from kivymd.uix.textfield import MDTextField
+from menu import Menu
+from nodeeditor import EditNodeDialog
+from trash import Trash
 
-import os
-import threading
 import commons
+import os
 
 class MainPanel(FloatLayout):
 	

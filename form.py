@@ -1,7 +1,6 @@
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.floatlayout import FloatLayout
-from kivy.graphics import Rectangle,Color,Line
 from field import Field
+from kivy.graphics import Line
+from kivy.uix.boxlayout import BoxLayout
 
 import commons
 

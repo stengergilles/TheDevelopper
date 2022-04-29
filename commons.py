@@ -1,10 +1,10 @@
 import json
-import importlib
-from pydoc import locate
-from kivy.metrics import dp
-from kivy.clock import Clock
-import traceback
 import os
+import traceback
+
+from kivy.clock import Clock
+from kivy.metrics import dp
+from pydoc import locate
 
 def init():
 	global start_dir

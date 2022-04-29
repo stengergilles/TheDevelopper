@@ -1,10 +1,7 @@
 from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.textfield import MDTextField
-from kivy.properties import StringProperty
-from kivy.metrics import dp
 from kivymd.uix.label import MDLabel
+from kivymd.uix.textfield import MDTextField
 
-import commons
 
 class Field(BoxLayout):
 		

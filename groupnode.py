@@ -1,15 +1,14 @@
-from kivy.uix.stacklayout import StackLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.label import Label
-from kivy.properties import StringProperty,ListProperty,BooleanProperty
 from kivy.clock import Clock
-from kivy.graphics import Rectangle,Color,Line,Triangle
-from  kivy.metrics import dp
-from kivymd.uix.label import MDIcon
-from kivymd.uix.dialog import MDDialog
-from kivymd.uix.textfield import MDTextField
+from kivy.graphics import Line
+from kivy.graphics import Rectangle
+from kivy.metrics import dp
+from kivy.properties import StringProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.stacklayout import StackLayout
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
 
 from groupeditor import EditGroupDialog
 

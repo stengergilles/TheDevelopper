@@ -1,26 +1,22 @@
 from kivymd.app import MDApp
 
-from kivy.core.window import Window
-from kivy.metrics import dp
-from kivy.utils import platform
-from kivy.config import Config
-from kivy.uix.screenmanager import ScreenManager,Screen
 from kivy.clock import Clock
+from kivy.config import Config
+from kivy.core.window import Window
 from kivy.uix.image import Image
+from kivy.uix.screenmanager import Screen
+from kivy.uix.screenmanager import ScreenManager
+from kivy.utils import platform
 
 from mainpanel import MainPanel
-from graphnode import GraphNode
-from groupnode import GroupNode
 
 import commons
 
 import os
 
 import asyncio
-import logging
 
 import cProfile,pstats
-from pstats import SortKey
 
 class TheDevelopper(MDApp):
 	

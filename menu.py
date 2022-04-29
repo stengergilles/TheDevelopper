@@ -1,9 +1,7 @@
-from kivymd.uix.circularlayout import MDCircularLayout
-from kivymd.uix.button import MDFloatingActionButton
-from kivy.metrics import dp
 from functools import partial
-from kivy.app import App
-from kivy.graphics import Ellipse,Color
+from kivy.metrics import dp
+from kivymd.uix.button import MDFloatingActionButton
+from kivymd.uix.circularlayout import MDCircularLayout
 
 class Menu(MDCircularLayout):
 	data=None

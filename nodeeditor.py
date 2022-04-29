@@ -1,11 +1,11 @@
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.button import MDIconButton
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
+from field import Field
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
+from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivymd.uix.button import MDIconButton
+from kivymd.uix.textfield import MDTextField
 from mydialog import MyDialog
-from field import Field
 
 class EditNodeDialog(MyDialog):
 	

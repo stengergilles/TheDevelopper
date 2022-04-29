@@ -1,7 +1,8 @@
-from kivymd.uix.label import MDIcon
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.metrics import dp
 import commons
+
+from kivy.metrics import dp
+from kivy.uix.relativelayout import RelativeLayout
+from kivymd.uix.label import MDIcon
 
 class Trash(RelativeLayout):
 	

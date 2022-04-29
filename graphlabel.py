@@ -1,13 +1,15 @@
-from kivy.uix.relativelayout import RelativeLayout
-from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import StringProperty,ListProperty,BooleanProperty
-from kivy.clock import Clock
-from kivy.graphics import Rectangle,Color,Line,Triangle
-from kivymd.uix.label import MDIcon,MDLabel
 import commons
+
+from kivy.clock import Clock
+from kivy.graphics import Line
+from kivy.graphics import Rectangle
 from kivy.metrics import dp
-from uuid import uuid4
+from kivy.properties import StringProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.relativelayout import RelativeLayout
+from kivymd.uix.label import MDLabel
 from trash import Trash
+from uuid import uuid4
 
 class GraphLabel(RelativeLayout):
 	

@@ -1,10 +1,12 @@
-from kivymd.uix.textfield import MDTextField
-from kivymd.uix.list import MDList,OneLineIconListItem,IconLeftWidget
-from kivy.uix.scrollview import ScrollView
-from kivy.uix.relativelayout import RelativeLayout
-from mydialog import MyDialog
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty
+from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.scrollview import ScrollView
+from kivymd.uix.list import IconLeftWidget
+from kivymd.uix.list import MDList
+from kivymd.uix.list import OneLineIconListItem
+from kivymd.uix.textfield import MDTextField
+from mydialog import MyDialog
 
 class EditGroupDialog(MyDialog):
 	

@@ -1,9 +1,6 @@
-from kivy.uix.codeinput import CodeInput
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.stacklayout import StackLayout
-from kivymd.uix.label import MDLabel
 from kivy.extras.highlight import PythonLexer
-from kivy.metrics import dp
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.codeinput import CodeInput
 
 class Editor(BoxLayout):
 	

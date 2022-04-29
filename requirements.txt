@@ -2,3 +2,5 @@ kivy==2.0.0
 kivymd
 pillow
 pygments
+fiximports
+autoflake
