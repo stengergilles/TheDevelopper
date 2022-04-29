@@ -49,14 +49,14 @@ requirements = kivy==2.0.0,kivymd,python3,sdl2_ttf==2.0.15,pillow,pygments
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
 #presplash.filename = %(source.dir)s/splash.png
-presplash.filename = %(source.dir)s/icon.png
+#presplash.filename = %(source.dir)s/icon.png
 
 # (str) Icon of the application
 #icon.filename = %(source.dir)s/data/icon.png
 icon.filename = %(source.dir)s/icon.png
 
 # (str) Supported orientation (one of landscape, sensorLandscape, portrait or all)
-orientation = portrait
+orientation = all
 
 # (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
@@ -86,7 +86,7 @@ fullscreen = 1
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-android.presplash_color = gray
+android.presplash_color = black
 
 # (list) Permissions
 #android.permissions = INTERNET
