@@ -18,8 +18,10 @@ from filedialog import FileSaveDialog
 from filedialog import FileLoadDialog
 from editor import Editor
 from kivy.clock import Clock
+from kivy.core.window import Window
 
 import os
+import threading
 import commons
 
 class MainPanel(FloatLayout):
@@ -307,9 +309,13 @@ class MainPanel(FloatLayout):
 				return True
 		return False
 		
-	def create_widgets(self,*args):
+	def create_widget1(self,*args):
 		self.fl=FileLoadDialog()
+		
+	def create_widget2(self,*args):
 		self.fs=FileSaveDialog()
+		
+	def create_widget3(self,*args):
 		self.editor=Editor()
 			
 	def __init__(self,app=None,**kwargs):
@@ -344,4 +350,6 @@ class MainPanel(FloatLayout):
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
 		self.editoractive=False
-		Clock.schedule_once(self.create_widgets,0.05)
+		Clock.schedule_once(self.create_widget1,0)
+		Clock.schedule_once(self.create_widget2,0)
+		Clock.schedule_once(self.create_widget3,0)

@@ -10,10 +10,10 @@ import os.path
 class FileSaveDialog(MyDialog):
 	
 	def open(self,*args):
-		pass
+		return True
 		
 	def dismiss(self,*args):
-		pass
+		return True
 
 	def exit_manager(self,*args):
 		if self.f.text != "" and self.d.current_path not in self.f.text:

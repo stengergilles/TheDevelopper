@@ -4,6 +4,9 @@ from kivy.core.window import Window
 from kivy.metrics import dp
 from kivy.utils import platform
 from kivy.config import Config
+from kivy.uix.screenmanager import ScreenManager,Screen
+from kivy.clock import Clock
+from kivy.uix.image import Image
 
 from mainpanel import MainPanel
 from graphnode import GraphNode
@@ -39,21 +42,29 @@ class TheDevelopper(MDApp):
 		self.theme_cls.primary_palette="Blue"
 		Window.softinput_mode='below_target'
 	
-	def makepanel(self):
+	def makepanel(self,*args):
+		s=Screen(name='schema1')
 		self.root=MainPanel(app=self,pos=(0,0),size=(Window.width,Window.height),size_hint=(None,None))
-		return(self.root)
+		s.add_widget(self.root)
+		self.sm.add_widget(s)
+		self.sm.switch_to(s)
 	
 	def build(self):
 		self.config_app()
-		return(self.makepanel())
+		self.sm=ScreenManager()
+		s=Screen(name='splash')
+		s.add_widget(Image(source='icon.png'))
+		self.sm.switch_to(s)
+		Clock.schedule_once(self.makepanel)
+		return(self.sm)
 		
-#	def on_start(self):
-#		self.profile=cProfile.Profile()
-#		self.profile.enable()
+	def on_start(self):
+		self.profile=cProfile.Profile()
+		self.profile.enable()
 		
-#	def on_stop(self):
-#		self.profile.disable()
-#		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
+	def on_stop(self):
+		self.profile.disable()
+		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
 		
 if __name__ == '__main__':
 	Config.set('kivy','clock','free_only')
