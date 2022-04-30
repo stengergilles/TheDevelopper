@@ -59,11 +59,21 @@ class TheDevelopper(MDApp):
 		self.profile.enable()
 		
 	def on_stop(self):
+		Window.close()
 		self.profile.disable()
 		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
 		
 if __name__ == '__main__':
 	Config.set('kivy','clock','free_only')
+	Config.set('graphics','display','-1')
+	Config.set('graphics','fullscreen','0')
+	Config.set('graphics','height','600')
+	Config.set('graphics','left','0')
+	Config.set('graphics','top','0')
+	Config.set('graphics','width','800')
+	Config.set('graphics','resizable','1')
+	Config.set('graphics','borderless','0')
+	Config.set('graphics','window_state','visible')
 	a=TheDevelopper()
 	loop=asyncio.get_event_loop()
 	loop.run_until_complete(a.async_run())
