@@ -332,6 +332,9 @@ class MainPanel(FloatLayout):
 		self.remove_widget(self.graphtitle)
 		self.add_widget(self.modtitle)
 		
+	def subgraph(self,*args):
+		pass
+		
 	def __init__(self,app=None,**kwargs):
 		super(MainPanel,self).__init__(**kwargs)
 		self.app=app
@@ -358,6 +361,10 @@ class MainPanel(FloatLayout):
 			'icon':'book-edit',
 			'name':'Editor',
 			'callback':self.code_graph
+		},{
+			'icon':'folder',
+			'name':'SubGraph',
+			'callback':self.subgraph
 		}
 		])
 		self.menuvisible=False
