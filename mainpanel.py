@@ -197,7 +197,7 @@ class MainPanel(FloatLayout):
 		self.editor.y=0.05*self.height
 		self.editor.size=(self.width*0.9,self.height*0.5)
 		self.add_widget(self.editor)
-		self.center_and_fit(0.05*self.width,self.height*0.55,self.width*0.9,self.height*0.45)
+		self.center_and_fit(0.05*self.width,self.height*0.55,self.width*0.9,self.height*0.40)
 		self.editoractive=True
 	
 	def text_color(self):
@@ -319,13 +319,16 @@ class MainPanel(FloatLayout):
 		
 	def create_widget3(self,*args):
 		self.editor=Editor()
+		
+	def update_title(self,*args):
+		self.graphtitle.text="[ref=title]"+self.modtitle.text+"[/ref]"
+		self.remove_widget(self.modtitle)
+		self.add_widget(self.graphtitle)
 	
 	def change_title(self,instance,value):
 		self.modtitle=MDTextField(text=self.graphtitle.text,pos_hint={'top':1},size_hint=(1,0.05))
-		t=self.modtitle.text
-		re.sub( "[.*]", "" ,t)
-		print(t)
-		self.modtitle.text=t
+		self.modtitle.text=re.sub(r"\[.*?\]", "" ,self.modtitle.text)
+		self.modtitle.bind(on_text_validate=self.update_title)
 		self.remove_widget(self.graphtitle)
 		self.add_widget(self.modtitle)
 		
@@ -360,7 +363,7 @@ class MainPanel(FloatLayout):
 		self.menuvisible=False
 		self.havemodal=False
 		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
-		self.graphtitle=MDLabel(halign='center',text='[ref=title]graph title[/ref]',pos_hint={'top':1},size_hint=(1,0.05),markup=True)
+		self.graphtitle=MDLabel(halign='center',text='[ref=title]graph title[/ref]',pos_hint={'top':1},size_hint=(1,0.05),markup=True,theme_text_color='Custom',text_color=self.theme_primary_color())
 		self.graphtitle.bind(on_ref_press=self.change_title)
 		self.add_widget(self.graphtitle)
 		self.editoractive=False
