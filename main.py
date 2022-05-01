@@ -53,8 +53,17 @@ class TheDevelopper(MDApp):
 		self.sm.switch_to(s)
 		Clock.schedule_once(self.makepanel)
 		return(self.sm)
+	
+	def hook_keyboard(self,window,key,*largs):
+		if platform == 'android':
+			if key == 27:
+				return True
+		return False
 		
 	def on_start(self):
+		if platform == 'android':
+			from kivy.base import EventLoop
+			EventLoop.window.bind(on_keyboard=self.hook_keyboard)
 		self.profile=cProfile.Profile()
 		self.profile.enable()
 		

@@ -9,6 +9,7 @@ from groupnode import GroupNode
 from kivy.clock import Clock
 from kivy.graphics import Color
 from kivy.metrics import dp
+from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivymd.uix.button import MDFlatButton
@@ -335,6 +336,9 @@ class MainPanel(FloatLayout):
 	def subgraph(self,*args):
 		pass
 		
+	def exit(self,*args):
+		App.get_running_app().stop()
+		
 	def __init__(self,app=None,**kwargs):
 		super(MainPanel,self).__init__(**kwargs)
 		self.app=app
@@ -365,6 +369,10 @@ class MainPanel(FloatLayout):
 			'icon':'folder',
 			'name':'SubGraph',
 			'callback':self.subgraph
+		},{
+			'icon':'logout',
+			'name':'Exit',
+			'callback':self.exit
 		}
 		])
 		self.menuvisible=False
