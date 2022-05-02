@@ -14,6 +14,7 @@ class EditNodeDialog(MyDialog):
 	
 	def field_validate(self,*args):
 		if args:
+			print(str(args))
 			if len(args)==2:
 				if type(args[1]) is bool:
 					if not args[1]:
@@ -25,6 +26,9 @@ class EditNodeDialog(MyDialog):
 										if i.t.helper_text==t.original:
 											self.nodedata._form.remove_widget(i)
 							t.original=t.text
+			else:
+				args[0].focus=False
+		return True
 						
 	
 	def on_nodedata(self,*args):
