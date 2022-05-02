@@ -19,6 +19,7 @@ from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
 from menu import Menu
 from nodeeditor import EditNodeDialog
+from projecteditor import EditProjectDialog
 from trash import Trash
 
 import commons
@@ -334,7 +335,23 @@ class MainPanel(FloatLayout):
 		self.add_widget(self.modtitle)
 		
 	def subgraph(self,*args):
-		pass
+		if args:
+			self.dismiss()
+		else:
+			self.havemodal=True
+			self.d=MDDialog(
+				title='Project Management',
+				type='custom',
+				content_cls=EditNodeDialog(),
+				buttons=[
+					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.dismiss()),
+					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.subgraph('back'))
+				],
+				pos_hint={'center_x':0.5,'center_y':0.5},
+				auto_dismiss=False
+			)
+			self.d.content_cls.data=self
+			self.add_widget(self.d)
 		
 	def exit(self,*args):
 		App.get_running_app().stop()

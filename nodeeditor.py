@@ -12,6 +12,21 @@ class EditNodeDialog(MyDialog):
 	
 	nodedata=ObjectProperty(None)
 	
+	def field_validate(self,*args):
+		if args:
+			if len(args)==2:
+				if type(args[1]) is bool:
+					if not args[1]:
+						t=args[0]
+						if t.text !=t.original:
+							if self.nodedata:
+								for i in self.nodedata._form.walk(restrict=True):
+									if type(i) is Field:
+										if i.t.helper_text==t.original:
+											self.nodedata._form.remove_widget(i)
+							t.original=t.text
+						
+	
 	def on_nodedata(self,*args):
 		for i in self.nodedata._form.walk(restrict=True):
 			if type(i) is Field:
@@ -47,7 +62,12 @@ class EditNodeDialog(MyDialog):
 		self.height=self.height+h
 		self.parent.height=self.parent.height+h
 		t=MDTextField(helper_text='Field Name',helper_text_mode='persistent',text=n)
+		t.original=n
+		t.unfocus_on_touch=True
+		t.bind(on_text_validate=self.field_validate)
+		t.bind(focus=self.field_validate)
 		a.add_widget(t)
+		t.focus=True
 		b=MDIconButton(icon='minus',size_hint=(None,None),size=(dp(24),dp(24)))
 		b.t=t
 		b.bind(on_press=self.remove_item)

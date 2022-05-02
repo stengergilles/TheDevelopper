@@ -64,13 +64,13 @@ class TheDevelopper(MDApp):
 		if platform == 'android':
 			from kivy.base import EventLoop
 			EventLoop.window.bind(on_keyboard=self.hook_keyboard)
-		self.profile=cProfile.Profile()
-		self.profile.enable()
+#		self.profile=cProfile.Profile()
+#		self.profile.enable()
 		
 	def on_stop(self):
 		Window.close()
-		self.profile.disable()
-		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
+#		self.profile.disable()
+#		pstats.Stats(self.profile).sort_stats('tottime').print_stats(10)
 		
 if __name__ == '__main__':
 	Window.maximize()
