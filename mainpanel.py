@@ -13,6 +13,7 @@ from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.relativelayout import RelativeLayout
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.button import MDFloatingActionButtonSpeedDial,MDFloatingLabel
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.snackbar import Snackbar
 from kivymd.uix.textfield import MDTextField
@@ -21,6 +22,7 @@ from menu import Menu
 from nodeeditor import EditNodeDialog
 from projecteditor import EditProjectDialog
 from trash import Trash
+from kivy.uix.screenmanager import Screen
 
 import commons
 import os
@@ -322,6 +324,9 @@ class MainPanel(FloatLayout):
 	def create_widget3(self,*args):
 		self.editor=Editor()
 		
+	def getgraphtitle(self):
+		return re.sub(r"\[.*?\]", "" ,self.graphtitle.text)
+		
 	def update_title(self,*args):
 		self.graphtitle.text="[ref=title]"+self.modtitle.text+"[/ref]"
 		self.remove_widget(self.modtitle)
@@ -334,15 +339,45 @@ class MainPanel(FloatLayout):
 		self.remove_widget(self.graphtitle)
 		self.add_widget(self.modtitle)
 		
+	def selectgraph(self,instance):
+			r=range(len(self.speed.children))
+			for i in r:
+				if type(self.speed.children[i]) is MDFloatingLabel:
+					if self.speed.children[i+1] == instance:
+						for j in self.parent.parent.walk(restrict=True):
+							if type(j) is Screen:
+								if j.name == self.speed.children[i].text:
+									for k in self.projectlist:
+										if k['screen'] == j:
+											commons.schema=k['schema']
+											commons.mainpanel=k['mainpanel']
+									self.parent.parent.switch_to(j)
+		
 	def subgraph(self,*args):
 		if args:
+			if hasattr(self,'speed'):
+				self.screenlist=self.speed.projectlist
 			self.dismiss()
+			sm=self.parent.parent
+			if len(sm.screens)>=2:
+				self.speed=MDFloatingActionButtonSpeedDial()
+				self.speed.root_button_anim=True
+				self.speed.callback=self.selectgraph
+				data={}
+				for i in sm.screens:
+					data[i.name]='graph'
+				self.speed.data=data
+				self.parent.add_widget(self.speed)
+			else:
+				if hasattr(self,'speed'):
+					self.parent.remove_widget(self.speed)
+					self.speed=None
 		else:
 			self.havemodal=True
 			self.d=MDDialog(
 				title='Project Management',
 				type='custom',
-				content_cls=EditNodeDialog(),
+				content_cls=EditProjectDialog(),
 				buttons=[
 					MDFlatButton(text='Cancel',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.dismiss()),
 					MDFlatButton(text='Ok',theme_text_color='Custom',text_color=self.theme_primary_color(),on_press=lambda *x: self.subgraph('back'))
@@ -350,7 +385,7 @@ class MainPanel(FloatLayout):
 				pos_hint={'center_x':0.5,'center_y':0.5},
 				auto_dismiss=False
 			)
-			self.d.content_cls.data=self
+			self.d.content_cls.projectdata=self
 			self.add_widget(self.d)
 		
 	def exit(self,*args):
@@ -394,7 +429,7 @@ class MainPanel(FloatLayout):
 		])
 		self.menuvisible=False
 		self.havemodal=False
-		self.add_widget(Trash(pos_hint={'right':1,'bottom':1},size_hint=(None,None)))
+		self.add_widget(Trash(pos_hint={'left':1,'bottom':1},size_hint=(None,None)))
 		self.graphtitle=MDLabel(halign='center',text='[ref=title]graph title[/ref]',pos_hint={'top':1},size_hint=(1,0.05),markup=True,theme_text_color='Custom',text_color=self.theme_primary_color())
 		self.graphtitle.bind(on_ref_press=self.change_title)
 		self.add_widget(self.graphtitle)

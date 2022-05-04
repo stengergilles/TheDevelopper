@@ -14,7 +14,6 @@ class EditNodeDialog(MyDialog):
 	
 	def field_validate(self,*args):
 		if args:
-			print(str(args))
 			if len(args)==2:
 				if type(args[1]) is bool:
 					if not args[1]:

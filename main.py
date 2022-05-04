@@ -5,7 +5,7 @@ from kivy.config import Config
 from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.uix.screenmanager import Screen
-from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.screenmanager import ScreenManager,SlideTransition
 from kivy.utils import platform
 
 from mainpanel import MainPanel
@@ -39,15 +39,21 @@ class TheDevelopper(MDApp):
 		Window.softinput_mode='below_target'
 	
 	def makepanel(self,*args):
-		s=Screen(name='schema1')
+		if not type(args[0]) is str:
+			s=Screen(name='schema1')
+		else:
+			s=Screen(name=args[0])
 		self.root=MainPanel(app=self,pos=(0,0),size=(Window.width,Window.height),size_hint=(None,None))
 		s.add_widget(self.root)
 		self.sm.add_widget(s)
-		self.sm.switch_to(s)
+		if not type(args[0]) is str:
+			self.sm.switch_to(s)
+		else:
+			return s,self.root
 	
 	def build(self):
 		self.config_app()
-		self.sm=ScreenManager()
+		self.sm=ScreenManager(transition=SlideTransition())
 		s=Screen(name='splash')
 		s.add_widget(Image(source='icon.png'))
 		self.sm.switch_to(s)
